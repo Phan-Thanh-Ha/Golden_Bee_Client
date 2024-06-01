@@ -3,11 +3,11 @@ import LayoutGradientBlue from "../../components/layouts/LayoutGradientBlue";
 import Header from "../../components/Header";
 import {colors} from "../../styles/Colors";
 import Footer from "../../components/Footer";
-import LoginForm from "../../components/forms/LoginForm";
+import ForgotPasswordForm from "../../components/forms/ForgotPasswordForm";
 import {KeyboardAwareScrollView} from "@codler/react-native-keyboard-aware-scroll-view";
 import FormRegister from "../../components/forms/RegisterForm";
 
-const LoginScreen = ({navigation}) => {
+const ForgotPasswordScreen = ({navigation}) => {
     return (
         <>
             <Header showBackButton={true} color={colors.WHITE}/>
@@ -20,9 +20,9 @@ const LoginScreen = ({navigation}) => {
             >
                 <LayoutGradientBlue>
                     <Text style={styles.title}>
-                        Đăng nhập
+                        Đổi mật khẩu
                     </Text>
-                    <LoginForm navigation={navigation}/>
+                    <ForgotPasswordForm navigation={navigation}/>
                 </LayoutGradientBlue>
             </KeyboardAwareScrollView>
             <Footer/>
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
 })
-export default LoginScreen;
+export default ForgotPasswordScreen;

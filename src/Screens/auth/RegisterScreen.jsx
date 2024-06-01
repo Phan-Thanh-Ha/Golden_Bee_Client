@@ -1,35 +1,41 @@
-import { StyleSheet, Text, View} from "react-native";
-import FormRegister from "../../components/forms/FormRegister";
+import {StyleSheet, Text, View} from "react-native";
+import FormRegister from "../../components/forms/RegisterForm";
 import Header from "../../components/Header";
 import LayoutGradientBlue from "../../components/layouts/LayoutGradientBlue";
 import {colors} from "../../styles/Colors";
-import BtnPrimary from "../../components/buttons/BtnPrimary";
+import Footer from "../../components/Footer";
+import {ScreenNames} from "../../Constants";
+import Button from "../../components/buttons/Button";
+import ArrowRight from "../../components/svg/ArrowRight";
+import {KeyboardAwareScrollView} from "@codler/react-native-keyboard-aware-scroll-view";
+import {useEffect, useState} from "react";
 
 const RegisterScreen = ({navigation}) => {
+    const [submit, setSubmit] = useState(false);
+    useEffect(()=> {
+        if(submit === true) {
+            navigation.navigate(ScreenNames.ACTIVE_ACCOUNT);
+            setSubmit(false);
+        }
+    },[submit])
     const handleNext = () => {
-        navigation.navigate('ActiveAccount');
+        navigation.navigate(ScreenNames.ACTIVE_ACCOUNT);
     }
     return (
         <>
             <Header showBackButton={true} color={colors.WHITE}/>
             <LayoutGradientBlue>
-                <Text style={styles.title}>
-                    Đăng ký
-                </Text>
-                <FormRegister/>
-
-                <View style={styles.pagination}>
-                    <View
-                        style={styles.dotActive}
-                    />
-                    <View
-                        style={styles.dot}
-                    />
-                </View>
-                <BtnPrimary onPress={handleNext}>
-                    {"Tiếp theo"}
-                </BtnPrimary>
+                <KeyboardAwareScrollView
+                    contentContainerStyle={styles.container}
+                    resetScrollToCoords={{x: 0, y: 0}}
+                    scrollEnabled={true}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <Text style={styles.title}>Đăng ký</Text>
+                    <FormRegister setSubmit={setSubmit}/>
+                </KeyboardAwareScrollView>
             </LayoutGradientBlue>
+            <Footer/>
         </>
     );
 };
@@ -48,7 +54,7 @@ const styles = StyleSheet.create({
         height: 5,
         borderRadius: 10,
         margin: 2,
-        backgroundColor: colors.WHITE
+        backgroundColor: colors.WHITE,
     },
     dotActive: {
         backgroundColor: colors.YELLOW,

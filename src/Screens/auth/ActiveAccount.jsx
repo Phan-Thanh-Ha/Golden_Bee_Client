@@ -4,18 +4,31 @@ import Header from "../../components/Header";
 import {colors} from "../../styles/Colors";
 import FormActiveAccount from "../../components/forms/FormActiveAccount";
 import {useState} from "react";
+import Footer from "../../components/Footer";
+import {KeyboardAwareScrollView} from "@codler/react-native-keyboard-aware-scroll-view";
+import FormRegister from "../../components/forms/RegisterForm";
 
 const ActiveAccount = () => {
     const [isSubmit, setIsSubmit] = useState();
     return (
         <>
             <Header showBackButton={true} color={colors.WHITE}/>
-            <LayoutGradientBlue>
-                <Text style={styles.title}>
-                    Kích hoạt tài khoản
-                </Text>
-                <FormActiveAccount isSubmit={setIsSubmit}/>
-            </LayoutGradientBlue>
+
+            <KeyboardAwareScrollView
+                contentContainerStyle={styles.container}
+                resetScrollToCoords={{x: 0, y: 0}}
+                scrollEnabled={true}
+                keyboardShouldPersistTaps="handled"
+            >
+                <LayoutGradientBlue>
+                    <Text style={styles.title}>
+                        Kích hoạt tài khoản
+                    </Text>
+                    <FormActiveAccount isSubmit={setIsSubmit}/>
+                    <Footer/>
+                </LayoutGradientBlue>
+            </KeyboardAwareScrollView>
+            <Footer/>
         </>
     );
 };

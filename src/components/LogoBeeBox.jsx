@@ -2,12 +2,11 @@ import MainStyle from "../styles/MainStyle";
 import {Image, Text, View} from "react-native";
 import {logo_bee_blue} from "../assets";
 
-const LogoBee = () => {
+const LogoBeeBox = () => {
     return (
         <>
             <View
                 style={{
-                    flex: 1,
                     alignItems: 'center',
                     marginTop: 35
                 }}>
@@ -34,4 +33,4 @@ const LogoBee = () => {
     )
 }
 
-export default LogoBee;
+export default LogoBeeBox;

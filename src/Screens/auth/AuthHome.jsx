@@ -5,17 +5,18 @@ import BtnAuth from "../../components/auth/BtnAuth";
 import Header from "../../components/Header";
 import {colors} from "../../styles/Colors";
 import Footer from "../../components/Footer";
+import {ScreenNames} from "../../Constants";
 
 const AuthHome = ({navigation}) => {
     const handleLogin = () => {
-        navigation.navigate('LoginScreen');
+        navigation.navigate(ScreenNames.LOGIN);
     }
     const handleRegister = () => {
-        navigation.navigate('RegisterScreen');
+        navigation.navigate(ScreenNames.REGISTER);
     }
     return(
         <LayoutAbout>
-            <Header showBackButton={true} />
+            <Header showBackButton={true} color={colors.WHITE}/>
             <LogoBee/>
             <View style={{
                 marginBottom: 100,

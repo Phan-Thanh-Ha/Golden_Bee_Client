@@ -11,6 +11,7 @@ const ScreenNames = {
   REGISTER: "REGISTER",
   AUTH_HOME: "AUTH_HOME",
   ACTIVE_ACCOUNT: "ACTIVE_ACCOUNT",
+  FORGOT_PASSWORD: "FORGOT_PASSWORD",
   // End Authentication
 
   //

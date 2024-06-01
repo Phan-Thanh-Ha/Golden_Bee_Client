@@ -5,25 +5,29 @@ import LayoutAbout from "../../components/layouts/LayoutAbout";
 import { colors } from "../../styles/Colors";
 import BtnPrimary from "../../components/buttons/BtnPrimary";
 import CustomSwiper from "../../components/about/CustomSwiper";
+import {ScreenNames} from "../../Constants";
+import {image_banner_2, image_banner_3, image_banner_4} from "../../assets";
+import Button from "../../components/buttons/Button";
+import ArrowRight from "../../components/svg/ArrowRight";
 
 const dataSlider = [
     {
         title: 'Thời gian linh động',
         description1: 'Thời gian làm việc tùy thuộc vào lựa chọn của bạn.',
         description2: 'Chuyển hóa thời gian rảnh của bạn thành thu nhập!',
-        image: require('../../assets/images/tmp-client-1.png'),
+        image: image_banner_2,
     },
     {
         title: 'Thu nhập hấp dẫn',
         description1: 'Siêng năng và tích cực nhận việc.',
         description2: 'Thu nhập hấp dẫn đến 20 triệu/tháng!.',
-        image: require('../../assets/images/tmp-client-2.png'),
+        image: image_banner_3,
     },
     {
         title: 'Chính sách đãi ngộ tốt',
         description1: 'Kênh chia sẻ tôn vinh giá trị lao động và nghề cung cấp dịch vụ.',
         description2: 'Được hưởng chính sách hỗ trợ tuyệt vời từ Ong Vàng',
-        image: require('../../assets/images/tmp-client-3.png'),
+        image: image_banner_4,
     },
 ];
 
@@ -38,7 +42,7 @@ const AboutScreen = ({navigation}) => {
             swiperRef.current.scrollToIndex({ index: nextIndex, animated: true });
         }
         if(currentIndex === 2) {
-            navigation.navigate("AuthHome");
+            navigation.navigate(ScreenNames.AUTH_HOME);
         }
     };
 
@@ -47,9 +51,15 @@ const AboutScreen = ({navigation}) => {
             <LogoBee />
             <CustomSwiper dataSlider={dataSlider} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} swiperRef={swiperRef}/>
             <View style={styles.buttonContainer}>
-                <BtnPrimary onPress={handleNext}>
-                    {currentIndex === 2 ? "Bắt đầu ": "Tiếp theo"}
-                </BtnPrimary>
+                <View style={styles.buttonContainer}>
+                    <Button
+                        onPress={handleNext}
+                        bgColor={colors.PRIMARY_GREEN}
+                        icon={() => <ArrowRight color={colors.WHITE} />}
+                    >
+                        {currentIndex === 2 ? "Bắt đầu ": "Tiếp theo"}
+                    </Button>
+                </View>
             </View>
         </LayoutAbout>
     );
