@@ -14,7 +14,7 @@ import LogoBee from "../LogoBee";
 import LogoBeeBox from "../LogoBeeBox";
 
 
-const LoginForm = ({setSubmit, navigation}) => {
+const LoginForm = ({setSubmit, navigation, setData}) => {
     const validationSchema = yup.object().shape({
         phoneNumber: yup.string().matches(/^[0-9]{10}$/, 'Số điện thoại không hợp lệ').required('Thông tin bắt buộc'),
         password: yup.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự').required('Thông tin bắt buộc'),
@@ -26,6 +26,7 @@ const LoginForm = ({setSubmit, navigation}) => {
             text1: 'Thông tin đăng ký',
             text2: JSON.stringify(values),
         });
+        setData(values)
         setSubmit(true);
     };
 
@@ -69,9 +70,9 @@ const LoginForm = ({setSubmit, navigation}) => {
                             {'Đăng nhập'}
                         </Button>
                         <View style={styles.regis}>
-                            <Text style={styles.regt}>Bạn chưa có tài khoản ?</Text>
+                            <Text style={styles.regisSub}>Bạn chưa có tài khoản ?</Text>
                             <Pressable onPress={() => navigation.navigate(ScreenNames.REGISTER)}>
-                                <Text style={styles.regtt}>Đăng ký</Text>
+                                <Text style={styles.regisBtn}>Đăng ký</Text>
                             </Pressable>
                         </View>
                     </View>
@@ -89,11 +90,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         margin: 10
     },
-    regt: {
+    regisSub: {
         fontSize: 15,
         marginRight: 10
     },
-    regtt: {
+    regisBtn: {
         fontSize: 15,
         color: colors.MAIN_BLUE_CLIENT
     },

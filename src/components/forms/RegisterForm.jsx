@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import Toast from 'react-native-toast-message';
@@ -9,6 +9,7 @@ import {colors} from "../../styles/Colors";
 import CustomFormError from "./CustomFormError";
 import ArrowRight from "../svg/ArrowRight"; // Import CustomLabel component
 import Button from "../buttons/Button";
+import {ScreenNames} from "../../Constants";
 
 
 const RegisterForm = ({setSubmit}) => {
@@ -28,6 +29,7 @@ const RegisterForm = ({setSubmit}) => {
         });
         setSubmit(true);
     };
+
 
     return (
         <Formik
@@ -86,23 +88,40 @@ const RegisterForm = ({setSubmit}) => {
                             secureTextEntry
                         />
                         <CustomFormError>{touched.confirmPassword && errors.confirmPassword}</CustomFormError>
+                        <Button
+                            onPress={handleSubmit}
+                            icon={()=>(<ArrowRight color={colors.RED} />)}
+                        >
+                            Tiếp tục
+                        </Button>
+                        <View style={styles.regis}>
+                            <Text style={styles.regisSub}>Bạn đã có tài khoản ?</Text>
+                            <Pressable onPress={() => navigation.navigate(ScreenNames.LOGIN)}>
+                                <Text style={styles.regisBtn}>Đăng nhập</Text>
+                            </Pressable>
+                        </View>
                     </View>
-                    <View style={styles.pagination}>
-                        <View style={styles.dotActive}/>
-                        <View style={styles.dot}/>
-                    </View>
-                    <Button onPress={handleSubmit} bgColor={colors.PRIMARY_GREEN}
-                            icon={() => <ArrowRight color={colors.WHITE}/>}>
-                        {'Tiếp theo'}
-                    </Button>
                 </View>
-
             )}
         </Formik>
     );
 };
 
 const styles = StyleSheet.create({
+    regis: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: "center",
+        margin: 10
+    },
+    regisSub: {
+        fontSize: 15,
+        marginRight: 10
+    },
+    regisBtn: {
+        fontSize: 15,
+        color: colors.MAIN_BLUE_CLIENT
+    },
     container: {
         margin: 15,
         backgroundColor: colors.WHITE,

@@ -17,7 +17,7 @@ const RootNavigator = () => {
         <NavigationContainer>
             <Root.Navigator
                 screenOptions={{headerShown: false, animationEnabled: false}}
-                initialRouteName={ScreenNames.AUTH_HOME}>
+                initialRouteName={ScreenNames.SPLASH}>
                 <Root.Screen name={ScreenNames.FIRST} component={First}/>
                 {/*màn hình mở đầu*/}
                 <Root.Screen name={ScreenNames.SPLASH} component={SplashScreen}/>

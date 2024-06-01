@@ -13,21 +13,20 @@ const ActiveAccount = () => {
     return (
         <>
             <Header showBackButton={true} color={colors.WHITE}/>
-
-            <KeyboardAwareScrollView
-                contentContainerStyle={styles.container}
-                resetScrollToCoords={{x: 0, y: 0}}
-                scrollEnabled={true}
-                keyboardShouldPersistTaps="handled"
-            >
-                <LayoutGradientBlue>
+            <LayoutGradientBlue>
+                <KeyboardAwareScrollView
+                    contentContainerStyle={styles.container}
+                    resetScrollToCoords={{x: 0, y: 0}}
+                    scrollEnabled={true}
+                    keyboardShouldPersistTaps="handled"
+                >
                     <Text style={styles.title}>
                         Kích hoạt tài khoản
                     </Text>
                     <FormActiveAccount isSubmit={setIsSubmit}/>
                     <Footer/>
-                </LayoutGradientBlue>
-            </KeyboardAwareScrollView>
+                </KeyboardAwareScrollView>
+            </LayoutGradientBlue>
             <Footer/>
         </>
     );

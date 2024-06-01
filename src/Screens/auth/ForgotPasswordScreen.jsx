@@ -5,26 +5,28 @@ import {colors} from "../../styles/Colors";
 import Footer from "../../components/Footer";
 import ForgotPasswordForm from "../../components/forms/ForgotPasswordForm";
 import {KeyboardAwareScrollView} from "@codler/react-native-keyboard-aware-scroll-view";
-import FormRegister from "../../components/forms/RegisterForm";
 
 const ForgotPasswordScreen = ({navigation}) => {
     return (
         <>
             <Header showBackButton={true} color={colors.WHITE}/>
+            <LayoutGradientBlue>
+                <KeyboardAwareScrollView
+                    contentContainerStyle={styles.container}
+                    resetScrollToCoords={{x: 0, y: 0}}
+                    scrollEnabled={true}
+                    keyboardShouldPersistTaps="handled"
+                    enableAutomaticScroll={true}
+                    extraScrollHeight={140}
+                    enableOnAndroid={true}
+                >
 
-            <KeyboardAwareScrollView
-                contentContainerStyle={styles.container}
-                resetScrollToCoords={{x: 0, y: 0}}
-                scrollEnabled={true}
-                keyboardShouldPersistTaps="handled"
-            >
-                <LayoutGradientBlue>
                     <Text style={styles.title}>
                         Đổi mật khẩu
                     </Text>
                     <ForgotPasswordForm navigation={navigation}/>
-                </LayoutGradientBlue>
-            </KeyboardAwareScrollView>
+                </KeyboardAwareScrollView>
+            </LayoutGradientBlue>
             <Footer/>
         </>
     );

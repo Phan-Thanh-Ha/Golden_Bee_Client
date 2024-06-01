@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import LinearGradient from 'react-native-linear-gradient';
-const Button = ({ bgColor, textColor = 'white', fontSize = 20, fontWeight = 'normal', icon: Icon, children, onPress, ...props }) => {
+const Button = ({ bgColor, textColor = 'white', fontSize = 20, fontWeight = 'normal', icon: Icon, children = 'default', onPress , ...props }) => {
     const gradientColors = bgColor ? [bgColor, bgColor] : ['#4c669f', '#3b5998', '#192f6a'];
 
     return (

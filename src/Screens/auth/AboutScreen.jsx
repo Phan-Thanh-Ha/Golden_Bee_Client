@@ -3,7 +3,6 @@ import { View, StyleSheet } from 'react-native';
 import LogoBee from "../../components/LogoBee";
 import LayoutAbout from "../../components/layouts/LayoutAbout";
 import { colors } from "../../styles/Colors";
-import BtnPrimary from "../../components/buttons/BtnPrimary";
 import CustomSwiper from "../../components/about/CustomSwiper";
 import {ScreenNames} from "../../Constants";
 import {image_banner_2, image_banner_3, image_banner_4} from "../../assets";
