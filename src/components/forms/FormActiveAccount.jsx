@@ -10,6 +10,8 @@ import {
 import React, {useEffect, useState} from "react";
 import ArrowRight from "../svg/ArrowRight";
 import Button from "../buttons/Button";
+import MainStyle from "../../styles/MainStyle";
+import MainStyles from "../../styles/MainStyle";
 
 const CELL_COUNT = 4;
 const FormActiveAccount = ({isSubmit}) => {
@@ -58,8 +60,8 @@ const FormActiveAccount = ({isSubmit}) => {
         }
     };
     return (
-        <View style={styles.form}>
-            <View style={styles.viewImg}>
+        <View style={MainStyles.containerFormActive}>
+            <View style={MainStyles.viewImgFormActive}>
                 <Image
                     source={image_banner_5}
                     style={{
@@ -69,114 +71,48 @@ const FormActiveAccount = ({isSubmit}) => {
                     }}
                 />
             </View>
-            <Text style={styles.title}>
+            <Text style={MainStyles.titleFormActive}>
                 Xin chào Nguyễn Văn A {"\n"}
                 MÃ KÍCH HOẠT đã được gửi đến số điện thoại 0123456789 của bạn qua tin nhắn.
                 Vui lòng nhập MÃ KÍCH HOẠT vào bên dưới!
             </Text>
-            <Text style={styles.titleOtp}>
+            <Text style={MainStyles.titleOtpFormActive}>
                 Mã kích hoạt
             </Text>
-            <View style={styles.otp}>
+            <View style={MainStyles.otpFormActive}>
                 <CodeField
                     ref={ref}
                     {...props}
                     value={otpValue}
                     onChangeText={setOtpValue}
                     cellCount={CELL_COUNT}
-                    rootStyle={styles.codeFieldRoot}
+                    rootStyle={MainStyle.codeFieldRootFormActive}
                     keyboardType="number-pad"
                     textContentType="oneTimeCode"
                     renderCell={({index, symbol, isFocused}) => (
                         <View
                             onLayout={getCellOnLayoutHandler(index)}
                             key={index}
-                            style={[styles.cellRoot, isFocused && styles.focusCell]}>
-                            <Text style={styles.cellText}>
+                            style={[MainStyles.cellRootFormActive, isFocused && styles.focusCell]}>
+                            <Text>
                                 {symbol || (isFocused ? <Cursor/> : null)}
                             </Text>
                         </View>
                     )}
                 />
-                <Text style={styles.countdownText}>Mã kích hoạt sẽ hết hạn trong {countdown} giây</Text>
+                <Text style={MainStyles.countdownTextFormActive}>Mã kích hoạt sẽ hết hạn trong {countdown} giây</Text>
 
             </View>
-            <Text style={styles.textErr}>
+            <Text style={MainStyles.textErrFormActive}>
                 {errorMessage}
             </Text>
             <Button onPress={handleSubmit}
             >
                 {'Kích hoạt'}
             </Button>
-            <View style={styles.box}/>
+            <View style={MainStyles.boxFormActive}/>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
-    form: {
-        justifyContent: 'center',
-        margin: 15,
-        borderRadius: 5,
-        backgroundColor: colors.WHITE,
-        padding: 10
-    },
-    textErr: {
-        color: colors.ERROR,
-        textAlign: 'center',
-    },
-    title: {
-        textAlign: 'center',
-        fontSize: 16,
-        marginHorizontal: 20,
-        marginTop: 20,
-        color: colors.MAIN_BLUE_CLIENT
-    },
-    titleOtp: {
-        color: colors.BLACK,
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        margin: 20,
-    },
-    subTitle: {
-        fontSize: 16,
-        marginTop: 20,
-    },
-    viewImg: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20
-    },
-    otp: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    codeFieldRoot: {
-        marginTop: 20,
-        width: '70%',
-        marginLeft: 20,
-        marginRight: 20,
-    },
-    cellRoot: {
-        width: 40,
-        height: 40,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'black',
-    },
-    focusCell: {
-        borderColor: 'blue',
-    },
-    countdownText: {
-        fontSize: 14,
-        margin: 30,
-        color: colors.MAIN_BLUE_CLIENT
-    },
-    box: {
-        height: 50
-    }
-})
 export default FormActiveAccount;

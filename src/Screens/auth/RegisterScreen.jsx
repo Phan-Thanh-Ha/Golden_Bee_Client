@@ -5,8 +5,6 @@ import LayoutGradientBlue from "../../components/layouts/LayoutGradientBlue";
 import {colors} from "../../styles/Colors";
 import Footer from "../../components/Footer";
 import {ScreenNames} from "../../Constants";
-import Button from "../../components/buttons/Button";
-import ArrowRight from "../../components/svg/ArrowRight";
 import {KeyboardAwareScrollView} from "@codler/react-native-keyboard-aware-scroll-view";
 import {useEffect, useState} from "react";
 
@@ -32,7 +30,7 @@ const RegisterScreen = ({navigation}) => {
                     keyboardShouldPersistTaps="handled"
                 >
                     <Text style={styles.title}>Đăng ký</Text>
-                    <FormRegister setSubmit={setSubmit}/>
+                    <FormRegister setSubmit={setSubmit} navigation={navigation}/>
                 </KeyboardAwareScrollView>
             </LayoutGradientBlue>
             <Footer/>

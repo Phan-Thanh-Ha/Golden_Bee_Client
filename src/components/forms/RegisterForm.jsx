@@ -10,9 +10,10 @@ import CustomFormError from "./CustomFormError";
 import ArrowRight from "../svg/ArrowRight"; // Import CustomLabel component
 import Button from "../buttons/Button";
 import {ScreenNames} from "../../Constants";
+import MainStyle from "../../styles/MainStyle";
 
 
-const RegisterForm = ({setSubmit}) => {
+const RegisterForm = ({setSubmit, navigation}) => {
     const validationSchema = yup.object().shape({
         fullName: yup.string().required('Thông tin bắt buộc'),
         idNumber: yup.string().matches(/^[0-9]{17}$/, 'CMND/CCCD phải là chuỗi 14 ký tự số').required('Thông tin bắt buộc'),
@@ -40,7 +41,7 @@ const RegisterForm = ({setSubmit}) => {
             {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
                 <View>
                     <View
-                        style={styles.container}
+                        style={MainStyle.containerForm}
                     >
                         <CustomLabel>Họ và tên:</CustomLabel>
                         <CustomInput
@@ -90,14 +91,14 @@ const RegisterForm = ({setSubmit}) => {
                         <CustomFormError>{touched.confirmPassword && errors.confirmPassword}</CustomFormError>
                         <Button
                             onPress={handleSubmit}
-                            icon={()=>(<ArrowRight color={colors.RED} />)}
+                            icon={()=>(<ArrowRight color={colors.WHITE} />)}
                         >
                             Tiếp tục
                         </Button>
-                        <View style={styles.regis}>
-                            <Text style={styles.regisSub}>Bạn đã có tài khoản ?</Text>
+                        <View style={MainStyle.regis}>
+                            <Text style={MainStyle.regisSub}>Bạn đã có tài khoản ?</Text>
                             <Pressable onPress={() => navigation.navigate(ScreenNames.LOGIN)}>
-                                <Text style={styles.regisBtn}>Đăng nhập</Text>
+                                <Text style={MainStyle.regisBtn}>Đăng nhập</Text>
                             </Pressable>
                         </View>
                     </View>

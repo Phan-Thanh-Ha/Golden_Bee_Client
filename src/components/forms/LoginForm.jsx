@@ -1,17 +1,15 @@
 import React from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import Toast from 'react-native-toast-message';
-import CustomInput from './CustomInput'; // Import CustomInput component
+import CustomInput from './CustomInput';
 import CustomLabel from './CustomLabel';
-import {colors} from "../../styles/Colors";
 import CustomFormError from "./CustomFormError";
-import ArrowRight from "../svg/ArrowRight"; // Import CustomLabel component
 import Button from "../buttons/Button";
 import {ScreenNames} from "../../Constants";
-import LogoBee from "../LogoBee";
 import LogoBeeBox from "../LogoBeeBox";
+import MainStyle from "../../styles/MainStyle";
 
 
 const LoginForm = ({setSubmit, navigation, setData}) => {
@@ -39,10 +37,10 @@ const LoginForm = ({setSubmit, navigation, setData}) => {
             {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
                 <View>
                     <View
-                        style={styles.container}
+                        style={MainStyle.containerForm}
                     >
                         <LogoBeeBox/>
-                        <Text style={styles.title}>Chào mừng bạn trở lại</Text>
+                        <Text style={MainStyle.subTitleForm}>Chào mừng bạn trở lại</Text>
                         <CustomLabel>Số điện thoại:</CustomLabel>
                         <CustomInput
                             placeholder="Nhập số điện thoại"
@@ -61,82 +59,25 @@ const LoginForm = ({setSubmit, navigation, setData}) => {
                             secureTextEntry
                         />
                         <CustomFormError>{touched.password && errors.password}</CustomFormError>
-                        <View style={styles.viewForgot}>
+                        <View style={MainStyle.viewSubLinkForm}>
                             <Pressable onPress={() => navigation.navigate(ScreenNames.FORGOT_PASSWORD)}>
-                                <Text style={styles.forgot}>Quên mật khẩu ?</Text>
+                                <Text style={MainStyle.subLinkForm}>Quên mật khẩu ?</Text>
                             </Pressable>
                         </View>
                         <Button onPress={handleSubmit}>
                             {'Đăng nhập'}
                         </Button>
-                        <View style={styles.regis}>
-                            <Text style={styles.regisSub}>Bạn chưa có tài khoản ?</Text>
+                        <View style={MainStyle.regis}>
+                            <Text style={MainStyle.regisSub}>Bạn chưa có tài khoản ?</Text>
                             <Pressable onPress={() => navigation.navigate(ScreenNames.REGISTER)}>
-                                <Text style={styles.regisBtn}>Đăng ký</Text>
+                                <Text style={MainStyle.regisBtn}>Đăng ký</Text>
                             </Pressable>
                         </View>
                     </View>
                 </View>
-
             )}
         </Formik>
     );
 };
-
-const styles = StyleSheet.create({
-    regis: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: "center",
-        margin: 10
-    },
-    regisSub: {
-        fontSize: 15,
-        marginRight: 10
-    },
-    regisBtn: {
-        fontSize: 15,
-        color: colors.MAIN_BLUE_CLIENT
-    },
-    container: {
-        margin: 15,
-        backgroundColor: colors.WHITE,
-        padding: 15,
-        borderRadius: 10,
-    },
-    title: {
-        color: colors.MAIN_BLUE_CLIENT,
-        textAlign: 'center',
-        margin: 10,
-        fontSize: 15,
-        marginBottom: 100
-    },
-    dot: {
-        width: 10,
-        height: 5,
-        borderRadius: 10,
-        margin: 2,
-        backgroundColor: colors.WHITE,
-    },
-    dotActive: {
-        backgroundColor: colors.YELLOW,
-        width: 20,
-        height: 5,
-        borderRadius: 5,
-        margin: 2,
-    },
-    pagination: {
-        flexDirection: 'row',
-        marginVertical: 10,
-        justifyContent: 'center',
-    },
-    forgot: {
-        color: colors.MAIN_BLUE_CLIENT
-    },
-    viewForgot: {
-        alignItems: 'flex-end',
-        marginBottom: 20
-    }
-})
 
 export default LoginForm;
