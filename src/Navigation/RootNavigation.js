@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import ScreenNames from '../Constants/ScreenNames';
 import {First} from '../Screens';
 import SplashScreen from '../Screens/SplashScreen';
@@ -17,81 +17,87 @@ import AccountScreen from '../Screens/main/AccountScreen';
 import BenefitsScreen from '../Screens/main/BenefitsScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Demo from '../Screens/Demo';
+import {BottomTabNavigator} from './BottomTabNavigator';
+const MainStack = createStackNavigator();
 
-const Root = createStackNavigator();
-
-const RootNavigator = () => {
+const MainStackNavigator = () => {
   const [initialRoute, setInitialRoute] = useState(null);
 
-  useEffect(() => {
-    const checkPhoneNumber = async () => {
-      try {
-        const phoneNumber = await AsyncStorage.getItem('phoneNumber');
-        if (phoneNumber) {
-          console.log('Phone Number found:', phoneNumber);
-          setInitialRoute(ScreenNames.HOME);
-        } else {
-          console.log('No Phone Number found, navigating to Login');
-          setInitialRoute(ScreenNames.SPLASH);
-        }
-      } catch (error) {
-        console.error(
-          'Failed to fetch the phone number from AsyncStorage:',
-          error,
-        );
-        setInitialRoute(ScreenNames.SPLASH);
-      }
-    };
+  // useEffect(() => {
+  //   const checkPhoneNumber = async () => {
+  //     try {
+  //       const phoneNumber = await AsyncStorage.getItem('phoneNumber');
+  //       if (phoneNumber) {
+  //         console.log('Phone Number found:', phoneNumber);
+  //         setInitialRoute(ScreenNames.HOME);
+  //       } else {
+  //         console.log('No Phone Number found, navigating to Login');
+  //         setInitialRoute(ScreenNames.SPLASH);
+  //       }
+  //     } catch (error) {
+  //       console.error(
+  //         'Failed to fetch the phone number from AsyncStorage:',
+  //         error,
+  //       );
+  //       setInitialRoute(ScreenNames.SPLASH);
+  //     }
+  //   };
 
-    checkPhoneNumber();
-  }, []);
+  //   checkPhoneNumber();
+  // }, []);
 
-  if (initialRoute === null) {
-    // Optionally, you can return a loading screen or null while checking AsyncStorage
-    return null;
-  }
+  // if (initialRoute === null) {
+  //   // Optionally, you can return a loading screen or null while checking AsyncStorage
+  //   return null;
+  // }
 
   return (
     <NavigationContainer>
-      <Root.Navigator
-        screenOptions={{headerShown: false, animationEnabled: false}}
-        initialRouteName={initialRoute}>
-        initialRouteName={ScreenNames.DEMO}>
-        {/*màn hình demo*/}
-        <Root.Screen name={ScreenNames.DEMO} component={Demo} />
-        {/*màn hình first*/}
-        <Root.Screen name={ScreenNames.FIRST} component={First} />
-        {/*màn hình mở đầu*/}
-        <Root.Screen name={ScreenNames.SPLASH} component={SplashScreen} />
-        {/*Màn hình chính đăng nhập*/}
-        <Root.Screen name={ScreenNames.AUTH_HOME} component={AuthHome} />
-        {/*Màn hình giới thệu lúc bắt đầu trước khi đăng nhập*/}
-        <Root.Screen name={ScreenNames.ABOUT} component={AboutScreen} />
-        {/*màn hình đăng nhập*/}
-        <Root.Screen name={ScreenNames.LOGIN} component={LoginScreen} />
-        {/*Màn hình đăng ksy*/}
-        <Root.Screen name={ScreenNames.REGISTER} component={RegisterScreen} />
-        {/*Màn hình kích hoạt tòi khoản*/}
-        <Root.Screen
+      <MainStack.Navigator
+        screenOptions={{
+          headerShown: false,
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+        initialRouteName={ScreenNames.MAIN_NAVIGATOR}>
+        <MainStack.Screen name={ScreenNames.DEMO} component={Demo} />
+        <MainStack.Screen name={ScreenNames.FIRST} component={First} />
+        <MainStack.Screen name={ScreenNames.SPLASH} component={SplashScreen} />
+        <MainStack.Screen name={ScreenNames.AUTH_HOME} component={AuthHome} />
+        <MainStack.Screen name={ScreenNames.ABOUT} component={AboutScreen} />
+        <MainStack.Screen name={ScreenNames.LOGIN} component={LoginScreen} />
+        <MainStack.Screen
+          name={ScreenNames.REGISTER}
+          component={RegisterScreen}
+        />
+        <MainStack.Screen
           name={ScreenNames.ACTIVE_ACCOUNT}
           component={ActiveAccount}
         />
-        {/*Màn hình đổi ật khẩu*/}
-        <Root.Screen
+        <MainStack.Screen
           name={ScreenNames.FORGOT_PASSWORD}
           component={ForgotPasswordScreen}
         />
-        <Root.Screen
+        <MainStack.Screen
           name={ScreenNames.CONFIRM_OTP_PASSWORD}
           component={ConfirmOtpForgotPassword}
         />
-        <Root.Screen name={ScreenNames.HOME} component={HomeScreen} />
-        <Root.Screen name={ScreenNames.EMAIL} component={EmailScreen} />
-        <Root.Screen name={ScreenNames.ACCOUNT} component={AccountScreen} />
-        <Root.Screen name={ScreenNames.BENEFITS} component={BenefitsScreen} />
-      </Root.Navigator>
+        <MainStack.Screen name={ScreenNames.HOME} component={HomeScreen} />
+        <MainStack.Screen name={ScreenNames.EMAIL} component={EmailScreen} />
+        <MainStack.Screen
+          name={ScreenNames.ACCOUNT}
+          component={AccountScreen}
+        />
+        <MainStack.Screen
+          name={ScreenNames.BENEFITS}
+          component={BenefitsScreen}
+        />
+        <MainStack.Screen
+          name={ScreenNames.MAIN_NAVIGATOR}
+          component={BottomTabNavigator}
+        />
+      </MainStack.Navigator>
     </NavigationContainer>
   );
 };
 
-export default RootNavigator;
+export default MainStackNavigator;

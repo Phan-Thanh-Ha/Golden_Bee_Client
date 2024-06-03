@@ -1,63 +1,152 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation, BottomNavigationTab, Icon, Layout, Text } from '@ui-kitten/components';
-import HomeScreen from "../Screens/main/HomeScreen";
-import EmailScreen from "../Screens/main/EmailScreen";
-import AccountScreen from "../Screens/main/AccountScreen";
-import BenefitsScreen from "../Screens/main/BenefitsScreen";
-import { View, StyleSheet } from 'react-native';
+import {
+  Alert,
+  Animated,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
+import {Icon, Text} from '@ui-kitten/components';
 
-const { Navigator, Screen } = createBottomTabNavigator();
+const Screen1 = () => {
+  return <View style={styles.screen1} />;
+};
 
-const HomeIcon = (props) => <Icon {...props} name='home-outline' />;
-const EmailIcon = (props) => <Icon {...props} name='email-outline' />;
-const AccountIcon = (props) => <Icon {...props} name='person-outline' />;
-const BenefitsIcon = (props) => <Icon {...props} name='gift-outline' />;
+const Screen2 = () => {
+  return <View style={styles.screen2} />;
+};
 
-const NotificationBadge = () => (
-    <View style={styles.badge}>
-        <Text style={styles.badgeText}>1</Text>
-    </View>
-);
+export const BottomTabNavigator = () => {
+  const _renderIcon = (routeName, selectedTab) => {
+    let iconName = '';
 
-const BottomTabBar = ({ navigation, state }) => (
-    <BottomNavigation
-        selectedIndex={state.index}
-        onSelect={index => navigation.navigate(state.routeNames[index])}
-        appearance='noIndicator'
-    >
-        <BottomNavigationTab title='Home' icon={HomeIcon} />
-        <BottomNavigationTab title='Email' icon={EmailIcon} />
-        <BottomNavigationTab title='Account' icon={AccountIcon} />
-        <BottomNavigationTab title='Benefits' icon={BenefitsIcon} />
-    </BottomNavigation>
-);
+    switch (routeName) {
+      case 'title1':
+        iconName = 'home-outline';
+        displayName = 'Home';
+        break;
+      case 'title2':
+        iconName = 'settings-2-outline';
+        displayName = 'Settings';
+        break;
+    }
 
-const BottomTabNavigator = () => (
-    <Navigator tabBar={props => <BottomTabBar {...props} />}>
-        <Screen name="Home" component={HomeScreen} />
-        <Screen name="Email" component={EmailScreen} />
-        <Screen name="Account" component={AccountScreen} />
-        <Screen name="Benefits" component={BenefitsScreen} />
-    </Navigator>
-);
+    return (
+      <Icon
+        name={iconName}
+        fill={routeName === selectedTab ? 'black' : 'gray'}
+        style={{width: 25, height: 25}}
+      />
+    );
+  };
+  const renderTabBar = ({routeName, selectedTab, navigate}) => {
+    return (
+      <TouchableOpacity
+        onPress={() => navigate(routeName)}
+        style={styles.tabbarItem}>
+        {_renderIcon(routeName, selectedTab)}
+        <Text style={{color: routeName === selectedTab ? 'black' : 'gray'}}>
+          {displayName}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
-const styles = StyleSheet.create({
-    badge: {
-        position: 'absolute',
-        right: -6,
-        top: -3,
-        backgroundColor: 'red',
-        borderRadius: 6,
-        width: 12,
-        height: 12,
-        justifyContent: 'center',
-        alignItems: 'center',
+  return (
+    <CurvedBottomBar.Navigator
+      type="DOWN"
+      style={styles.bottomBar}
+      shadowStyle={styles.shawdow}
+      height={55}
+      circleWidth={50}
+      bgColor="white"
+      initialRouteName="title1"
+      borderTopLeftRight
+      renderCircle={({selectedTab, navigate}) => (
+        <Animated.View style={styles.btnCircleUp}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => Alert.alert('Click Action')}>
+            <Icon style={styles.icon} fill="#8F9BB3" name="layers-outline" />
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+      tabBar={renderTabBar}>
+      <CurvedBottomBar.Screen
+        name="title1"
+        position="LEFT"
+        component={() => <Screen1 />}
+      />
+      <CurvedBottomBar.Screen
+        name="title2"
+        component={() => <Screen2 />}
+        position="RIGHT"
+      />
+    </CurvedBottomBar.Navigator>
+  );
+};
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  shawdow: {
+    shadowColor: '#DDDDDD',
+    shadowOffset: {
+      width: 0,
+      height: 0,
     },
-    badgeText: {
-        color: 'white',
-        fontSize: 10,
+    shadowOpacity: 1,
+    shadowRadius: 5,
+  },
+  button: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  bottomBar: {},
+  btnCircleUp: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E8E8E8',
+    bottom: 30,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
     },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 1,
+  },
+  imgCircle: {
+    width: 30,
+    height: 30,
+    tintColor: 'gray',
+  },
+  tabbarItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  img: {
+    width: 30,
+    height: 30,
+  },
+  screen1: {
+    flex: 1,
+    backgroundColor: '#BFEFFF',
+  },
+  screen2: {
+    flex: 1,
+    backgroundColor: '#FFEBCD',
+  },
+  icon: {
+    width: 32,
+    height: 32,
+  },
 });
-
-export default BottomTabNavigator;

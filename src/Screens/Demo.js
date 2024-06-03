@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {Button} from '@ui-kitten/components';
+import {Button, Icon} from '@ui-kitten/components';
 import {useDispatch} from 'react-redux';
 import {mainAction} from '../Redux/Action';
 
@@ -23,14 +23,16 @@ const Demo = () => {
     } catch (error) {}
   };
   return (
-    <View>
+    <View style={{marginVertical: 130}}>
       <Button
         onPress={() => {
           clickdemo01();
         }}>
         Click me
       </Button>
-      <Text>Demo</Text>
+
+      <Text>123456</Text>
+      <Icon style={{width: 32, height: 32}} fill="#8F9BB3" name="star" />
     </View>
   );
 };

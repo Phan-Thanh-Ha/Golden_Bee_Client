@@ -32,7 +32,6 @@ android/java_pid21540.hprof
 # node.js
 #
 node_modules/
-yarn.lock
 npm-debug.log
 yarn-error.log
 
