@@ -1,8 +1,9 @@
 const ScreenNames = {
-  FIRST: "FIRST",
+  DEMO: 'DEMO',
+  FIRST: 'FIRST',
 
   // SPLASH
-  SPLASH: "SPLASH",
+  SPLASH: 'SPLASH',
   // End Splash
 
   // Authentication
@@ -19,7 +20,6 @@ const ScreenNames = {
   ACCOUNT: "ACCOUNT",
   BENEFITS: "BENEFITS",
   //
-
 };
 
 export default ScreenNames;

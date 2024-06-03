@@ -6,4 +6,3 @@ export * from "./auth/ActiveAccount";
 export * from "./auth/ForgotPasswordScreen";
 export * from "./auth/ConfirmOtpForgotPassword";
 
-

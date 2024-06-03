@@ -16,6 +16,7 @@ import EmailScreen from '../Screens/main/EmailScreen';
 import AccountScreen from '../Screens/main/AccountScreen';
 import BenefitsScreen from '../Screens/main/BenefitsScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Demo from '../Screens/Demo';
 
 const Root = createStackNavigator();
 
@@ -55,16 +56,27 @@ const RootNavigator = () => {
       <Root.Navigator
         screenOptions={{headerShown: false, animationEnabled: false}}
         initialRouteName={initialRoute}>
+        initialRouteName={ScreenNames.DEMO}>
+        {/*màn hình demo*/}
+        <Root.Screen name={ScreenNames.DEMO} component={Demo} />
+        {/*màn hình first*/}
         <Root.Screen name={ScreenNames.FIRST} component={First} />
+        {/*màn hình mở đầu*/}
         <Root.Screen name={ScreenNames.SPLASH} component={SplashScreen} />
+        {/*Màn hình chính đăng nhập*/}
         <Root.Screen name={ScreenNames.AUTH_HOME} component={AuthHome} />
+        {/*Màn hình giới thệu lúc bắt đầu trước khi đăng nhập*/}
         <Root.Screen name={ScreenNames.ABOUT} component={AboutScreen} />
+        {/*màn hình đăng nhập*/}
         <Root.Screen name={ScreenNames.LOGIN} component={LoginScreen} />
+        {/*Màn hình đăng ksy*/}
         <Root.Screen name={ScreenNames.REGISTER} component={RegisterScreen} />
+        {/*Màn hình kích hoạt tòi khoản*/}
         <Root.Screen
           name={ScreenNames.ACTIVE_ACCOUNT}
           component={ActiveAccount}
         />
+        {/*Màn hình đổi ật khẩu*/}
         <Root.Screen
           name={ScreenNames.FORGOT_PASSWORD}
           component={ForgotPasswordScreen}

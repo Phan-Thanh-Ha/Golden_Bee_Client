@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
+    "ios": "react-native run-ios --simulator='iPhone 14 Pro Max'",
+    "start": "react-native start --reset-cache",
     "test": "jest",
     "lint": "eslint .",
     "adb": "adb reverse tcp:8081 tcp:8081",
     "apk": "cd android && ./gradlew clean && ./gradlew assembleRelease && open app/build/outputs/apk/release",
     "aab": "cd android && ./gradlew clean && ./gradlew bundleRelease && open app/build/outputs/bundle/release",
-    "android-clean": "rm -rf node_modules && rm -rf yarn.lock && yarn install && cd android && ./gradlew clean && cd .. && yarn android"
+    "android-clean": "cd android && ./gradlew clean && cd .. && yarn android",
+    "ios-clean": "rm -rf node_modules && rm -rf yarn.lock && yarn install && cd ios && rm -rf Pods/ && rm -rf Podfile.lock && pod install && cd .."
   },
   "dependencies": {
     "@codler/react-native-keyboard-aware-scroll-view": "^2.0.1",
