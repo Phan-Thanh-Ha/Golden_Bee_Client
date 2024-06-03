@@ -62,3 +62,5 @@ buck-out/
 package-lock.json
 yarn.lock
 Podfile.lock
+yarn-debug.log
+.yarn/cache
