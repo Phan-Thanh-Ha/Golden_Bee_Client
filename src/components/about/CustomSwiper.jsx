@@ -85,10 +85,6 @@ const styles = StyleSheet.create({
     },
     inactiveDot: {
         backgroundColor: colors.WHITE,
-    },
-    buttonContainer: {
-        marginTop: 20,
-        alignItems: 'center',
-    },
+    }
 });
 export default CustomSwiper;

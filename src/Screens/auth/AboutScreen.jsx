@@ -49,8 +49,8 @@ const AboutScreen = ({navigation}) => {
         <LayoutAbout>
             <LogoBee />
             <CustomSwiper dataSlider={dataSlider} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} swiperRef={swiperRef}/>
-            <View style={styles.buttonContainer}>
-                <View style={styles.buttonContainer}>
+            <View>
+                <View>
                     <Button
                         onPress={handleNext}
                         bgColor={colors.PRIMARY_GREEN}
@@ -63,50 +63,5 @@ const AboutScreen = ({navigation}) => {
         </LayoutAbout>
     );
 };
-
-const styles = StyleSheet.create({
-    slide: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    image: {
-        width: 280,
-        height: 280,
-        resizeMode: 'contain',
-    },
-    title: {
-        color: colors.TEXT_WHITE_CLIENT,
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginTop: 10,
-        marginBottom: 10,
-        textAlign: 'center',
-    },
-    description: {
-        color: colors.TEXT_WHITE_CLIENT,
-        fontSize: 15,
-        textAlign: 'center',
-        marginHorizontal: 20,
-    },
-    pagination: {
-        flexDirection: 'row',
-        marginVertical: 10,
-        justifyContent: 'center',
-    },
-    dot: {
-        width: 10,
-        height: 5,
-        borderRadius: 5,
-        margin: 2,
-    },
-    activeDot: {
-        backgroundColor: colors.YELLOW,
-        width: 20,
-    },
-    inactiveDot: {
-        backgroundColor: colors.WHITE,
-    },
-});
 
 export default AboutScreen;

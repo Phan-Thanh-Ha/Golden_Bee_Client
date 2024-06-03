@@ -15,7 +15,7 @@ import MainStyles from "../../styles/MainStyle";
 import Toast from "react-native-toast-message";
 
 const CELL_COUNT = 4;
-const FormActiveAccount = ({setSubmit, data}) => {
+const FormOtpForgotPassword = ({setSubmit, data}) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [otpValue, setOtpValue] = useState('');
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -93,8 +93,8 @@ const FormActiveAccount = ({setSubmit, data}) => {
                 />
             </View>
             <Text style={MainStyles.titleFormActive}>
-                Xin chào {data?.fullName} {"\n"}
-                MÃ KÍCH HOẠT đã được gửi đến số điện thoại {data?.phoneNumber} của bạn qua tin nhắn.
+                Xin chào {data.fullName} {"\n"}
+                MÃ KÍCH HOẠT đã được gửi đến số điện thoại {data.phoneNumber} của bạn qua tin nhắn.
                 Vui lòng nhập MÃ KÍCH HOẠT vào bên dưới!
             </Text>
             <Text style={MainStyles.titleOtpFormActive}>
@@ -146,4 +146,4 @@ const FormActiveAccount = ({setSubmit, data}) => {
     )
 }
 
-export default FormActiveAccount;
+export default FormOtpForgotPassword;
