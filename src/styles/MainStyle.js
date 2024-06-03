@@ -134,6 +134,52 @@ const MainStyles = StyleSheet.create({
     },
     boxFormActive: {
         height: 50
-    }
+    },
+    titleForgotPasswordForm: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: '#fff',
+        textAlign: 'center',
+        marginTop: 20,
+        marginBottom: 20,
+    },
+    containerAuthHome : {
+        marginBottom: 100,
+        alignItems: 'center'
+    },
+    textAuthHome : {
+        color: colors.WHITE,
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 10,
+        marginBottom: 10,
+        textAlign: 'center',
+    },
+    titleActiveAccount: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: '#fff',
+        textAlign: 'center',
+        marginTop: 20,
+        marginBottom: 20,
+    },
+    containerLogin: {
+        flexGrow: 1,
+        justifyContent: 'center',
+    },
+    titleLogin: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: '#fff',
+        textAlign: 'center',
+        marginTop: 20,
+        marginBottom: 20,
+    },
+    containerForgot: {
+        flex: 1,
+    },
+    contentContainerForgot: {
+        paddingBottom: 20,
+    },
 });
 export default MainStyles;

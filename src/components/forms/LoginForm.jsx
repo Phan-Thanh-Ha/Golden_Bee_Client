@@ -10,6 +10,7 @@ import Button from "../buttons/Button";
 import {ScreenNames} from "../../Constants";
 import LogoBeeBox from "../LogoBeeBox";
 import MainStyle from "../../styles/MainStyle";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const LoginForm = ({setSubmit, navigation, setData}) => {
@@ -18,14 +19,23 @@ const LoginForm = ({setSubmit, navigation, setData}) => {
         password: yup.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự').required('Thông tin bắt buộc'),
     });
 
-    const handleSubmit = (values) => {
-        Toast.show({
-            type: 'success',
-            text1: 'Thông tin đăng ký',
-            text2: JSON.stringify(values),
-        });
-        setData(values)
-        setSubmit(true);
+    const handleSubmit = async  (values) => {
+        try {
+            await AsyncStorage.setItem('phoneNumber', values.phoneNumber);
+            Toast.show({
+                type: 'success',
+                text1: 'Đăng nhập thành công !',
+                // text2: JSON.stringify(values),
+            });
+            navigation.navigate(ScreenNames.HOME);
+        } catch (error) {
+            console.error('Failed to save the phone number to AsyncStorage:', error);
+            Toast.show({
+                type: 'error',
+                text1: 'Lỗi đăng nhập ! liên hệ IT !',
+                // text2: JSON.stringify(values),
+            });
+        }
     };
 
     return (

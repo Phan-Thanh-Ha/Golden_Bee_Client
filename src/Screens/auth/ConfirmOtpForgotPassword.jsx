@@ -9,7 +9,7 @@ import {KeyboardAwareScrollView} from "@codler/react-native-keyboard-aware-scrol
 import FormRegister from "../../components/forms/RegisterForm";
 import {ScreenNames} from "../../Constants";
 
-const ActiveAccount = ({navigation, route}) => {
+const ConfirmOtpForgotPassword = ({navigation, route}) => {
     const [isSubmit, setIsSubmit] = useState(false);
     useEffect(()=> {
         if(isSubmit === true) {
@@ -31,7 +31,7 @@ const ActiveAccount = ({navigation, route}) => {
                     enableOnAndroid={true}
                 >
                     <Text style={styles.title}>
-                        Kích hoạt tài khoản
+                        Xác thực tài khoản
                     </Text>
                     <FormActiveAccount setSubmit={setIsSubmit} data={route?.params?.data}/>
                 </KeyboardAwareScrollView>
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
 })
-export default ActiveAccount;
+export default ConfirmOtpForgotPassword;

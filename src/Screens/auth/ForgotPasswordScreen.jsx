@@ -5,14 +5,18 @@ import {colors} from "../../styles/Colors";
 import Footer from "../../components/Footer";
 import ForgotPasswordForm from "../../components/forms/ForgotPasswordForm";
 import {KeyboardAwareScrollView} from "@codler/react-native-keyboard-aware-scroll-view";
+import MainStyles from "../../styles/MainStyle";
+import { useState} from "react";
+import MainStyle from "../../styles/MainStyle";
 
 const ForgotPasswordScreen = ({navigation}) => {
+    const [submit, setSubmit] = useState(false);
     return (
         <>
             <Header showBackButton={true} color={colors.WHITE}/>
             <LayoutGradientBlue>
                 <KeyboardAwareScrollView
-                    contentContainerStyle={styles.container}
+                    contentContainerStyle={MainStyle.containerLogin}
                     resetScrollToCoords={{x: 0, y: 0}}
                     scrollEnabled={true}
                     keyboardShouldPersistTaps="handled"
@@ -20,26 +24,14 @@ const ForgotPasswordScreen = ({navigation}) => {
                     extraScrollHeight={140}
                     enableOnAndroid={true}
                 >
-
-                    <Text style={styles.title}>
+                    <Text style={MainStyles.titleForgotPasswordForm}>
                         Đổi mật khẩu
                     </Text>
-                    <ForgotPasswordForm navigation={navigation}/>
+                    <ForgotPasswordForm setSubmit={setSubmit} navigation={navigation}/>
                 </KeyboardAwareScrollView>
             </LayoutGradientBlue>
             <Footer/>
         </>
     );
 };
-
-const styles = StyleSheet.create({
-    title: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: '#fff',
-        textAlign: 'center',
-        marginTop: 20,
-        marginBottom: 20,
-    },
-})
 export default ForgotPasswordScreen;

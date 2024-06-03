@@ -3,14 +3,12 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import Toast from 'react-native-toast-message';
-import CustomInput from './CustomInput'; // Import CustomInput component
+import CustomInput from './CustomInput';
 import CustomLabel from './CustomLabel';
 import {colors} from "../../styles/Colors";
 import CustomFormError from "./CustomFormError";
-import ArrowRight from "../svg/ArrowRight"; // Import CustomLabel component
 import Button from "../buttons/Button";
 import {ScreenNames} from "../../Constants";
-import LogoBee from "../LogoBee";
 import LogoBeeBox from "../LogoBeeBox";
 
 
@@ -27,13 +25,14 @@ const ForgotPasswordForm = ({setSubmit, navigation}) => {
             text1: 'Thông tin đăng ký',
             text2: JSON.stringify(values),
         });
-        setSubmit(true);
-        navigation.navigate(ScreenNames.ACTIVE_ACCOUNT);
+        navigation.navigate(ScreenNames.CONFIRM_OTP_PASSWORD, {
+            data: values
+        });
     };
 
     return (
         <Formik
-            initialValues={{phoneNumber: '', password: '',confirmPassword: ''}}
+            initialValues={{phoneNumber: '', password: '', confirmPassword: ''}}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
         >
@@ -43,7 +42,8 @@ const ForgotPasswordForm = ({setSubmit, navigation}) => {
                         style={styles.container}
                     >
                         <LogoBeeBox/>
-                        <Text style={styles.title}>Vui lòng cung cấp thông tin bên dưới để thay đổi mật khẩu nhé !</Text>
+                        <Text style={styles.title}>Vui lòng cung cấp thông tin bên dưới để thay đổi mật khẩu nhé
+                            !</Text>
                         <CustomLabel>Số điện thoại:</CustomLabel>
                         <CustomInput
                             placeholder="Nhập số điện thoại"
@@ -53,7 +53,7 @@ const ForgotPasswordForm = ({setSubmit, navigation}) => {
                         />
                         <CustomFormError>{touched.phoneNumber && errors.phoneNumber}</CustomFormError>
 
-                        <CustomLabel>Mật khẩu:</CustomLabel>
+                        <CustomLabel>Mật khẩu mới:</CustomLabel>
                         <CustomInput
                             placeholder="Nhập mật khẩu"
                             onChangeText={handleChange('password')}

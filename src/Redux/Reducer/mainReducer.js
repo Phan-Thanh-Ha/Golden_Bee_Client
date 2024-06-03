@@ -1,5 +1,3 @@
-import { StorageNames } from "../../Constants";
-import { setData } from "../../Utils";
 import mainTypes from "../Action/mainTypes";
 
 const initialState = {

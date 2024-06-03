@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import {colors} from "../../styles/Colors";
 import Footer from "../../components/Footer";
 import {ScreenNames} from "../../Constants";
+import MainStyle from "../../styles/MainStyle";
 
 const AuthHome = ({navigation}) => {
     const handleLogin = () => {
@@ -18,21 +19,11 @@ const AuthHome = ({navigation}) => {
         <LayoutAbout>
             <Header showBackButton={true} color={colors.WHITE}/>
             <LogoBee/>
-            <View style={{
-                marginBottom: 100,
-                alignItems: 'center'
-            }}>
+            <View style={MainStyle.containerAuthHome}>
                 <BtnAuth onPress={handleLogin}>
                     {"Đăng nhập"}
                 </BtnAuth>
-                <Text style={{
-                    color: colors.WHITE,
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    marginTop: 10,
-                    marginBottom: 10,
-                    textAlign: 'center',
-                }}>Hoặc</Text>
+                <Text style={MainStyle.textAuthHome}>Hoặc</Text>
                 <BtnAuth onPress={handleRegister}>
                     {"Đăng ký"}
                 </BtnAuth>
