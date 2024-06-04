@@ -1,54 +1,85 @@
-import React from 'react';
+import React from "react";
 import {
-  Alert,
-  Animated,
+  View,
+  Text,
   StyleSheet,
   TouchableOpacity,
-  View,
-} from 'react-native';
-import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
-import {Icon, Text} from '@ui-kitten/components';
-
-const Screen1 = () => {
-  return <View style={styles.screen1} />;
-};
-
-const Screen2 = () => {
-  return <View style={styles.screen2} />;
-};
+  Alert,
+  Animated,
+  Image,
+} from "react-native";
+import { CurvedBottomBar } from "react-native-curved-bottom-bar";
+import { Icon } from "@ui-kitten/components";
+import { ScreenNames } from "../Constants";
+import HomeScreen from "../Screens/main/HomeScreen";
+import EmailScreen from "../Screens/main/EmailScreen";
+import BenefitsScreen from "../Screens/main/BenefitsScreen";
+import AccountScreen from "../Screens/main/AccountScreen";
+import { logo_bee_blue } from "../assets";
+import { colors } from "../styles/Colors";
 
 export const BottomTabNavigator = () => {
   const _renderIcon = (routeName, selectedTab) => {
-    let iconName = '';
+    let iconName = "";
+    let displayName = "";
 
     switch (routeName) {
-      case 'title1':
-        iconName = 'home-outline';
-        displayName = 'Home';
+      case ScreenNames.HOME:
+        iconName = "home-outline";
+        displayName = "Trang chủ";
         break;
-      case 'title2':
-        iconName = 'settings-2-outline';
-        displayName = 'Settings';
+      case ScreenNames.EMAIL:
+        iconName = "email-outline";
+        displayName = "Email";
         break;
+      case ScreenNames.BENEFITS:
+        iconName = "gift-outline";
+        displayName = "Phúc lợi";
+        break;
+      case ScreenNames.ACCOUNT:
+        iconName = "person-outline";
+        displayName = "Tài khoản";
+        break;
+      default:
+        iconName = "home-outline";
+        displayName = "Trang chủ";
     }
 
     return (
-      <Icon
-        name={iconName}
-        fill={routeName === selectedTab ? 'black' : 'gray'}
-        style={{width: 25, height: 25}}
-      />
+      <>
+        <Icon
+          name={iconName}
+          fill={
+            routeName === selectedTab
+              ? colors.TEXT_COLOR_BLUE_TAB
+              : colors.TEXT_COLOR_GRAY_TAB
+          }
+          style={{ width: 25, height: 25 }}
+        />
+        <Text
+          style={{
+            color:
+              routeName === selectedTab
+                ? colors.TEXT_COLOR_BLUE_TAB
+                : colors.TEXT_COLOR_GRAY_TAB,
+          }}
+        >
+          {displayName}
+        </Text>
+      </>
     );
   };
-  const renderTabBar = ({routeName, selectedTab, navigate}) => {
+
+  const renderTabBar = ({ routeName, selectedTab, navigate }) => {
     return (
       <TouchableOpacity
         onPress={() => navigate(routeName)}
-        style={styles.tabbarItem}>
+        style={[
+          styles.tabbarItem,
+          routeName === selectedTab && styles.tabbarItemSelected,
+        ]}
+      >
         {_renderIcon(routeName, selectedTab)}
-        <Text style={{color: routeName === selectedTab ? 'black' : 'gray'}}>
-          {displayName}
-        </Text>
       </TouchableOpacity>
     );
   };
@@ -61,39 +92,54 @@ export const BottomTabNavigator = () => {
       height={55}
       circleWidth={50}
       bgColor="white"
-      initialRouteName="title1"
+      initialRouteName={ScreenNames.HOME}
       borderTopLeftRight
-      renderCircle={({selectedTab, navigate}) => (
+      renderCircle={({ selectedTab, navigate }) => (
         <Animated.View style={styles.btnCircleUp}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => Alert.alert('Click Action')}>
-            <Icon style={styles.icon} fill="#8F9BB3" name="layers-outline" />
+            // onPress={() => navigate(ScreenNames.HOME)}
+          >
+            <Image source={logo_bee_blue} style={styles.circleIcon} />
           </TouchableOpacity>
         </Animated.View>
       )}
-      tabBar={renderTabBar}>
+      tabBar={renderTabBar}
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <CurvedBottomBar.Screen
-        name="title1"
+        name={ScreenNames.HOME}
         position="LEFT"
-        component={() => <Screen1 />}
+        component={() => <HomeScreen />}
       />
       <CurvedBottomBar.Screen
-        name="title2"
-        component={() => <Screen2 />}
+        name={ScreenNames.EMAIL}
+        component={() => <EmailScreen />}
+        position="RIGHT"
+      />
+      <CurvedBottomBar.Screen
+        name={ScreenNames.BENEFITS}
+        component={() => <BenefitsScreen />}
+        position="LEFT"
+      />
+      <CurvedBottomBar.Screen
+        name={ScreenNames.ACCOUNT}
+        component={() => <AccountScreen />}
         position="RIGHT"
       />
     </CurvedBottomBar.Navigator>
   );
 };
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
   },
   shawdow: {
-    shadowColor: '#DDDDDD',
+    shadowColor: "#DDDDDD",
     shadowOffset: {
       width: 0,
       height: 0,
@@ -103,18 +149,18 @@ export const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   bottomBar: {},
   btnCircleUp: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E8E8E8',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.WHITE,
     bottom: 30,
-    shadowColor: '#000',
+    shadowColor: colors.BLACK,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -123,30 +169,22 @@ export const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 1,
   },
-  imgCircle: {
-    width: 30,
-    height: 30,
-    tintColor: 'gray',
-  },
   tabbarItem: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 5,
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
   },
-  img: {
-    width: 30,
-    height: 30,
-  },
-  screen1: {
-    flex: 1,
-    backgroundColor: '#BFEFFF',
-  },
-  screen2: {
-    flex: 1,
-    backgroundColor: '#FFEBCD',
-  },
+  tabbarItemSelected: {},
   icon: {
     width: 32,
     height: 32,
+  },
+  circleIcon: {
+    width: 60,
+    height: 60,
+    resizeMode: "contain",
   },
 });

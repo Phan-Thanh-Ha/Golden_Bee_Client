@@ -5,4 +5,7 @@ export * from "./auth/AboutScreen";
 export * from "./auth/ActiveAccount";
 export * from "./auth/ForgotPasswordScreen";
 export * from "./auth/ConfirmOtpForgotPassword";
+export * from "./main/UpdateProfileScreen";
+export * from "./main/AddProfileScreen";
+
 

@@ -10,42 +10,42 @@ import Toast from "react-native-toast-message";
 import MainStyle from "../../styles/MainStyle";
 
 const LoginScreen = ({ navigation }) => {
-    const [dataLogin, setDataLogin] = useState({});
-    const [isSubmit, setIsSubmit] = useState(false);
+  const [dataLogin, setDataLogin] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
 
-    console.log((dataLogin));
+  console.log((dataLogin));
 
-    useEffect(() => {
-        if (isSubmit) {
-            Toast.show({
-                type: 'success',
-                text1: 'Đăng nhập thành công !'
-            })
-        }
-    }, [dataLogin]);
+  useEffect(() => {
+    if (isSubmit) {
+      Toast.show({
+        type: 'success',
+        text1: 'Đăng nhập thành công !'
+      })
+    }
+  }, [dataLogin]);
 
-    return (
-        <>
-            <Header showBackButton={true} color={colors.WHITE} />
-            <LayoutGradientBlue>
-                <KeyboardAwareScrollView
-                    contentContainerStyle={MainStyle.containerLogin}
-                    resetScrollToCoords={{ x: 0, y: 0 }}
-                    scrollEnabled={true}
-                    keyboardShouldPersistTaps="handled"
-                    enableAutomaticScroll={true}
-                    extraScrollHeight={140}
-                    enableOnAndroid={true}
-                >
-                    <Text style={MainStyle.titleLogin}>
-                        Đăng nhập
-                    </Text>
-                    <LoginForm navigation={navigation} setSubmit={setIsSubmit} setData={setDataLogin} />
-                </KeyboardAwareScrollView>
-            </LayoutGradientBlue>
-            <Footer />
-        </>
-    );
+  return (
+    <>
+      <LayoutGradientBlue>
+        <Header showBackButton={true} color={colors.WHITE} />
+        <KeyboardAwareScrollView
+          contentContainerStyle={MainStyle.containerLogin}
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          scrollEnabled={true}
+          keyboardShouldPersistTaps="handled"
+          enableAutomaticScroll={true}
+          extraScrollHeight={140}
+          enableOnAndroid={true}
+        >
+          <Text style={MainStyle.titleLogin}>
+            Đăng nhập
+          </Text>
+          <LoginForm navigation={navigation} setSubmit={setIsSubmit} setData={setDataLogin} />
+        </KeyboardAwareScrollView>
+      </LayoutGradientBlue>
+      <Footer />
+    </>
+  );
 };
 
 export default LoginScreen;

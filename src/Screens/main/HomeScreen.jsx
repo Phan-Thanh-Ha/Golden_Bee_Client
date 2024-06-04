@@ -1,10 +1,9 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
-import {ScreenNames} from '../../Constants';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNames } from '../../Constants';
 import Button from '../../components/buttons/Button';
-import BottomTabNavigator from '../../Navigation/BottomTabNavigator';
 
 const HomeScreen = () => {
   const navigation = useNavigation();

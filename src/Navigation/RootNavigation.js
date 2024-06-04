@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
-import ScreenNames from '../Constants/ScreenNames';
-import {First} from '../Screens';
 import SplashScreen from '../Screens/SplashScreen';
 import AuthHome from '../Screens/auth/AuthHome';
 import AboutScreen from '../Screens/auth/AboutScreen';
@@ -15,14 +13,15 @@ import HomeScreen from '../Screens/main/HomeScreen';
 import EmailScreen from '../Screens/main/EmailScreen';
 import AccountScreen from '../Screens/main/AccountScreen';
 import BenefitsScreen from '../Screens/main/BenefitsScreen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Demo from '../Screens/Demo';
 import {BottomTabNavigator} from './BottomTabNavigator';
+import UpdateProfileScreen from '../Screens/main/UpdateProfileScreen';
+import AddProfileScreen from '../Screens/main/AddProfileScreen';
+import First from '../Screens/First';
+import {ScreenNames} from '../Constants';
 const MainStack = createStackNavigator();
 
 const MainStackNavigator = () => {
-  const [initialRoute, setInitialRoute] = useState(null);
-
   return (
     <NavigationContainer>
       <MainStack.Navigator
@@ -30,7 +29,7 @@ const MainStackNavigator = () => {
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,
         }}
-        initialRouteName={ScreenNames.ACTIVE_ACCOUNT}>
+        initialRouteName={ScreenNames.FIRST}>
         <MainStack.Screen name={ScreenNames.DEMO} component={Demo} />
         <MainStack.Screen name={ScreenNames.FIRST} component={First} />
         <MainStack.Screen name={ScreenNames.SPLASH} component={SplashScreen} />
@@ -66,6 +65,14 @@ const MainStackNavigator = () => {
         <MainStack.Screen
           name={ScreenNames.MAIN_NAVIGATOR}
           component={BottomTabNavigator}
+        />
+        <MainStack.Screen
+          name={ScreenNames.UPDATE_PROFILE}
+          component={UpdateProfileScreen}
+        />
+        <MainStack.Screen
+          name={ScreenNames.ADD_PROFILE}
+          component={AddProfileScreen}
         />
       </MainStack.Navigator>
     </NavigationContainer>
