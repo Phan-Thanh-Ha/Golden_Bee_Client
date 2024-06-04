@@ -23,34 +23,6 @@ const MainStack = createStackNavigator();
 const MainStackNavigator = () => {
   const [initialRoute, setInitialRoute] = useState(null);
 
-  // useEffect(() => {
-  //   const checkPhoneNumber = async () => {
-  //     try {
-  //       const phoneNumber = await AsyncStorage.getItem('phoneNumber');
-  //       if (phoneNumber) {
-  //         console.log('Phone Number found:', phoneNumber);
-  //         setInitialRoute(ScreenNames.HOME);
-  //       } else {
-  //         console.log('No Phone Number found, navigating to Login');
-  //         setInitialRoute(ScreenNames.SPLASH);
-  //       }
-  //     } catch (error) {
-  //       console.error(
-  //         'Failed to fetch the phone number from AsyncStorage:',
-  //         error,
-  //       );
-  //       setInitialRoute(ScreenNames.SPLASH);
-  //     }
-  //   };
-
-  //   checkPhoneNumber();
-  // }, []);
-
-  // if (initialRoute === null) {
-  //   // Optionally, you can return a loading screen or null while checking AsyncStorage
-  //   return null;
-  // }
-
   return (
     <NavigationContainer>
       <MainStack.Navigator
@@ -58,7 +30,7 @@ const MainStackNavigator = () => {
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,
         }}
-        initialRouteName={ScreenNames.MAIN_NAVIGATOR}>
+        initialRouteName={ScreenNames.ACTIVE_ACCOUNT}>
         <MainStack.Screen name={ScreenNames.DEMO} component={Demo} />
         <MainStack.Screen name={ScreenNames.FIRST} component={First} />
         <MainStack.Screen name={ScreenNames.SPLASH} component={SplashScreen} />

@@ -12,7 +12,6 @@ import com.facebook.soloader.SoLoader;
 import com.golden_bee_clients.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import com.golden_bee_clients.BuildConfig;
 
 public class MainApplication extends Application implements ReactApplication {
 
