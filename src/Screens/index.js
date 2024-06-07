@@ -1,11 +1,11 @@
 export * from "./First";
-export * from "./auth/AuthHome";
+export * from "./Officer/AuthHome";
 export * from "./SplashScreen";
-export * from "./auth/AboutScreen";
-export * from "./auth/ActiveAccount";
-export * from "./auth/ForgotPasswordScreen";
-export * from "./auth/ConfirmOtpForgotPassword";
-export * from "./main/UpdateProfileScreen";
-export * from "./main/AddProfileScreen";
+export * from "./Officer/AboutScreen";
+export * from "./Officer/ActiveAccount";
+export * from "./Officer/ForgotPasswordScreen";
+export * from "./Officer/ConfirmOtpForgotPassword";
+export * from "./Home/UpdateProfileScreen";
+export * from "./Home/AddProfileScreen";
 
 

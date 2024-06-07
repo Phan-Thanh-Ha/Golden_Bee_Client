@@ -196,5 +196,141 @@ const MainStyles = StyleSheet.create({
     marginTop: 40,
     color: colors.MAIN_BLUE_CLIENT,
   },
+  BtnSelectImage: {
+    width: 300,
+    height: 300,
+  },
+  rowBtnUpload: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  columnBtn: {
+    flex: 1,
+    paddingLeft: 10,
+  },
+  columnBtnUpload: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: colors.MAIN_BLUE_CLIENT,
+    borderWidth: 1,
+    padding: 30,
+    margin: 10,
+    borderRadius: 10,
+    borderStyle: "dotted",
+  },
+  containerFormUpload: {
+    justifyContent: "center",
+    margin: 15,
+    borderRadius: 5,
+    backgroundColor: colors.WHITE,
+    padding: 10,
+  },
+  tabCustomContainer: {},
+  containerTabContent: {
+    padding: 10,
+  },
+  selectedTabStyle: {
+    backgroundColor: "blue",
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    color: colors.WHITE,
+  },
+
+  unselectedTabStyle: {
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tabContainer: {
+    height: 230,
+    justifyContent: "center",
+    borderRadius: 5,
+    borderBottomEndRadius: 5,
+    borderBottomStartRadius: 5,
+    padding: 5,
+    marginBottom: 5,
+    backgroundColor: colors.WHITE,
+  },
+  tabContainerNewJob: {
+    height: 200,
+    justifyContent: "center",
+    borderRadius: 5,
+    borderBottomEndRadius: 5,
+    borderBottomStartRadius: 5,
+    padding: 5,
+    marginBottom: 5,
+    backgroundColor: colors.WHITE,
+  },
+  tabActive: {
+    // backgroundColor: colors.MAIN_BLUE_CLIENT,
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 5,
+    colors: colors.WHITE,
+  },
+  tabRowSpace: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  tabRow: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  tabCol: {
+    flex: 1,
+  },
+  containerTabPayment: {
+    padding: 10,
+  },
+  layoutTabPayment: {
+    backgroundColor: colors.WHITE,
+    borderRadius: 8,
+  },
+  modalContent: {
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 10,
+    color: colors.MAIN_BLUE_CLIENT,
+  },
+  modalSectionTitle: {
+    fontSize: 17,
+    fontWeight: "700",
+    marginBottom: 10,
+    color: colors.MAIN_BLUE_CLIENT,
+  },
+  modalText: {
+    fontSize: 15,
+    marginBottom: 5,
+  },
+
+  modalContentCpnModal: {
+    padding: 20,
+  },
+  modalTitleCpnModal: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 10,
+    color: colors.MAIN_BLUE_CLIENT,
+  },
+  modalSectionTitleCpnModal: {
+    fontSize: 17,
+    fontWeight: "700",
+    marginBottom: 10,
+    color: colors.MAIN_BLUE_CLIENT,
+  },
+  modalTextCpnModal: {
+    fontSize: 15,
+    marginBottom: 5,
+  },
 });
+
 export default MainStyles;

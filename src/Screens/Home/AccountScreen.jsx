@@ -4,8 +4,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../Constants';
 import Button from '../../components/buttons/Button';
+import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 
-const HomeScreen = () => {
+const AccountScreen = () => {
   const navigation = useNavigation();
 
   const handleLogout = async () => {
@@ -18,23 +19,10 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Home</Text>
+    <LayoutGradientBlue>
       <Button onPress={handleLogout}>Đăng xuất</Button>
-    </View>
+    </LayoutGradientBlue>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-});
-
-export default HomeScreen;
+export default AccountScreen;

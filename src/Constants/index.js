@@ -1,1 +1,1 @@
-export { default as ScreenNames } from "./ScreenNames";
+export {default as ScreenNames} from './ScreenNames';

@@ -2,8 +2,6 @@ import LayoutAbout from "../../components/layouts/LayoutAbout";
 import LogoBee from "../../components/LogoBee";
 import { Text, View } from "react-native";
 import BtnAuth from "../../components/auth/BtnAuth";
-import Header from "../../components/Header";
-import { colors } from "../../styles/Colors";
 import Footer from "../../components/Footer";
 import { ScreenNames } from "../../Constants";
 import MainStyle from "../../styles/MainStyle";

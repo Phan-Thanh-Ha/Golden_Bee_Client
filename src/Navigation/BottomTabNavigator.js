@@ -11,10 +11,10 @@ import {
 import { CurvedBottomBar } from "react-native-curved-bottom-bar";
 import { Icon } from "@ui-kitten/components";
 import { ScreenNames } from "../Constants";
-import HomeScreen from "../Screens/main/HomeScreen";
-import EmailScreen from "../Screens/main/EmailScreen";
-import BenefitsScreen from "../Screens/main/BenefitsScreen";
-import AccountScreen from "../Screens/main/AccountScreen";
+import HomeScreen from "../Screens/Home/HomeScreen";
+import EmailScreen from "../Screens/Home/EmailScreen";
+import BenefitsScreen from "../Screens/Home/BenefitsScreen";
+import AccountScreen from "../Screens/Home/AccountScreen";
 import { logo_bee_blue } from "../assets";
 import { colors } from "../styles/Colors";
 

@@ -20,6 +20,19 @@ const LoginForm = ({ setSubmit, navigation, setData }) => {
   });
 
   const handleSubmit = async (values) => {
+    // try {
+    //   const pr = {
+    //     AreaId: 0,
+    //   };
+    //   const params = {
+    //     Json: JSON.stringify(pr),
+    //     func: "CPN_spOfficer_LoginMB",
+    //   };
+
+    //   const result = await mainAction.API_spCallServer(params, dispatch);
+    //   console.log("🚀 ~ clickdemo01 ~ result:", result);
+    // } catch (error) { }
+
     try {
       await AsyncStorage.setItem('phoneNumber', values.phoneNumber);
       Toast.show({

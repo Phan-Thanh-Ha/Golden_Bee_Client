@@ -1,2 +1,2 @@
-export * from './RootNavigation';
-export * from './BottomTabNavigator';
+export * from "./RootNavigation";
+export * from "./BottomTabNavigator";

@@ -1,35 +1,33 @@
-import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import SplashScreen from '../Screens/SplashScreen';
-import AuthHome from '../Screens/auth/AuthHome';
-import AboutScreen from '../Screens/auth/AboutScreen';
-import LoginScreen from '../Screens/auth/LoginScreen';
-import RegisterScreen from '../Screens/auth/RegisterScreen';
-import ActiveAccount from '../Screens/auth/ActiveAccount';
-import ForgotPasswordScreen from '../Screens/auth/ForgotPasswordScreen';
-import ConfirmOtpForgotPassword from '../Screens/auth/ConfirmOtpForgotPassword';
-import HomeScreen from '../Screens/main/HomeScreen';
-import EmailScreen from '../Screens/main/EmailScreen';
-import AccountScreen from '../Screens/main/AccountScreen';
-import BenefitsScreen from '../Screens/main/BenefitsScreen';
+import AuthHome from '../Screens/Officer/AuthHome';
+import AboutScreen from '../Screens/Officer/AboutScreen';
+import LoginScreen from '../Screens/Officer/LoginScreen';
+import RegisterScreen from '../Screens/Officer/RegisterScreen';
+import ActiveAccount from '../Screens/Officer/ActiveAccount';
+import ForgotPasswordScreen from '../Screens/Officer/ForgotPasswordScreen';
+import ConfirmOtpForgotPassword from '../Screens/Officer/ConfirmOtpForgotPassword';
+import HomeScreen from '../Screens/Home/HomeScreen';
+import EmailScreen from '../Screens/Home/EmailScreen';
+import AccountScreen from '../Screens/Home/AccountScreen';
+import BenefitsScreen from '../Screens/Home/BenefitsScreen';
 import Demo from '../Screens/Demo';
 import {BottomTabNavigator} from './BottomTabNavigator';
-import UpdateProfileScreen from '../Screens/main/UpdateProfileScreen';
-import AddProfileScreen from '../Screens/main/AddProfileScreen';
+import UpdateProfileScreen from '../Screens/Home/UpdateProfileScreen';
+import AddProfileScreen from '../Screens/Home/AddProfileScreen';
 import First from '../Screens/First';
 import {ScreenNames} from '../Constants';
+
+import TakeJobScreen from '../Screens/Home/TakeJobScreen';
 const MainStack = createStackNavigator();
 
 const MainStackNavigator = () => {
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        screenOptions={{
-          headerShown: false,
-          ...TransitionPresets.SlideFromRightIOS,
-        }}
-        initialRouteName={ScreenNames.FIRST}>
+        screenOptions={{headerShown: false, animationEnabled: false}}
+        initialRouteName={ScreenNames.MAIN_NAVIGATOR}>
         <MainStack.Screen name={ScreenNames.DEMO} component={Demo} />
         <MainStack.Screen name={ScreenNames.FIRST} component={First} />
         <MainStack.Screen name={ScreenNames.SPLASH} component={SplashScreen} />
@@ -73,6 +71,10 @@ const MainStackNavigator = () => {
         <MainStack.Screen
           name={ScreenNames.ADD_PROFILE}
           component={AddProfileScreen}
+        />
+        <MainStack.Screen
+          name={ScreenNames.TAKE_JOB}
+          component={TakeJobScreen}
         />
       </MainStack.Navigator>
     </NavigationContainer>

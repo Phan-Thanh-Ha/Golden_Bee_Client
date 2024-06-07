@@ -1,4 +1,4 @@
-import mainTypes from './mainTypes';
+import mainTypes from "./mainTypes";
 
 export function closeError(params, cb) {
   return {
@@ -16,4 +16,17 @@ export function API_spCallServer(params, dispatch) {
       reject,
     });
   });
+}
+
+export function confirmJob(itemID) {
+  return {
+    type: mainTypes.CONFIRM,
+    payload: itemID,
+  };
+}
+
+export function doneJob() {
+  return {
+    type: mainTypes.DONE_JOB,
+  };
 }

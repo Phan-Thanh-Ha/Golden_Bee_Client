@@ -1,9 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import {Button, Icon} from '@ui-kitten/components';
 import {useDispatch} from 'react-redux';
 import {mainAction} from '../Redux/Action';
-
+import BottomSheet from '@gorhom/bottom-sheet';
 const Demo = () => {
   const dispatch = useDispatch();
 
@@ -19,20 +19,28 @@ const Demo = () => {
       };
 
       const result = await mainAction.API_spCallServer(params, dispatch);
-      console.log('🚀 ~ clickdemo01 ~ result:', result);
     } catch (error) {}
   };
-  return (
-    <View style={{marginVertical: 130}}>
-      <Button
-        onPress={() => {
-          clickdemo01();
-        }}>
-        Click me
-      </Button>
 
-      <Text>123456</Text>
-      <Icon style={{width: 32, height: 32}} fill="#8F9BB3" name="star" />
+  // ref
+  const bottomSheetRef = useRef(null);
+
+  // variables
+  const snapPoints = ['25%', '50%', '90%'];
+
+  return (
+    <View style={{flex: 1, padding: 24}}>
+      <Button
+        title="Open Bottom Sheet"
+        onPress={() => {
+          bottomSheetRef.current.expand();
+        }}
+      />
+      <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <Text>Awesome content goes here</Text>
+        </View>
+      </BottomSheet>
     </View>
   );
 };
