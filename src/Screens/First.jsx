@@ -1,55 +1,79 @@
-import { Image, SafeAreaView, View, StyleSheet } from "react-native";
-import LogoBee from "../components/LogoBee";
-import { colors } from "../styles/Colors";
-import { useEffect, useState } from "react";
-import { image_banner_1 } from "../assets";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ScreenNames } from "../Constants";
+import { Image, SafeAreaView, View, StyleSheet } from 'react-native';
+import LogoBee from '../components/LogoBee';
+import { colors } from '../styles/Colors';
+import { useEffect } from 'react';
+import { image_banner_1 } from '../assets';
+import { ScreenNames } from '../Constants';
+import { getData } from '../utils';
+import StorageNames from '../Constants/StorageNames';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { mainAction } from '../Redux/Action';
+import Geolocation from '@react-native-community/geolocation';
 
-const First = ({ navigation }) => {
-  const [initialRoute, setInitialRoute] = useState(null);
+const First = () => {
+  const navi = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const checkPhoneNumber = async () => {
+    const startUp = async () => {
       try {
-        const phoneNumber = await AsyncStorage.getItem('phoneNumber');
-        if (phoneNumber) {
-          console.log('Phone Number found:', phoneNumber);
-          setInitialRoute(ScreenNames.UPDATE_PROFILE);
-        } else {
-          console.log('No Phone Number found, navigating to Login');
-          setInitialRoute(ScreenNames.ABOUT);
-        }
+        // Lấy vị trí người dùng
+        Geolocation.getCurrentPosition(
+          (position) => {
+            if (position.coords) {
+              const params = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+              };
+              // Cập nhật vị trí trong Redux
+              mainAction.locationUpdate(params, dispatch);
+              // Tiếp tục xử lý logic sau khi lấy vị trí
+              getRouter();
+            }
+          },
+          (error) => {
+            console.log('Error getting location:', error);
+            // Nếu không lấy được vị trí, tiếp tục xử lý logic
+            getRouter();
+          },
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
       } catch (error) {
-        console.error('Failed to fetch the phone number from AsyncStorage:', error);
-        setInitialRoute(ScreenNames.ABOUT);
+        console.error('Failed to fetch data:', error);
       }
     };
 
-    checkPhoneNumber();
+    startUp();
   }, []);
 
-  useEffect(() => {
-    if (initialRoute !== null) {
-      setTimeout(() => {
-        navigation.navigate(initialRoute);
-      }, 3000);
+  const getRouter = async () => {
+    try {
+      // Lấy thông tin người dùng và dịch vụ được chấp nhận từ AsyncStorage
+      const userLogin = await getData(StorageNames.USER_PROFILE);
+      const serviceAccepted = await getData(StorageNames.ORDER_SERVICE);
+      console.log('user open app:', userLogin);
+      // Nếu không có thông tin người dùng, điều hướng đến màn hình xác thực
+      if (!userLogin) {
+        navi.navigate(ScreenNames.AUTH_HOME);
+      } else {
+        // Nếu có thông tin người dùng, cập nhật thông tin người dùng và dịch vụ được chấp nhận trong Redux
+        mainAction.userLogin(userLogin, dispatch);
+        mainAction.acceptedOrder(serviceAccepted, dispatch);
+        // Điều hướng đến màn hình cập nhật thông tin người dùng
+        navi.navigate(ScreenNames.UPDATE_PROFILE);
+      }
+    } catch (error) {
+      console.error('Failed to fetch the user from AsyncStorage:', error);
     }
-  }, [initialRoute, navigation]);
-
-  if (initialRoute === null) {
-    return null;
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <LogoBee />
         <View style={styles.imageContainer}>
-          <Image
-            source={image_banner_1}
-            style={styles.image}
-          />
+          <Image source={image_banner_1} style={styles.image} />
         </View>
       </View>
     </SafeAreaView>
@@ -60,7 +84,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: colors.WHITE
+    backgroundColor: colors.WHITE,
   },
   content: {
     flex: 1,

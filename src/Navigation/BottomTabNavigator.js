@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -30,7 +30,7 @@ export const BottomTabNavigator = () => {
         break;
       case ScreenNames.EMAIL:
         iconName = "email-outline";
-        displayName = "Email";
+        displayName = "Thông báo";
         break;
       case ScreenNames.BENEFITS:
         iconName = "gift-outline";

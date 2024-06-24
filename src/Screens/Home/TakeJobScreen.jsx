@@ -1,13 +1,9 @@
-import {Text, View} from 'react-native';
+import { Text, View } from "react-native";
 
 const TakeJobScreen = () => {
   return (
-    <>
-      <View>
-        <Text>TakeJobScreen</Text>
-      </View>
-    </>
-  );
-};
+    <Text>Take</Text>
+  )
+}
 
 export default TakeJobScreen;

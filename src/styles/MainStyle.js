@@ -1,5 +1,6 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { colors } from "./Colors";
+import { responsivescreen } from "../utils/responsive-screen";
 
 export const SCREEN_WIDTH = Dimensions.get("screen").width;
 export const SCREEN_HEIGHT = Dimensions.get("screen").height;
@@ -7,6 +8,23 @@ export const SCREEN_HEIGHT = Dimensions.get("screen").height;
 const MainStyles = StyleSheet.create({
   safeArea: {
     flex: 1,
+  },
+  filterButton: {
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#6200EE",
+    marginRight: 10,
+  },
+  datePickerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  hiddenDatePicker: {
+    position: "absolute",
+    width: 0,
+    height: 0,
+    opacity: 0,
   },
   imageBackground: {
     flex: 1,
@@ -165,14 +183,12 @@ const MainStyles = StyleSheet.create({
   },
   containerLogin: {
     flexGrow: 1,
-    justifyContent: "center",
   },
   titleLogin: {
     fontSize: 30,
     fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
-    marginTop: 20,
     marginBottom: 20,
   },
   containerForgot: {
@@ -245,7 +261,6 @@ const MainStyles = StyleSheet.create({
     justifyContent: "center",
   },
   tabContainer: {
-    height: 230,
     justifyContent: "center",
     borderRadius: 5,
     borderBottomEndRadius: 5,
@@ -255,7 +270,6 @@ const MainStyles = StyleSheet.create({
     backgroundColor: colors.WHITE,
   },
   tabContainerNewJob: {
-    height: 200,
     justifyContent: "center",
     borderRadius: 5,
     borderBottomEndRadius: 5,
@@ -265,14 +279,12 @@ const MainStyles = StyleSheet.create({
     backgroundColor: colors.WHITE,
   },
   tabActive: {
-    // backgroundColor: colors.MAIN_BLUE_CLIENT,
     marginLeft: 5,
     marginRight: 5,
     borderRadius: 5,
     colors: colors.WHITE,
   },
   tabRowSpace: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
@@ -330,6 +342,142 @@ const MainStyles = StyleSheet.create({
   modalTextCpnModal: {
     fontSize: 15,
     marginBottom: 5,
+  },
+  containerZaloChat: {
+    height: 60,
+    justifyContent: "center",
+    borderRadius: 5,
+    borderBottomEndRadius: 5,
+    borderBottomStartRadius: 5,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginBottom: 5,
+    backgroundColor: colors.WHITE,
+  },
+  flexRowSpaceBetween: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  flexRowFlexEnd: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  flexRowFlexStart: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  flexRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  flexRowCenter: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  titleChatZalo: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: colors.MAIN_BLUE_CLIENT,
+  },
+  tabContainerDefault: {
+    height: 230,
+    justifyContent: "center",
+    borderRadius: 5,
+    borderBottomEndRadius: 5,
+    borderBottomStartRadius: 5,
+    padding: 5,
+    marginBottom: 5,
+    backgroundColor: "transparent",
+  },
+  textDefault: {
+    fontSize: 16,
+    textAlign: "center",
+    color: colors.WHITE,
+  },
+  scrollTab: {},
+  screenTitle: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  contentContainer: {
+    backgroundColor: colors.WHITE,
+    margin: 10,
+    borderRadius: 10,
+    padding: 5,
+  },
+  labelTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: colors.MAIN_BLUE_CLIENT,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingBottom: 16,
+  },
+  cardJob: {
+    backgroundColor: colors.WHITE,
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 10,
+  },
+  titleCardJob: {
+    color: colors.MAIN_COLOR_CLIENT,
+    marginLeft: 10,
+    fontSize: 18,
+    fontWeight: "700",
+    paddingRight: SCREEN_WIDTH * 0.04,
+  },
+  textCardJob: {
+    color: colors.MAIN_BLUE_CLIENT,
+    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: "600",
+    paddingRight: SCREEN_WIDTH * 0.04,
+  },
+  cardContentJob: {
+    backgroundColor: colors.WHITE,
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: colors.primary[100],
+  },
+  rowMargin: {
+    marginVertical: 8,
+  },
+  line: {
+    backgroundColor: colors.MAIN_BLUE_CLIENT,
+    marginBottom: 5,
+    marginTop: 5,
+    height: 1,
+    width: SCREEN_WIDTH * 0.7,
+  },
+  titleContentModal: {
+    color: colors.MAIN_COLOR_CLIENT,
+    marginLeft: 10,
+    fontSize: 18,
+    fontWeight: "600",
+    paddingLeft: SCREEN_WIDTH * 0.04,
+    paddingRight: SCREEN_WIDTH * 0.04,
+  },
+  imageUpload: {
+    borderColor: colors.MAIN_BLUE_CLIENT,
+    borderWidth: 1,
+    borderRadius: 5,
+    margin: 10,
+    borderStyle: "dotted",
+  },
+  textBtnUpload: {
+    color: colors.MAIN_BLUE_CLIENT,
+    fontSize: 14,
+    paddingHorizontal: 20,
+    textAlign: "center",
   },
 });
 

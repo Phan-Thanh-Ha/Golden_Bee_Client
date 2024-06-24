@@ -11,6 +11,7 @@ function Person({ color = colors.MAIN_BLUE_CLIENT, size = 32 }) {
       viewBox="0 0 24 24"
       fill="none"
       stroke={color}
+      strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
       className="lucide lucide-user"

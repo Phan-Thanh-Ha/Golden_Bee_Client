@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "616914078130",
+    "firebase_url": "https://golden-bee-651eb-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "golden-bee-651eb",
+    "storage_bucket": "golden-bee-651eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616914078130:android:1aa680b6fc4031ef2ebcab",
+        "android_client_info": {
+          "package_name": "com.golden_bee_clients"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANLQ5mDcjbOoMJjmzZj7KZLrVhWIYpmhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616914078130:android:7eeca32064e5eccd2ebcab",
+        "android_client_info": {
+          "package_name": "com.golden_bee_customers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANLQ5mDcjbOoMJjmzZj7KZLrVhWIYpmhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

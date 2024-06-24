@@ -1,51 +1,35 @@
-import { StyleSheet, Text, View } from "react-native";
 import LayoutGradientBlue from "../../components/layouts/LayoutGradientBlue";
-import Header from "../../components/Header";
-import { colors } from "../../styles/Colors";
 import Footer from "../../components/Footer";
 import LoginForm from "../../components/forms/LoginForm";
 import { KeyboardAwareScrollView } from "@codler/react-native-keyboard-aware-scroll-view";
-import { useEffect, useState } from "react";
-import Toast from "react-native-toast-message";
-import MainStyle from "../../styles/MainStyle";
+import Box from "../../components/Box";
+import BackButton from "../../components/BackButton";
+import { colors } from "../../styles/Colors";
+import MainStyles from "../../styles/MainStyle";
+import { Text } from "react-native";
 
-const LoginScreen = ({ navigation }) => {
-  const [dataLogin, setDataLogin] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
-
-  console.log((dataLogin));
-
-  useEffect(() => {
-    if (isSubmit) {
-      Toast.show({
-        type: 'success',
-        text1: 'Đăng nhập thành công !'
-      })
-    }
-  }, [dataLogin]);
-
+const LoginScreen = () => {
   return (
     <>
       <LayoutGradientBlue>
-        <Header showBackButton={true} color={colors.WHITE} />
         <KeyboardAwareScrollView
-          contentContainerStyle={MainStyle.containerLogin}
+          contentContainerStyle={MainStyles.containerLogin}
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={true}
           keyboardShouldPersistTaps="handled"
           enableAutomaticScroll={true}
-          extraScrollHeight={140}
+          extraScrollHeight={200}
           enableOnAndroid={true}
         >
-          <Text style={MainStyle.titleLogin}>
-            Đăng nhập
+          <BackButton color={colors.WHITE} />
+          <Text style={MainStyles.titleForgotPasswordForm}>
+            Đăng Nhập
           </Text>
-          <LoginForm navigation={navigation} setSubmit={setIsSubmit} setData={setDataLogin} />
+          <LoginForm />
         </KeyboardAwareScrollView>
       </LayoutGradientBlue>
       <Footer />
     </>
   );
 };
-
 export default LoginScreen;

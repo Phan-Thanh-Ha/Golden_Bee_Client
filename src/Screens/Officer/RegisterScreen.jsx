@@ -1,36 +1,39 @@
-import {StyleSheet, Text, View} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import FormRegister from "../../components/forms/RegisterForm";
 import Header from "../../components/Header";
 import LayoutGradientBlue from "../../components/layouts/LayoutGradientBlue";
-import {colors} from "../../styles/Colors";
+import { colors } from "../../styles/Colors";
 import Footer from "../../components/Footer";
-import {ScreenNames} from "../../Constants";
-import {KeyboardAwareScrollView} from "@codler/react-native-keyboard-aware-scroll-view";
-import {useEffect, useState} from "react";
-import MainStyle from "../../styles/MainStyle";
+import { KeyboardAwareScrollView } from "@codler/react-native-keyboard-aware-scroll-view";
+import { useEffect, useState } from "react";
+import MainStyles from "../../styles/MainStyle";
+import BackButton from "../../components/BackButton";
 
-const RegisterScreen = ({navigation}) => {
-    const [submit, setSubmit] = useState(false);
+const RegisterScreen = ({ navigation }) => {
+  const [submit, setSubmit] = useState(false);
 
-    return (
-        <>
-            <Header showBackButton={true} color={colors.WHITE}/>
-            <LayoutGradientBlue>
-                <KeyboardAwareScrollView
-                    contentContainerStyle={MainStyle.containerLogin}
-                    resetScrollToCoords={{x: 0, y: 0}}
-                    scrollEnabled={true}
-                    keyboardShouldPersistTaps="handled"
-                    extraHeight={140}
-                    enableOnAndroid={true}
-                >
-                    <Text style={MainStyle.titleLogin}>Đăng ký</Text>
-                    <FormRegister setSubmit={setSubmit} navigation={navigation}/>
-                </KeyboardAwareScrollView>
-            </LayoutGradientBlue>
-            <Footer/>
-        </>
-    );
+  return (
+    <>
+      <LayoutGradientBlue>
+        <KeyboardAwareScrollView
+          contentContainerStyle={MainStyles.containerLogin}
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          scrollEnabled={true}
+          keyboardShouldPersistTaps="handled"
+          enableAutomaticScroll={true}
+          extraScrollHeight={200}
+          enableOnAndroid={true}
+        >
+          <BackButton color={colors.WHITE} />
+          <Text style={MainStyles.titleForgotPasswordForm}>
+            Đăng ký
+          </Text>
+          <FormRegister setSubmit={setSubmit} navigation={navigation} />
+        </KeyboardAwareScrollView>
+      </LayoutGradientBlue>
+      <Footer />
+    </>
+  );
 };
 
 export default RegisterScreen;

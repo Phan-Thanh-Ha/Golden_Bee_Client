@@ -53,20 +53,6 @@ const ImageUploader = () => {
       name: 'photo.jpg',
       type: 'image/jpeg'
     });
-
-    // try {
-    //   const response = await axios.post('YOUR_API_ENDPOINT', formData, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     }
-    //   });
-    //   setImageUri(previewUri);
-    //   closePreviewModal();
-    //   closeBottomSheet();
-    //   Alert.alert('Success', 'Image uploaded successfully!');
-    // } catch (error) {
-    //   Alert.alert('Error', 'Failed to upload image.');
-    // }
   };
 
   const handleCancel = () => {

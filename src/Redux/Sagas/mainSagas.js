@@ -1,11 +1,11 @@
 import {delay, put, takeEvery, takeLatest} from 'redux-saga/effects';
 // import {api, APIKey, API_END_POINT} from '../../Config';
 import mainTypes from '../Action/mainTypes';
-import {api, APIKey, API_END_POINT} from '../../Config/Api';
+import {api, APIKey, API_END_POINT, IMAGES_DOMAIN} from '../../Config/Api';
 // import messaging from "@react-native-firebase/messaging";
-
+import messaging from '@react-native-firebase/messaging';
 export function* API_spCallServer(action) {
-  console.log('🚀 ~ function*API_spCallServer ~ action:', action);
+  // console.log('🚀 ~ function*API_spCallServer ~ action:', action);
   const params = action && action.params;
 
   try {
@@ -43,7 +43,53 @@ export function* cameraScan(action) {
   const params = action && action.params;
   yield delay(300);
 }
+export function* checkPermission(action) {
+  try {
+    const authStatus = yield messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      const token = yield messaging().getToken();
+      if (token) {
+        // yield setData(StorageNames.DEVICES_TOKEN, JSON.stringify(token));
+        action.resolve(token);
+      }
+    }
+  } catch (e) {
+    yield delay(300);
+    action.reject(e);
+  }
+}
 
+export function* API_spCallPostImage(action) {
+  console.log('API_spCallPostImage main saga action : ', action);
+  try {
+    //params received
+    const params = action && action.params;
+
+    let FuncApi = 'API_spCallPostImage_New';
+    let respone = yield api.post(
+      'https://api-crmcak.vps.vn/api/ApiMain/API_spCallPostImage_TimeKeeping',
+      params,
+    );
+    // check call api success
+    if (respone && respone.status === 201) {
+      respone.data == {}
+        ? action.resolve([])
+        : action.resolve(JSON.parse(respone.data.Message));
+    } else {
+      // api call fail
+      action.reject(respone);
+    }
+  } catch (e) {
+    ///something wrong
+    action.reject(e);
+    console.log('catch saga', e);
+  }
+}
 export default function* watchMainSagas() {
   yield takeEvery(mainTypes.CallServer, API_spCallServer);
+  yield takeEvery(mainTypes.PostImage, API_spCallPostImage);
+  yield takeLatest(mainTypes.CHECK_PERMISSION, checkPermission);
 }

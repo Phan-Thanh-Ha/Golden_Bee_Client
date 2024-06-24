@@ -4,7 +4,9 @@ const initialState = {
   error: false,
   loading: false,
   language: "vn",
-  confirmed: -1,
+  locationTime: {},
+  inOrder: -1,
+  acceptedOrder: {},
 };
 export default function (state = initialState, action = {}) {
   switch (action.type) {
@@ -14,15 +16,31 @@ export default function (state = initialState, action = {}) {
         loading: action.payload,
       };
 
-    case mainTypes.CONFIRM:
+    case mainTypes.IN_ORDER:
       return {
         ...state,
-        confirmed: action.payload,
+        inOrder: action.payload,
       };
-    case mainTypes.DONE_JOB:
+    case mainTypes.USER_PROFILE:
+      {
+        console.log("user in redux", action.payload);
+      }
       return {
         ...state,
-        confirmed: -1,
+        userLogin: action.payload,
+      };
+    case mainTypes.ACCEPTED_ORDER:
+      {
+        console.log("oder accepted in redux", action.payload);
+      }
+      return {
+        ...state,
+        acceptedOrder: action.payload,
+      };
+    case mainTypes.LOCATION_TIME:
+      return {
+        ...state,
+        locationTime: action.payload,
       };
     default:
       return state;
