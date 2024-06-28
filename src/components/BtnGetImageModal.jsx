@@ -1,20 +1,27 @@
-import React, { useRef, useCallback, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { useDispatch } from 'react-redux';
-import { Image } from 'react-native-compressor';
+import React, {useRef, useCallback, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {useDispatch} from 'react-redux';
+import {Image} from 'react-native-compressor';
 import FastImage from 'react-native-fast-image';
 import ProgressImage from 'react-native-image-progress';
-import { ProgressBar } from '@ui-kitten/components';
+import {ProgressBar} from '@ui-kitten/components';
 import Modal from 'react-native-modal';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { mainAction } from '../Redux/Action';
-import { colors } from '../styles/Colors';
-import { APIImage } from '../Config/Api';
-import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../styles/MainStyle';
-import { ic_image_edit, ic_trash, ic_upload, ic_upload_image } from '../assets';
+import {mainAction} from '../Redux/Action';
+import {colors} from '../styles/Colors';
+import {APIImage} from '../Config/Api';
+import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../styles/MainStyle';
+import {ic_image_edit, ic_trash, ic_upload, ic_upload_image} from '../assets';
 
-const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight }) => {
+const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
   const dispatch = useDispatch();
   const [isUpload, setIsUpload] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -81,7 +88,7 @@ const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight }) => {
     }
   };
 
-  const uploadImage = async (imageUri) => {
+  const uploadImage = async imageUri => {
     setIsLoadingMedia(true);
     try {
       const result = await Image.compress(imageUri, optionsMedia);
@@ -103,7 +110,7 @@ const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight }) => {
     }
   };
 
-  const API_spCallPostImage = async (arrayTempImage) => {
+  const API_spCallPostImage = async arrayTempImage => {
     try {
       const formData = new FormData();
       formData.append('AppAPIKey', 'netcoApikey2025');
@@ -121,27 +128,30 @@ const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight }) => {
         });
       });
 
-      const result = await mainAction.API_spCallPostImage(formData, dispatch, (event) => {
-        const progress = event.loaded / event.total;
-        setUploadProgress(progress);
-      });
+      const result = await mainAction.API_spCallPostImage(
+        formData,
+        dispatch,
+        event => {
+          const progress = event.loaded / event.total;
+          setUploadProgress(progress);
+        },
+      );
       if (result.length > 0) {
         setIsUpload(true);
       } else {
         setIsUpload(false);
       }
-      console.log('API_spCallPostImage result: ', result);
       if (result.length > 0) {
         setIsLoadingMedia(false);
         setSelectedImage({
           source: APIImage + result[0],
         });
         setImageUrl(result);
-        setImageList((prevList) => [
+        setImageList(prevList => [
           ...prevList,
-          { id: currentID, source: APIImage + result[0] },
+          {id: currentID, source: APIImage + result[0]},
         ]);
-        setCurrentID((prevID) => prevID + 1);
+        setCurrentID(prevID => prevID + 1);
       }
     } catch (error) {
       setIsLoadingMedia(false);
@@ -151,7 +161,9 @@ const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight }) => {
   const deleteImage = () => {
     setIsUpload(false);
     setSelectedImage(null);
-    setImageList(imageList.filter((image) => image.source !== selectedImage.source));
+    setImageList(
+      imageList.filter(image => image.source !== selectedImage.source),
+    );
   };
 
   const toggleOptionsModal = () => {
@@ -174,31 +186,38 @@ const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight }) => {
 
   return (
     <View style={styles.container}>
-      {
-        isUpload ? (
-          null
-        ) : (
-          <TouchableOpacity onPress={toggleOptionsModal}>
-            <View style={[MainStyles.imageUpload,
-            { backgroundColor: colors.WHITE, width: btnWidth, height: btnHeight, justifyContent: 'center', alignItems: 'center' },
+      {isUpload ? null : (
+        <TouchableOpacity onPress={toggleOptionsModal}>
+          <View
+            style={[
+              MainStyles.imageUpload,
+              {
+                backgroundColor: colors.WHITE,
+                width: btnWidth,
+                height: btnHeight,
+                justifyContent: 'center',
+                alignItems: 'center',
+              },
             ]}>
-              <FastImage
-                source={ic_upload}
-                style={{ width: 45, height: 45 }}
-              />
-              <Text style={MainStyles.textBtnUpload}>Tải lên hoặc chụp hình ảnh</Text>
-            </View>
-          </TouchableOpacity>
-        )
-      }
+            <FastImage source={ic_upload} style={{width: 45, height: 45}} />
+            <Text style={MainStyles.textBtnUpload}>
+              Tải lên hoặc chụp hình ảnh
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
 
       {isLoadingMedia && (
         <View style={styles.imageContainer}>
           {selectedImage && (
             <ProgressImage
-              source={{ uri: selectedImage.source }}
+              source={{uri: selectedImage.source}}
               indicator={() => (
-                <ActivityIndicator animating={true} color={colors.MAIN_BLUE_CLIENT} size={30} />
+                <ActivityIndicator
+                  animating={true}
+                  color={colors.MAIN_BLUE_CLIENT}
+                  size={30}
+                />
               )}
               indicatorProps={{
                 size: 80,
@@ -216,7 +235,10 @@ const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight }) => {
       {selectedImage && !isLoadingMedia && (
         <View style={styles.imageContainer}>
           <TouchableOpacity onPress={toggleImageModal}>
-            <FastImage source={{ uri: selectedImage.source }} style={{ width: btnWidth, height: btnHeight, borderRadius: 5 }} />
+            <FastImage
+              source={{uri: selectedImage.source}}
+              style={{width: btnWidth, height: btnHeight, borderRadius: 5}}
+            />
           </TouchableOpacity>
           <TouchableOpacity style={styles.deleteButton} onPress={deleteImage}>
             <Text style={styles.deleteButtonText}>X</Text>
@@ -227,17 +249,33 @@ const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight }) => {
       <Modal
         isVisible={isOptionsModalVisible}
         onBackdropPress={toggleOptionsModal}
-        style={styles.bottomModal}
-      >
+        style={styles.bottomModal}>
         <View style={styles.modalContent}>
           <TouchableOpacity style={styles.option} onPress={choosePhoto}>
-            <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 16, fontWeight: '700' }}>Chọn ảnh từ thư viện</Text>
+            <Text
+              style={{
+                color: colors.MAIN_BLUE_CLIENT,
+                fontSize: 16,
+                fontWeight: '700',
+              }}>
+              Chọn ảnh từ thư viện
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.option} onPress={takePhoto}>
-            <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 16, fontWeight: '700' }}>Chụp ảnh</Text>
+            <Text
+              style={{
+                color: colors.MAIN_BLUE_CLIENT,
+                fontSize: 16,
+                fontWeight: '700',
+              }}>
+              Chụp ảnh
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.option} onPress={toggleOptionsModal}>
-            <Text style={{ color: colors.ERROR, fontSize: 16, fontWeight: '700' }}>Hủy</Text>
+            <Text
+              style={{color: colors.ERROR, fontSize: 16, fontWeight: '700'}}>
+              Hủy
+            </Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -249,51 +287,51 @@ const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight }) => {
         animationIn="slideInUp"
         animationOut="slideOutDown"
         style={styles.modal}
-        onBackdropPress={closeModalOnOutsidePress}
-      >
+        onBackdropPress={closeModalOnOutsidePress}>
         <TouchableWithoutFeedback onPress={closeModalOnOutsidePress}>
           <View style={styles.modalContainer}>
             <FastImage
-              source={{ uri: imageToCrop }}
+              source={{uri: imageToCrop}}
               style={styles.fullScreenImage}
               resizeMode="contain"
             />
-            {
-              isUpload ? (
-                null
-              ) : (
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={styles.uploadButton} onPress={() => {
+            {isUpload ? null : (
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.uploadButton}
+                  onPress={() => {
                     setIsModalVisible(false);
                     uploadImage(imageToCrop);
                   }}>
-                    <FastImage
-                      source={ic_upload_image}
-                      style={{ width: 35, height: 35 }}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.cropButton} onPress={cropImageAndUpload}>
-                    <FastImage
-                      source={ic_image_edit}
-                      style={{ width: 35, height: 35 }}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.cancelButton} onPress={cancelCrop}>
-                    <FastImage
-                      source={ic_trash}
-                      style={{ width: 35, height: 35 }}
-                    />
-                  </TouchableOpacity>
-                </View>
-              )
-            }
+                  <FastImage
+                    source={ic_upload_image}
+                    style={{width: 35, height: 35}}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.cropButton}
+                  onPress={cropImageAndUpload}>
+                  <FastImage
+                    source={ic_image_edit}
+                    style={{width: 35, height: 35}}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.cancelButton}
+                  onPress={cancelCrop}>
+                  <FastImage
+                    source={ic_trash}
+                    style={{width: 35, height: 35}}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -393,6 +431,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
 
 export default BtnGetImageModal;

@@ -26,7 +26,7 @@ const Button = ({ bgColor, textColor = 'white', fontSize = 20, fontWeight = 'nor
           {
             !isLoading ? (
               <View style={styles.content}>
-                <Text style={{ ...styles.text, color: textColor, fontSize: fontSize, fontWeight: fontWeight }}>
+                <Text style={{ ...styles.text, color: textColor, fontSize: fontSize, fontWeight: fontWeight, }}>
                   {children}
                 </Text>
                 {Icon && <Icon style={{ ...styles.icon }} />}

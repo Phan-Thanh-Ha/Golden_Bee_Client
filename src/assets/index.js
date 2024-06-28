@@ -32,4 +32,4 @@ export const ic_image_edit = require("./images/image-edit.png");
 export const ic_upload_image = require("./images/upload-ic.png");
 export const ic_trash = require("./images/trash.png");
 export const ic_success = require("./images/success.png");
-export const gif_bee_flying = require("./images/bee-flying.gif");
+export const gif_bee_flying = require("./images/bee.gif");

@@ -1,4 +1,4 @@
-export const checkCaseStatus = (statusOnline, surplus) => {
+export const checkCaseStatus = (statusOnline, surplus, numOrder) => {
   if (statusOnline === false) {
     return {
       status: "Bạn đang tắt trạng thái nhận việc",
@@ -8,6 +8,14 @@ export const checkCaseStatus = (statusOnline, surplus) => {
     return {
       status:
         "Bạn cần có nhiều hơn 200.000 vnđ trong tài khoản để bắt đầu nhận việc",
+    };
+  }
+  if (numOrder > 1) {
+    return {
+      status:
+        "Bạn đang được nhận " +
+        numOrder +
+        " đơn dịch vụ, vui lòng liên hệ quản trị viên để giải quyết",
     };
   }
   return {

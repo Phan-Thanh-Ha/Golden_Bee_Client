@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -18,6 +18,7 @@ import { AlertToaster } from '../../utils';
 
 const RegisterForm = ({ setSubmit, navigation }) => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const validationSchema = yup.object().shape({
     fullName: yup.string().required('Thông tin bắt buộc'),
@@ -28,6 +29,7 @@ const RegisterForm = ({ setSubmit, navigation }) => {
   });
 
   const handleSubmit = async (values) => {
+    setIsLoading(true);
     try {
       const pr = {
         OfficerName: values.fullName,
@@ -40,6 +42,7 @@ const RegisterForm = ({ setSubmit, navigation }) => {
         Json: JSON.stringify(pr),
         func: "OVG_spRegister_Officer",
       };
+      console.log(params);
 
       const result = await mainAction.API_spCallServer(params, dispatch);
       if (result[0]?.Status === "OK") {
@@ -47,10 +50,15 @@ const RegisterForm = ({ setSubmit, navigation }) => {
         navigation.navigate(ScreenNames.ACTIVE_ACCOUNT, {
           data: values
         })
+        setIsLoading(false);
       } else {
         AlertToaster('error', "Đăng ký không thành công !", result[0]?.ResultMessage);
+        setIsLoading(false);
       }
+      setIsLoading(false);
+
     } catch (error) {
+      setIsLoading(false);
     }
   };
 
@@ -114,6 +122,8 @@ const RegisterForm = ({ setSubmit, navigation }) => {
           />
           <CustomFormError>{touched.confirmPassword && errors.confirmPassword}</CustomFormError>
           <Button
+            isLoading={isLoading}
+            disable={isLoading}
             onPress={handleSubmit}
             icon={() => (<ArrowRight color={colors.WHITE} />)}
           >

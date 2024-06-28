@@ -1,9 +1,9 @@
-import { Dimensions, StyleSheet } from "react-native";
-import { colors } from "./Colors";
-import { responsivescreen } from "../utils/responsive-screen";
+import {Dimensions, StyleSheet} from 'react-native';
+import {colors} from './Colors';
+import {responsivescreen} from '../utils/responsive-screen';
 
-export const SCREEN_WIDTH = Dimensions.get("screen").width;
-export const SCREEN_HEIGHT = Dimensions.get("screen").height;
+export const SCREEN_WIDTH = Dimensions.get('screen').width;
+export const SCREEN_HEIGHT = Dimensions.get('screen').height;
 
 const MainStyles = StyleSheet.create({
   safeArea: {
@@ -13,27 +13,27 @@ const MainStyles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#6200EE",
+    borderColor: '#6200EE',
     marginRight: 10,
   },
   datePickerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   hiddenDatePicker: {
-    position: "absolute",
+    position: 'absolute',
     width: 0,
     height: 0,
     opacity: 0,
   },
   imageBackground: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     width: SCREEN_WIDTH,
   },
   dot: {
@@ -51,14 +51,14 @@ const MainStyles = StyleSheet.create({
     margin: 2,
   },
   pagination: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: 10,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   regis: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     margin: 10,
   },
   regisSub: {
@@ -77,7 +77,7 @@ const MainStyles = StyleSheet.create({
   },
   subTitleForm: {
     color: colors.MAIN_BLUE_CLIENT,
-    textAlign: "center",
+    textAlign: 'center',
     margin: 10,
     fontSize: 15,
     marginBottom: 100,
@@ -86,31 +86,31 @@ const MainStyles = StyleSheet.create({
     color: colors.MAIN_BLUE_CLIENT,
   },
   viewSubLinkForm: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     marginBottom: 20,
   },
   containerFormActive: {
-    justifyContent: "center",
+    justifyContent: 'center',
     margin: 15,
     borderRadius: 5,
     backgroundColor: colors.WHITE,
     padding: 10,
   },
   viewImgFormActive: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 20,
   },
   otpFormActive: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textErrFormActive: {
     color: colors.ERROR,
-    textAlign: "center",
+    textAlign: 'center',
   },
   titleFormActive: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 16,
     marginHorizontal: 20,
     marginTop: 20,
@@ -119,8 +119,8 @@ const MainStyles = StyleSheet.create({
   titleOtpFormActive: {
     color: colors.BLACK,
     fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     margin: 20,
   },
   subTitleFormActive: {
@@ -129,7 +129,7 @@ const MainStyles = StyleSheet.create({
   },
   codeFieldRootFormActive: {
     marginTop: 20,
-    width: "70%",
+    width: '70%',
     marginLeft: 20,
     marginRight: 20,
   },
@@ -137,13 +137,13 @@ const MainStyles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: 'black',
   },
   focusCellFormActive: {
-    borderColor: "blue",
+    borderColor: 'blue',
   },
   countdownTextFormActive: {
     fontSize: 14,
@@ -155,29 +155,29 @@ const MainStyles = StyleSheet.create({
   },
   titleForgotPasswordForm: {
     fontSize: 30,
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center",
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
     marginTop: 20,
     marginBottom: 20,
   },
   containerAuthHome: {
     marginBottom: 100,
-    alignItems: "center",
+    alignItems: 'center',
   },
   textAuthHome: {
     color: colors.WHITE,
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: 10,
     marginBottom: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   titleActiveAccount: {
     fontSize: 30,
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center",
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
     marginTop: 20,
     marginBottom: 20,
   },
@@ -186,9 +186,9 @@ const MainStyles = StyleSheet.create({
   },
   titleLogin: {
     fontSize: 30,
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center",
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
     marginBottom: 20,
   },
   containerForgot: {
@@ -198,16 +198,16 @@ const MainStyles = StyleSheet.create({
     paddingBottom: 20,
   },
   subTitleUpdateProfile: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 16,
     marginHorizontal: 20,
     margin: 40,
     color: colors.MAIN_BLUE_CLIENT,
   },
   titleUpdateProfile: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginHorizontal: 20,
     marginTop: 40,
     color: colors.MAIN_BLUE_CLIENT,
@@ -217,9 +217,9 @@ const MainStyles = StyleSheet.create({
     height: 300,
   },
   rowBtnUpload: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   columnBtn: {
     flex: 1,
@@ -227,17 +227,17 @@ const MainStyles = StyleSheet.create({
   },
   columnBtnUpload: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderColor: colors.MAIN_BLUE_CLIENT,
     borderWidth: 1,
     padding: 30,
     margin: 10,
     borderRadius: 10,
-    borderStyle: "dotted",
+    borderStyle: 'dotted',
   },
   containerFormUpload: {
-    justifyContent: "center",
+    justifyContent: 'center',
     margin: 15,
     borderRadius: 5,
     backgroundColor: colors.WHITE,
@@ -248,20 +248,20 @@ const MainStyles = StyleSheet.create({
     padding: 10,
   },
   selectedTabStyle: {
-    backgroundColor: "blue",
+    backgroundColor: 'blue',
     borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     color: colors.WHITE,
   },
 
   unselectedTabStyle: {
     height: 100,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   tabContainer: {
-    justifyContent: "center",
+    justifyContent: 'center',
     borderRadius: 5,
     borderBottomEndRadius: 5,
     borderBottomStartRadius: 5,
@@ -270,7 +270,7 @@ const MainStyles = StyleSheet.create({
     backgroundColor: colors.WHITE,
   },
   tabContainerNewJob: {
-    justifyContent: "center",
+    justifyContent: 'center',
     borderRadius: 5,
     borderBottomEndRadius: 5,
     borderBottomStartRadius: 5,
@@ -285,14 +285,14 @@ const MainStyles = StyleSheet.create({
     colors: colors.WHITE,
   },
   tabRowSpace: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   tabRow: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   tabCol: {
     flex: 1,
@@ -309,13 +309,13 @@ const MainStyles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     marginBottom: 10,
     color: colors.MAIN_BLUE_CLIENT,
   },
   modalSectionTitle: {
     fontSize: 17,
-    fontWeight: "700",
+    fontWeight: '700',
     marginBottom: 10,
     color: colors.MAIN_BLUE_CLIENT,
   },
@@ -329,13 +329,13 @@ const MainStyles = StyleSheet.create({
   },
   modalTitleCpnModal: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     marginBottom: 10,
     color: colors.MAIN_BLUE_CLIENT,
   },
   modalSectionTitleCpnModal: {
     fontSize: 17,
-    fontWeight: "700",
+    fontWeight: '700',
     marginBottom: 10,
     color: colors.MAIN_BLUE_CLIENT,
   },
@@ -345,7 +345,7 @@ const MainStyles = StyleSheet.create({
   },
   containerZaloChat: {
     height: 60,
-    justifyContent: "center",
+    justifyContent: 'center',
     borderRadius: 5,
     borderBottomEndRadius: 5,
     borderBottomStartRadius: 5,
@@ -355,55 +355,55 @@ const MainStyles = StyleSheet.create({
     backgroundColor: colors.WHITE,
   },
   flexRowSpaceBetween: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   flexRowFlexEnd: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   flexRowFlexStart: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   flexRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   flexRowCenter: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   titleChatZalo: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.MAIN_BLUE_CLIENT,
   },
   tabContainerDefault: {
     height: 230,
-    justifyContent: "center",
+    justifyContent: 'center',
     borderRadius: 5,
     borderBottomEndRadius: 5,
     borderBottomStartRadius: 5,
     padding: 5,
     marginBottom: 5,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
   textDefault: {
     fontSize: 16,
-    textAlign: "center",
+    textAlign: 'center',
     color: colors.WHITE,
   },
   scrollTab: {},
   screenTitle: {
     fontSize: 30,
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center",
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
     marginBottom: 10,
   },
   contentContainer: {
@@ -414,7 +414,7 @@ const MainStyles = StyleSheet.create({
   },
   labelTitle: {
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.MAIN_BLUE_CLIENT,
   },
   scrollViewContent: {
@@ -431,14 +431,14 @@ const MainStyles = StyleSheet.create({
     color: colors.MAIN_COLOR_CLIENT,
     marginLeft: 10,
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     paddingRight: SCREEN_WIDTH * 0.04,
   },
   textCardJob: {
     color: colors.MAIN_BLUE_CLIENT,
     marginLeft: 10,
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     paddingRight: SCREEN_WIDTH * 0.04,
   },
   cardContentJob: {
@@ -462,7 +462,7 @@ const MainStyles = StyleSheet.create({
     color: colors.MAIN_COLOR_CLIENT,
     marginLeft: 10,
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     paddingLeft: SCREEN_WIDTH * 0.04,
     paddingRight: SCREEN_WIDTH * 0.04,
   },
@@ -471,13 +471,13 @@ const MainStyles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     margin: 10,
-    borderStyle: "dotted",
+    borderStyle: 'dotted',
   },
   textBtnUpload: {
     color: colors.MAIN_BLUE_CLIENT,
     fontSize: 14,
     paddingHorizontal: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });
 

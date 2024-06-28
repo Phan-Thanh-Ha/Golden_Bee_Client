@@ -16,6 +16,9 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <!-- Quyền cho image crop picker -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <!-- Quyền push notifire -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
     <application

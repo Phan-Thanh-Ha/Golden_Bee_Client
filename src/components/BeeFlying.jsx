@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { gif_bee_flying } from '../assets';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../styles/MainStyle';
 
 const BeeFlying = () => {
   return (
@@ -22,8 +23,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gif: {
-    width: 80,
-    height: 80,
+    width: SCREEN_WIDTH * 0.3,
+    height: SCREEN_HEIGHT * 0.3,
   },
 });
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Text, View, Image, ScrollView, Linking } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../Constants';
 import Button from '../../components/buttons/Button';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
@@ -16,37 +16,35 @@ import StorageNames from '../../Constants/StorageNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { mainAction } from '../../Redux/Action';
 import { responsivescreen } from '../../utils/responsive-screen';
-import { removeData } from '../../utils';
+import { GROUP_USER_ID, getData, removeData, setData } from '../../utils';
 import BtnToggle from '../../components/BtnToggle';
-
 
 const AccountScreen = () => {
   const navi = useNavigation();
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.main.userLogin);
+  const userLogin = useSelector(state => state.main.userLogin);
   const [loading, setLoading] = React.useState(false);
+  const acceptedOrder = useSelector((state) => state.main.acceptedOrder);
 
   const handleChangeToggle = async () => {
+    const status = !userLogin?.StateOnline;
     setLoading(true);
     try {
       const pr = {
         OfficerId: userLogin?.OfficerID,
-        StateOnline: userLogin?.StateOnline ? 0 : 1,
-        GroupUserId: 10060
+        StateOnline: status ? 1 : 0,
+        GroupUserId: 10060,
       };
       const params = {
         Json: JSON.stringify(pr),
-        func: "OVG_spOfficer_StateOnline",
+        func: 'OVG_spOfficer_StateOnline',
       };
 
       const result = await mainAction.API_spCallServer(params, dispatch);
-      console.log("--------------------------")
-      console.log("--------------------------", result)
-      console.log("--------------------------")
-      if (result?.Status === "OK") {
+      if (result?.Status === 'OK') {
         const userLoginChange = {
           ...userLogin,
-          StateOnline: !userLogin?.StateOnline
+          StateOnline: !userLogin?.StateOnline,
         };
         mainAction.userLogin(userLoginChange, dispatch);
         await setData(StorageNames.USER_PROFILE, userLoginChange);
@@ -63,18 +61,53 @@ const AccountScreen = () => {
   const handleLogout = async () => {
     try {
       navi.navigate(ScreenNames.AUTH_HOME);
-    } catch (error) {
-    }
+    } catch (error) { }
   };
+  useFocusEffect(
+    React.useCallback(() => {
+      OVG_spOfficer_Wallet_Money();
+    }, [acceptedOrder]),
+  );
+  const [totalPoint, setTotalPoint] = React.useState(0);
 
+  const OVG_spOfficer_Wallet_Money = async () => {
+    const userLogin = await getData(StorageNames.USER_PROFILE);
+    try {
+      const pr = {
+        OfficerId: userLogin.OfficerID,
+        GroupUserId: GROUP_USER_ID,
+      };
+      const params = {
+        Json: JSON.stringify(pr),
+        func: 'OVG_spOfficer_Wallet_Money',
+      };
+
+      const result = await mainAction.API_spCallServer(params, dispatch);
+      console.log("---------------");
+      console.log("---------------", result);
+      console.log("---------------");
+      if (result) {
+        setTotalPoint(result[0]?.TotalPoint);
+        setData(StorageNames.USER_PROFILE, {
+          ...userLogin,
+          Surplus: result[0]?.TotalPoint,
+        })
+        mainAction.userLogin({
+          ...userLogin,
+          Surplus: result,
+        }, dispatch);
+        // mainAction.serviceList(result, dispatch);
+      }
+    } catch (error) { }
+  };
   const user = {
-    name: "Nguyễn Văn Anh",
-    sdt: "0123456789",
-    cmnd: "0123456789",
-    staffId: "0123456789",
+    name: 'Nguyễn Văn Anh',
+    sdt: '0123456789',
+    cmnd: '0123456789',
+    staffId: '0123456789',
     level: 1,
-    point: 2000
-  }
+    point: 2000,
+  };
 
   return (
     <LayoutGradientBlue>
@@ -94,25 +127,71 @@ const AccountScreen = () => {
             />
             <View>
               <View style={MainStyles.flexRowFlexStart}>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15, width: 120 }}>Họ tên :</Text>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>{userLogin?.OfficerName}</Text>
+                <Text
+                  style={{
+                    color: colors.MAIN_BLUE_CLIENT,
+                    fontSize: 15,
+                    width: 120,
+                  }}>
+                  Họ tên :
+                </Text>
+                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
+                  {userLogin?.OfficerName}
+                </Text>
               </View>
               <View style={MainStyles.flexRowFlexStart}>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15, width: 120 }}>SĐT :</Text>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>{userLogin?.Phone}</Text>
+                <Text
+                  style={{
+                    color: colors.MAIN_BLUE_CLIENT,
+                    fontSize: 15,
+                    width: 120,
+                  }}>
+                  SĐT :
+                </Text>
+                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
+                  {userLogin?.Phone}
+                </Text>
               </View>
               <View style={MainStyles.flexRowFlexStart}>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15, width: 120 }}>CMND/CCCD :</Text>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>{userLogin?.PostOfficeId}</Text>
+                <Text
+                  style={{
+                    color: colors.MAIN_BLUE_CLIENT,
+                    fontSize: 15,
+                    width: 120,
+                  }}>
+                  CMND/CCCD :
+                </Text>
+                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
+                  {userLogin?.PostOfficeId}
+                </Text>
               </View>
               <View style={MainStyles.flexRowFlexStart}>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15, width: 120 }}>Mã nhân viên :</Text>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>{userLogin?.PostOfficeId}</Text>
+                <Text
+                  style={{
+                    color: colors.MAIN_BLUE_CLIENT,
+                    fontSize: 15,
+                    width: 120,
+                  }}>
+                  Mã nhân viên :
+                </Text>
+                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
+                  {userLogin?.PostOfficeId}
+                </Text>
               </View>
             </View>
           </View>
-          <View style={[MainStyles.flexRowCenter, { backgroundColor: colors.MAIN_BLUE_CLIENT, borderRadius: 10, padding: 5 }]}>
-            <Text style={{ color: colors.WHITE, fontSize: 17, marginRight: 5 }}>Cộng tác viên cao cấp</Text>
+          <View
+            style={[
+              MainStyles.flexRowCenter,
+              {
+                backgroundColor: colors.MAIN_BLUE_CLIENT,
+                borderRadius: 10,
+                padding: 5,
+              },
+            ]}>
+            <Text style={{ color: colors.WHITE, fontSize: 17, marginRight: 5 }}>
+              Cộng tác viên cao cấp
+            </Text>
             <Rating rating={5} fontSize={[17, 17]} />
           </View>
           <Box height={10} />
@@ -124,21 +203,20 @@ const AccountScreen = () => {
                 color: colors.MAIN_BLUE_CLIENT,
                 textAlign: 'center',
                 fontWeight: '700',
-              }}
-            >Tài khoản chính</Text>
+              }}>
+              Tài khoản chính
+            </Text>
             <View style={MainStyles.flexRowCenter}>
-              <Image
-                source={coin_icon}
-                style={{ width: 27, height: 27 }}
-              />
-              <Text style={
-                {
+              <Image source={coin_icon} style={{ width: 27, height: 27 }} />
+              <Text
+                style={{
                   color: colors.MAIN_COLOR_CLIENT,
                   marginLeft: 10,
                   fontSize: 20,
                   fontWeight: '700',
-                }
-              }>{FormatMoney(userLogin?.Surplus)} đ</Text>
+                }}>
+                {FormatMoney(totalPoint[0]?.TotalPoint)} đ
+              </Text>
             </View>
           </View>
           <Button fontSize={15} paddingHorizontal={10} paddingVertical={7}>
@@ -147,11 +225,19 @@ const AccountScreen = () => {
           <Box height={10} />
           <View style={MainStyles.flexRowSpaceBetween}>
             <Text style={MainStyles.labelTitle}>Hành trình</Text>
-            <Text style={[MainStyles.labelTitle, { color: colors.RED }]}>Cấp {user.level}</Text>
+            <Text style={[MainStyles.labelTitle, { color: colors.RED }]}>
+              Cấp {user.level}
+            </Text>
             {/* <ToggleCustom /> */}
             <View style={MainStyles.flexRow}>
-              <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>{userLogin.StateOnline ? 'Bật' : 'Tắt'} nhận đơn</Text>
-              <BtnToggle value={userLogin?.StateOnline} onChange={handleChangeToggle} isLoading={loading} />
+              <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>
+                {userLogin.StateOnline ? 'Bật' : 'Tắt'} nhận đơn
+              </Text>
+              <BtnToggle
+                value={userLogin?.StateOnline}
+                onChange={handleChangeToggle}
+                isLoading={loading}
+              />
             </View>
           </View>
           <View style={MainStyles.flexRowFlexEnd}>
@@ -161,54 +247,145 @@ const AccountScreen = () => {
               fontSize={12}
               textMargin={0}
               btnMargin={0}
-              icon={() => <Day color={colors.MAIN_BLUE_CLIENT} size={20} />}
-            >Đặt lịch làm việc</Button>
+              icon={() => <Day color={colors.MAIN_BLUE_CLIENT} size={20} />}>
+              Đặt lịch làm việc
+            </Button>
           </View>
           <View style={MainStyles.flexRowFlexStart}>
-            <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>Điểm ưu đãi</Text>
+            <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>
+              Điểm ưu đãi
+            </Text>
             <Image
               source={cirtificate}
               style={{
                 width: 20,
                 height: 20,
-                marginRight: 5
+                marginRight: 5,
               }}
             />
-            <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>{FormatMoney(user.point)} point</Text>
+            <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>
+              {FormatMoney(user.point)} point
+            </Text>
           </View>
           <Box height={10} />
           <Text style={[MainStyles.labelTitle]}>Báo cáo tuần</Text>
           <View style={MainStyles.flexRowFlexStart}>
-            <Text style={[{ marginRight: 10, paddingLeft: 10, fontSize: 15, color: colors.MAIN_BLUE_CLIENT }]}>Thu nhập tuần này :</Text>
-            <Text style={[MainStyles.labelTitle, { marginRight: 10, color: colors.MAIN_COLOR_CLIENT }]}>{FormatMoney(2000000)} đ</Text>
+            <Text
+              style={[
+                {
+                  marginRight: 10,
+                  paddingLeft: 10,
+                  fontSize: 15,
+                  color: colors.MAIN_BLUE_CLIENT,
+                },
+              ]}>
+              Thu nhập tuần này :
+            </Text>
+            <Text
+              style={[
+                MainStyles.labelTitle,
+                { marginRight: 10, color: colors.MAIN_COLOR_CLIENT },
+              ]}>
+              {FormatMoney(2000000)} đ
+            </Text>
           </View>
           <View style={MainStyles.flexRowFlexStart}>
-            <Text style={[{ marginRight: 10, paddingLeft: 10, fontSize: 15, color: colors.MAIN_BLUE_CLIENT }]}>Công việc tuần này :</Text>
-            <Text style={[MainStyles.labelTitle, { marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>{10} task đã hoàn thành</Text>
+            <Text
+              style={[
+                {
+                  marginRight: 10,
+                  paddingLeft: 10,
+                  fontSize: 15,
+                  color: colors.MAIN_BLUE_CLIENT,
+                },
+              ]}>
+              Công việc tuần này :
+            </Text>
+            <Text
+              style={[
+                MainStyles.labelTitle,
+                { marginRight: 10, color: colors.MAIN_BLUE_CLIENT },
+              ]}>
+              {10} task đã hoàn thành
+            </Text>
           </View>
           <Box height={10} />
           <Text style={[MainStyles.labelTitle]}>Hỗ trợ</Text>
           <View style={MainStyles.flexRowFlexStart}>
-            <Text style={[{ marginRight: 10, paddingLeft: 10, fontSize: 15, color: colors.MAIN_BLUE_CLIENT, width: 200 }]}>Thứ 2 đến thứ 7 :</Text>
-            <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>Chủ nhật</Text>
+            <Text
+              style={[
+                {
+                  marginRight: 10,
+                  paddingLeft: 10,
+                  fontSize: 15,
+                  color: colors.MAIN_BLUE_CLIENT,
+                  width: 200,
+                },
+              ]}>
+              Thứ 2 đến thứ 7 :
+            </Text>
+            <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>
+              Chủ nhật
+            </Text>
           </View>
           <View style={MainStyles.flexRowFlexStart}>
-            <Text style={[{ marginRight: 10, paddingLeft: 10, fontSize: 15, color: colors.MAIN_BLUE_CLIENT, width: 200 }]}>08:00 - 12:00 :</Text>
-            <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>09:00 - 12:00</Text>
+            <Text
+              style={[
+                {
+                  marginRight: 10,
+                  paddingLeft: 10,
+                  fontSize: 15,
+                  color: colors.MAIN_BLUE_CLIENT,
+                  width: 200,
+                },
+              ]}>
+              08:00 - 12:00 :
+            </Text>
+            <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>
+              09:00 - 12:00
+            </Text>
           </View>
           <View style={MainStyles.flexRowFlexStart}>
-            <Text style={[{ marginRight: 10, paddingLeft: 10, fontSize: 15, color: colors.MAIN_BLUE_CLIENT, width: 200 }]}>08:00 - 12:00 :</Text>
-            <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>09:00 - 12:00</Text>
+            <Text
+              style={[
+                {
+                  marginRight: 10,
+                  paddingLeft: 10,
+                  fontSize: 15,
+                  color: colors.MAIN_BLUE_CLIENT,
+                  width: 200,
+                },
+              ]}>
+              08:00 - 12:00 :
+            </Text>
+            <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>
+              09:00 - 12:00
+            </Text>
           </View>
 
-          <Button fontSize={15} paddingHorizontal={10} paddingVertical={7}>
+          <Button
+            fontSize={15}
+            paddingHorizontal={10}
+            paddingVertical={7}
+            onPress={() => {
+              Linking.openURL(`tel:${'0922277782'}`);
+            }}>
             Gọi tổng đài
           </Button>
         </View>
         <View style={MainStyles.contentContainer}>
           <Text style={MainStyles.labelTitle}>Khởi động lại ứng dụng</Text>
           <View style={MainStyles.flexRowSpaceBetween}>
-            <Text style={{ marginRight: 10, paddingLeft: 10, fontSize: 15, color: colors.MAIN_BLUE_CLIENT, marginVertical: 10 }}>Lịch đăng ký làm việc sẽ được làm mới khi khởi động ứng dụng !</Text>
+            <Text
+              style={{
+                marginRight: 10,
+                paddingLeft: 10,
+                fontSize: 15,
+                color: colors.MAIN_BLUE_CLIENT,
+                marginVertical: 10,
+              }}>
+              Lịch đăng ký làm việc sẽ được làm mới khi khởi động ứng dụng !
+            </Text>
           </View>
           <Button fontSize={15} paddingHorizontal={10} paddingVertical={7}>
             Khởi động lại ứng dụng
@@ -219,16 +396,22 @@ const AccountScreen = () => {
             onPress={handleLogout}
             textColor={colors.RED}
             bgColor={colors.WHITE}
-            paddingVertical={5}
-          >Đăng xuất</Button>
+            paddingVertical={5}>
+            Đăng xuất
+          </Button>
         </View>
         <Box height={SCREEN_HEIGHT * 0.02} />
-        <Button
+        {/* <Button
           textColor={colors.RED}
           bgColor={colors.WHITE}
           paddingVertical={5}
+<<<<<<< .mine
+          onPress={() => navi.navigate(ScreenNames.FIRE_STORE)}>
+          Firestore check
+        </Button>
+=======
           onPress={() => navi.navigate(ScreenNames.FIRE_STORE)}
-        >Firestore check</Button>
+        >Firestore check</Button> */}
         <Box height={responsivescreen.height(10)} />
       </ScrollView>
     </LayoutGradientBlue>

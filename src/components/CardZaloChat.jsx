@@ -1,13 +1,11 @@
-import { Image, Pressable, View } from "react-native"
-import { image_banner_4, zalo_icon } from "../assets"
-import MainStyles from "../styles/MainStyle"
-import { Text } from "react-native"
-import { colors } from "../styles/Colors"
+import {Image, Pressable, View} from 'react-native';
+import {image_banner_4, zalo_icon} from '../assets';
+import MainStyles from '../styles/MainStyle';
+import {Text} from 'react-native';
+import {colors} from '../styles/Colors';
 
 export default CardZaloChat = () => {
-  const onpenModal = () => {
-    // console.log("open")
-  }
+  const onpenModal = () => {};
   return (
     <View>
       <Pressable onPress={onpenModal}>
@@ -19,12 +17,12 @@ export default CardZaloChat = () => {
               style={{
                 width: 50,
                 height: 50,
-                resizeMode: 'contain'
+                resizeMode: 'contain',
               }}
             />
           </View>
         </View>
       </Pressable>
     </View>
-  )
-}
+  );
+};

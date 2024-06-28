@@ -46,6 +46,13 @@ export function acceptedOrder(order, dispatch) {
   });
 }
 
+export function setMyOrdersAccepted(orders, dispatch) {
+  return dispatch({
+    type: mainTypes.MY_ORDER_ACCEPTED,
+    payload: orders,
+  });
+}
+
 export function doneOderAcepted(dispatch) {
   return dispatch({
     type: mainTypes.ACCEPTED_ORDER,
@@ -53,7 +60,6 @@ export function doneOderAcepted(dispatch) {
   });
 }
 export function locationUpdate(location, dispatch) {
-  console.log('locationUpdate', location);
   return dispatch({
     type: mainTypes.LOCATION_TIME,
     payload: location,
@@ -61,7 +67,6 @@ export function locationUpdate(location, dispatch) {
 }
 
 export function API_spCallPostImage(params, dispatch) {
-  console.log('API_spCallPostImage params action : ', params);
   //debugger
   return new Promise((resolve, reject) => {
     dispatch({
