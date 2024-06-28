@@ -5,8 +5,8 @@ const initialState = {
   loading: false,
   language: "vn",
   locationTime: {},
-  inOrder: -1,
   acceptedOrder: {},
+  myOrdersAccepted: [],
 };
 export default function (state = initialState, action = {}) {
   switch (action.type) {
@@ -16,11 +16,6 @@ export default function (state = initialState, action = {}) {
         loading: action.payload,
       };
 
-    case mainTypes.IN_ORDER:
-      return {
-        ...state,
-        inOrder: action.payload,
-      };
     case mainTypes.USER_PROFILE:
       {
         console.log("user in redux", action.payload);
@@ -36,6 +31,14 @@ export default function (state = initialState, action = {}) {
       return {
         ...state,
         acceptedOrder: action.payload,
+      };
+    case mainTypes.MY_ORDER_ACCEPTED:
+      {
+        console.log("my oder accepted in redux", action.payload);
+      }
+      return {
+        ...state,
+        myOrdersAccepted: action.payload,
       };
     case mainTypes.LOCATION_TIME:
       return {

@@ -1,11 +1,9 @@
-import { Image, Pressable, View } from "react-native"
-import MainStyles from "../styles/MainStyle"
-import { Text } from "react-native"
+import {Image, Pressable, View} from 'react-native';
+import MainStyles from '../styles/MainStyle';
+import {Text} from 'react-native';
 
-export default CardChat = ({ data }) => {
-  const onpenModal = () => {
-    // console.log("open")
-  }
+export default CardChat = ({data}) => {
+  const onpenModal = () => {};
   return (
     <View>
       <Pressable onPress={onpenModal}>
@@ -16,5 +14,5 @@ export default CardChat = ({ data }) => {
         </View>
       </Pressable>
     </View>
-  )
-}
+  );
+};

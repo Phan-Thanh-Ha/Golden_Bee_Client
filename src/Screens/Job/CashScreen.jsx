@@ -46,18 +46,32 @@ const CashScreen = ({ route }) => {
         LngOfficer: location?.longitude,
         OfficerName: userLogin?.OfficerName,
         IsConfirm: 3,
+        TotalMoneyBooking: data?.DataService?.TotalPrice,
+        OfficerMoney: data?.DataService?.TotalPrice * 0.7,
+        AdminMoney: data?.DataService?.TotalPrice * 0.3,
+        ImageBookingServiceBefore: imageBefore[0],
+        ImageBookingServiceAfter: imageAfter[0],
         GroupUserId: 10060
       };
       const params = {
         Json: JSON.stringify(pr),
         func: "OVG_spOfficer_Booking_Save",
       };
+      // console.log("check pr --------------------------------------------------");
+      // console.log("check params ", params);
+      // console.log("check pr --------------------------------------------------");
+
       const result = await mainAction.API_spCallServer(params, dispatch);
+      // console.log("check result ", result);
       if (result?.Status === "OK") {
         //call update firebase
         const complete = completeOrder(data?.OrderId);
         if (complete) {
           mainAction.acceptedOrder({}, dispatch);
+          mainAction.userLogin({
+            ...userLogin,
+            OfficerStatus: 0
+          }, dispatch);
           setData(StorageNames.ORDER_SERVICE, null);
           navi.navigate(ScreenNames.CONGRATULATION, { data: data });
         }

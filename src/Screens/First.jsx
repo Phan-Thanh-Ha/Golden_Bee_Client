@@ -1,14 +1,14 @@
-import { Image, SafeAreaView, View, StyleSheet } from 'react-native';
+import {Image, SafeAreaView, View, StyleSheet} from 'react-native';
 import LogoBee from '../components/LogoBee';
-import { colors } from '../styles/Colors';
-import { useEffect } from 'react';
-import { image_banner_1 } from '../assets';
-import { ScreenNames } from '../Constants';
-import { getData } from '../utils';
+import {colors} from '../styles/Colors';
+import {useEffect} from 'react';
+import {image_banner_1} from '../assets';
+import {ScreenNames} from '../Constants';
+import {getData} from '../utils';
 import StorageNames from '../Constants/StorageNames';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { mainAction } from '../Redux/Action';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {mainAction} from '../Redux/Action';
 import Geolocation from '@react-native-community/geolocation';
 
 const First = () => {
@@ -20,11 +20,11 @@ const First = () => {
       try {
         // Lấy vị trí người dùng
         Geolocation.getCurrentPosition(
-          (position) => {
+          position => {
             if (position.coords) {
               const params = {
                 latitude: position.coords.latitude,
-                longitude: position.coords.longitude
+                longitude: position.coords.longitude,
               };
               // Cập nhật vị trí trong Redux
               mainAction.locationUpdate(params, dispatch);
@@ -32,39 +32,60 @@ const First = () => {
               getRouter();
             }
           },
-          (error) => {
-            console.log('Error getting location:', error);
+          error => {
+            // console.log('Error getting location:', error);
             // Nếu không lấy được vị trí, tiếp tục xử lý logic
             getRouter();
           },
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+          {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
         );
       } catch (error) {
-        console.error('Failed to fetch data:', error);
+        // console.error('Failed to fetch data:', error);
       }
     };
 
     startUp();
   }, []);
 
+  const checkUploadCCCD = async (userLogin, serviceAccepted) => {
+    // Nếu có thông tin người dùng, cập nhật thông tin người dùng và dịch vụ được chấp nhận trong Redux
+    mainAction.userLogin(userLogin, dispatch);
+    mainAction.acceptedOrder(serviceAccepted, dispatch);
+    if (
+      userLogin.FilesBC === '' ||
+      userLogin.FilesCCCD === '' ||
+      userLogin.FilesCCCD_BackSide === '' ||
+      userLogin.FilesCV === '' ||
+      userLogin.Avatar === ''
+    ) {
+      // Nếu chưa có thông tin CCCD, điều hướng đến màn hình cập nhật CCCD
+      navi.navigate(ScreenNames.UPDATE_PROFILE, {
+        data: {
+          FilesBC: userLogin.FilesBC,
+          FilesCCCD: userLogin.FilesCCCD,
+          FilesCCCD_BackSide: userLogin.FilesCCCD_BackSide,
+          FilesCV: userLogin.FilesCV,
+          Avatar: userLogin.Avatar,
+        },
+      });
+    } else {
+      navi.navigate(ScreenNames.MAIN_NAVIGATOR);
+    }
+  };
+
   const getRouter = async () => {
     try {
       // Lấy thông tin người dùng và dịch vụ được chấp nhận từ AsyncStorage
       const userLogin = await getData(StorageNames.USER_PROFILE);
       const serviceAccepted = await getData(StorageNames.ORDER_SERVICE);
-      console.log('user open app:', userLogin);
       // Nếu không có thông tin người dùng, điều hướng đến màn hình xác thực
       if (!userLogin) {
         navi.navigate(ScreenNames.AUTH_HOME);
       } else {
-        // Nếu có thông tin người dùng, cập nhật thông tin người dùng và dịch vụ được chấp nhận trong Redux
-        mainAction.userLogin(userLogin, dispatch);
-        mainAction.acceptedOrder(serviceAccepted, dispatch);
-        // Điều hướng đến màn hình cập nhật thông tin người dùng
-        navi.navigate(ScreenNames.UPDATE_PROFILE);
+        checkUploadCCCD(userLogin, serviceAccepted);
       }
     } catch (error) {
-      console.error('Failed to fetch the user from AsyncStorage:', error);
+      // console.error('Failed to fetch the user from AsyncStorage:', error);
     }
   };
 

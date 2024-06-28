@@ -1,32 +1,29 @@
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  createStackNavigator,
-  TransitionPresets,
-} from "@react-navigation/stack";
-import SplashScreen from "../Screens/SplashScreen";
-import AuthHome from "../Screens/Officer/AuthHome";
-import AboutScreen from "../Screens/Officer/AboutScreen";
-import LoginScreen from "../Screens/Officer/LoginScreen";
-import RegisterScreen from "../Screens/Officer/RegisterScreen";
-import ActiveAccount from "../Screens/Officer/ActiveAccount";
-import ForgotPasswordScreen from "../Screens/Officer/ForgotPasswordScreen";
-import ConfirmOtpForgotPassword from "../Screens/Officer/ConfirmOtpForgotPassword";
-import HomeScreen from "../Screens/Home/HomeScreen";
-import EmailScreen from "../Screens/Home/EmailScreen";
-import AccountScreen from "../Screens/Home/AccountScreen";
-import BenefitsScreen from "../Screens/Home/BenefitsScreen";
-import Demo from "../Screens/Demo";
-import { BottomTabNavigator } from "./BottomTabNavigator";
-import UpdateProfileScreen from "../Screens/Home/UpdateProfileScreen";
-import AddProfileScreen from "../Screens/Home/AddProfileScreen";
-import First from "../Screens/First";
-import { ScreenNames } from "../Constants";
-import TakeJobScreen from "../Screens/Home/TakeJobScreen";
-import CashScreen from "../Screens/Job/CashScreen";
-import PaymentScreen from "../Screens/Job/PaymentScreen";
-import BookingTimeScreen from "../Screens/Home/BookingTimeScreen";
-import Check from "../Screens/firebaseCheck/Check";
-import CongratulationsScreen from "../Screens/Job/CongratulationsScreen";
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
+import SplashScreen from '../Screens/SplashScreen';
+import AuthHome from '../Screens/Officer/AuthHome';
+import AboutScreen from '../Screens/Officer/AboutScreen';
+import LoginScreen from '../Screens/Officer/LoginScreen';
+import RegisterScreen from '../Screens/Officer/RegisterScreen';
+import ActiveAccount from '../Screens/Officer/ActiveAccount';
+import ForgotPasswordScreen from '../Screens/Officer/ForgotPasswordScreen';
+import ConfirmOtpForgotPassword from '../Screens/Officer/ConfirmOtpForgotPassword';
+import HomeScreen from '../Screens/Home/HomeScreen';
+import EmailScreen from '../Screens/Home/EmailScreen';
+import AccountScreen from '../Screens/Home/AccountScreen';
+import BenefitsScreen from '../Screens/Home/BenefitsScreen';
+import Demo from '../Screens/Demo';
+import {BottomTabNavigator} from './BottomTabNavigator';
+import UpdateProfileScreen from '../Screens/Home/UpdateProfileScreen';
+import AddProfileScreen from '../Screens/Home/AddProfileScreen';
+import First from '../Screens/First';
+import {ScreenNames} from '../Constants';
+import TakeJobScreen from '../Screens/Home/TakeJobScreen';
+import CashScreen from '../Screens/Job/CashScreen';
+import PaymentScreen from '../Screens/Job/PaymentScreen';
+import BookingTimeScreen from '../Screens/Home/BookingTimeScreen';
+import Check from '../Screens/firebaseCheck/Check';
+import CongratulationsScreen from '../Screens/Job/CongratulationsScreen';
 const MainStack = createStackNavigator();
 
 const MainStackNavigator = () => {
@@ -37,8 +34,7 @@ const MainStackNavigator = () => {
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,
         }}
-        initialRouteName={ScreenNames.FIRST}
-      >
+        initialRouteName={ScreenNames.FIRST}>
         <MainStack.Screen name={ScreenNames.DEMO} component={Demo} />
         <MainStack.Screen name={ScreenNames.FIRST} component={First} />
         <MainStack.Screen name={ScreenNames.SPLASH} component={SplashScreen} />

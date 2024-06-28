@@ -1,12 +1,45 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-
-platform :ios, '12.4'
+require_relative '../node_modules/react-native-permissions/scripts/setup'
+platform :ios, '13.0'
+use_modular_headers!
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'Golden_Bee_Clients' do
   config = use_native_modules!
 
+  pod 'Firebase/Core', :modular_headers => true
+  pod 'Firebase/Database', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+
+  # React Native Maps dependencies
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+  pod 'GoogleMaps'
+  pod 'Google-Maps-iOS-Utils'
+
+  # ⬇️ uncomment the permissions you need
+setup_permissions([
+  # 'AppTrackingTransparency',
+  # 'Bluetooth',
+  # 'Calendars',
+  # 'CalendarsWriteOnly',
+  'Camera',
+  # 'Contacts',
+  # 'FaceID',
+  'LocationAccuracy',
+  'LocationAlways',
+  'LocationWhenInUse',
+  # 'MediaLibrary',
+  'Microphone',
+  # 'Motion',
+  'Notifications',
+  'PhotoLibrary',
+  # 'PhotoLibraryAddOnly',
+  # 'Reminders',
+  # 'Siri',
+  # 'SpeechRecognition',
+  # 'StoreKit',
+])
   # Flags change depending on the env values.
   flags = get_default_flags()
 
@@ -39,5 +72,10 @@ target 'Golden_Bee_Clients' do
       :mac_catalyst_enabled => false
     )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    
+    # Fix for M1 chip issues
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+    end
   end
 end

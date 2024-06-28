@@ -12,9 +12,10 @@ import com.facebook.soloader.SoLoader;
 import com.golden_bee_clients.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import com.swmansion.rnscreens.RNScreensPackage;
-import com.facebook.react.PackageList; 
-
+import com.swmansion.rnscreens.RNScreensPackage; 
+// import com.facebook.react.PackageList; 
+import com.golden_bee_clients.BuildConfig;
+import org.devio.rn.splashscreen.SplashScreenReactPackage; 
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -30,7 +31,6 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          // packages.add(new RNScreensPackage()); // cấu hình debug trình duyệt
           return packages;
         }
 

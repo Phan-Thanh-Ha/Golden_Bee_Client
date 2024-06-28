@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>616914078130-6kc7465hbo2kn5t4o4cngqge134i2dsb.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBkJBLTxdZxJNU7rMHhm5jMfPa9gOeIQl4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>616914078130</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.cak-solution.golden-bee-client</string>
+	<key>PROJECT_ID</key>
+	<string>golden-bee-651eb</string>
+	<key>STORAGE_BUCKET</key>
+	<string>golden-bee-651eb.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:616914078130:ios:bbd0c13d421c1b362ebcab</string>
+	<key>DATABASE_URL</key>
+	<string>https://golden-bee-651eb-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>
