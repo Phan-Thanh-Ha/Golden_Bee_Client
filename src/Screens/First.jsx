@@ -1,14 +1,14 @@
-import {Image, SafeAreaView, View, StyleSheet} from 'react-native';
+import { Image, SafeAreaView, View, StyleSheet } from 'react-native';
 import LogoBee from '../components/LogoBee';
-import {colors} from '../styles/Colors';
-import {useEffect} from 'react';
-import {image_banner_1} from '../assets';
-import {ScreenNames} from '../Constants';
-import {getData} from '../utils';
+import { colors } from '../styles/Colors';
+import { useEffect } from 'react';
+import { image_banner_1 } from '../assets';
+import { ScreenNames } from '../Constants';
+import { getData } from '../utils';
 import StorageNames from '../Constants/StorageNames';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
-import {mainAction} from '../Redux/Action';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { mainAction } from '../Redux/Action';
 import Geolocation from '@react-native-community/geolocation';
 
 const First = () => {
@@ -37,7 +37,7 @@ const First = () => {
             // Nếu không lấy được vị trí, tiếp tục xử lý logic
             getRouter();
           },
-          {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
         );
       } catch (error) {
         // console.error('Failed to fetch data:', error);

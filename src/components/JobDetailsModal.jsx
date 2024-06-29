@@ -47,7 +47,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
   // const [dataServiceDetail, setDataServiceDetail] = useState({});
 
   // Snap points for the bottom sheet
-  const snapPoints = useMemo(() => ['60%', '100%'], []);
+  const snapPoints = useMemo(() => ['60%', '90%'], []);
 
   useImperativeHandle(ref, () => ({
     openModal(data) {

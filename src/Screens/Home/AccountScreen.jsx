@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, Image, ScrollView, Linking } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../Constants';
@@ -18,13 +18,15 @@ import { mainAction } from '../../Redux/Action';
 import { responsivescreen } from '../../utils/responsive-screen';
 import { GROUP_USER_ID, getData, removeData, setData } from '../../utils';
 import BtnToggle from '../../components/BtnToggle';
+import ModalConfirm from '../../components/modal/ModalConfirm';
 
 const AccountScreen = () => {
   const navi = useNavigation();
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.main.userLogin);
   const [loading, setLoading] = React.useState(false);
-  const acceptedOrder = useSelector((state) => state.main.acceptedOrder);
+  const acceptedOrder = useSelector(state => state.main.acceptedOrder);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleChangeToggle = async () => {
     const status = !userLogin?.StateOnline;
@@ -60,9 +62,19 @@ const AccountScreen = () => {
 
   const handleLogout = async () => {
     try {
+      await removeData(StorageNames.USER_PROFILE);
+      mainAction.userLogin(null, dispatch);
       navi.navigate(ScreenNames.AUTH_HOME);
     } catch (error) { }
   };
+  const handleClearAccount = async () => {
+    try {
+      await removeData(StorageNames.USER_PROFILE);
+      mainAction.userLogin(null, dispatch);
+      navi.navigate(ScreenNames.AUTH_HOME);
+    } catch (error) { }
+  }
+
   useFocusEffect(
     React.useCallback(() => {
       OVG_spOfficer_Wallet_Money();
@@ -83,20 +95,19 @@ const AccountScreen = () => {
       };
 
       const result = await mainAction.API_spCallServer(params, dispatch);
-      console.log("---------------");
-      console.log("---------------", result);
-      console.log("---------------");
       if (result) {
         setTotalPoint(result[0]?.TotalPoint);
         setData(StorageNames.USER_PROFILE, {
           ...userLogin,
           Surplus: result[0]?.TotalPoint,
-        })
-        mainAction.userLogin({
-          ...userLogin,
-          Surplus: result,
-        }, dispatch);
-        // mainAction.serviceList(result, dispatch);
+        });
+        mainAction.userLogin(
+          {
+            ...userLogin,
+            Surplus: result[0]?.TotalPoint,
+          },
+          dispatch,
+        );
       }
     } catch (error) { }
   };
@@ -162,7 +173,7 @@ const AccountScreen = () => {
                   CMND/CCCD :
                 </Text>
                 <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
-                  {userLogin?.PostOfficeId}
+                  {userLogin?.OfficerID}
                 </Text>
               </View>
               <View style={MainStyles.flexRowFlexStart}>
@@ -175,7 +186,7 @@ const AccountScreen = () => {
                   Mã nhân viên :
                 </Text>
                 <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
-                  {userLogin?.PostOfficeId}
+                  {userLogin?.OfficerID}
                 </Text>
               </View>
             </View>
@@ -215,7 +226,7 @@ const AccountScreen = () => {
                   fontSize: 20,
                   fontWeight: '700',
                 }}>
-                {FormatMoney(totalPoint[0]?.TotalPoint)} đ
+                {FormatMoney(totalPoint)} đ
               </Text>
             </View>
           </View>
@@ -228,7 +239,6 @@ const AccountScreen = () => {
             <Text style={[MainStyles.labelTitle, { color: colors.RED }]}>
               Cấp {user.level}
             </Text>
-            {/* <ToggleCustom /> */}
             <View style={MainStyles.flexRow}>
               <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>
                 {userLogin.StateOnline ? 'Bật' : 'Tắt'} nhận đơn
@@ -394,27 +404,30 @@ const AccountScreen = () => {
         <View style={{ marginHorizontal: 10 }}>
           <Button
             onPress={handleLogout}
-            textColor={colors.RED}
-            bgColor={colors.WHITE}
+            textColor={colors.WHITE}
+            bgColor={colors.MAIN_BLUE_CLIENT}
             paddingVertical={5}>
             Đăng xuất
           </Button>
         </View>
-        <Box height={SCREEN_HEIGHT * 0.02} />
-        {/* <Button
-          textColor={colors.RED}
-          bgColor={colors.WHITE}
-          paddingVertical={5}
-<<<<<<< .mine
-          onPress={() => navi.navigate(ScreenNames.FIRE_STORE)}>
-          Firestore check
-        </Button>
-=======
-          onPress={() => navi.navigate(ScreenNames.FIRE_STORE)}
-        >Firestore check</Button> */}
-        <Box height={responsivescreen.height(10)} />
+        <View style={{ margin: 10 }}>
+          <Button
+            onPress={() => setIsModalVisible(true)}
+            textColor={colors.WHITE}
+            bgColor={'#F44336'}
+            paddingVertical={5}>
+            Xóa tài khoản
+          </Button>
+        </View>
+        <Box height={SCREEN_HEIGHT * 0.1} />
       </ScrollView>
-    </LayoutGradientBlue>
+      <ModalConfirm
+        title={"Bạn đnag muốn xóa tài khoản này ! bạn có chắc chắn muốn xóa tài khoản hiện tại không ? Mọi thông tin của bạn sẽ không còn trên hệ thống sau khi bạn xác nhận !"}
+        isModalVisible={isModalVisible}
+        setModalVisible={setIsModalVisible}
+        onConfirm={handleClearAccount}
+      />
+    </LayoutGradientBlue >
   );
 };
 

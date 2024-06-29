@@ -29,7 +29,7 @@ export const filterAndSortOrders = (orders, myLatitude, myLongitude) => {
     console.log(
       `Distance to order ${order.OrderId}: ${distance.toFixed(2)} km`
     );
-    return distance <= 500000000;
+    return distance <= 5;
   });
 
   // Sắp xếp các đơn hàng theo khoảng cách tăng dần

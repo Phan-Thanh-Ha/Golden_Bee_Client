@@ -39,7 +39,7 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
   };
 
   const choosePhoto = async () => {
-    setIsOptionsModalVisible(false); // Đóng modal
+    // setIsOptionsModalVisible(false); // Đóng modal
     try {
       const image = await launchImageLibrary({
         mediaType: 'photo',

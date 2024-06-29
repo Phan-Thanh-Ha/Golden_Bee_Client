@@ -88,8 +88,8 @@ const AlertModal = ({ isVisible, onClose, children, isAuto, autoCloseTime = 3000
 const styles = StyleSheet.create({
   logoContainer: {
     position: 'absolute',
-    top: -40, // Điều chỉnh độ lệch lên trên
-    alignSelf: 'center', // Đưa logo về giữa theo chiều ngang
+    top: -40,
+    alignSelf: 'center',
   },
   modalContent: {
     paddingTop: SCREEN_HEIGHT * 0.05,

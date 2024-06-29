@@ -51,7 +51,7 @@ const HomeScreen = () => {
 
       const result = await mainAction.API_spCallServer(params, dispatch);
       if (result?.Status === 'OK') {
-        const accepting = acceptOrder(fistOrder.OrderId, userLogin?.OfficerID, userLogin?.OfficerName, userLogin?.Phone, location?.latitude, location?.longitude);
+        const accepting = acceptOrder(fistOrder.OrderId, userLogin?.OfficerID, userLogin?.OfficerName, userLogin?.Phone, location?.latitude, location?.longitude, userLogin?.Avatar);
         if (accepting) {
           setData(StorageNames.USER_PROFILE, {
             ...userLogin,
@@ -81,7 +81,7 @@ const HomeScreen = () => {
     if (userLogin?.OfficerID) {
       if (
         userLogin?.StateOnline &&
-        // userLogin?.Surplus > 200000 &&
+        userLogin?.Surplus > 200000 &&
         !acceptedOrder?.OrderId
       ) {
         listenForNewOrders(newOrders, setNewOrders);
@@ -110,6 +110,7 @@ const HomeScreen = () => {
         );
         if (orders.length > 0) {
           const fistOrder = orders[0];
+          console.log('check fist order ', fistOrder);
           OVG_spOfficer_Booking_Save(fistOrder);
         }
       }

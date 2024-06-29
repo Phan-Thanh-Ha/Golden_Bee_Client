@@ -78,7 +78,8 @@ export const acceptOrder = async (
   staffName,
   staffPhone,
   LatitudeStaff,
-  LongitudeStaff
+  LongitudeStaff,
+  staffAvatar = ""
 ) => {
   if (
     typeof staffId !== "string" &&
@@ -96,6 +97,7 @@ export const acceptOrder = async (
       StaffPhone: staffPhone,
       LatitudeStaff: LatitudeStaff,
       LongitudeStaff: LongitudeStaff,
+      StaffAvatar: staffAvatar,
       StatusOrder: 1,
     });
     console.log("Order accepted successfully:", { orderId, staffId });

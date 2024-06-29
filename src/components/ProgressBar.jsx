@@ -4,22 +4,22 @@ import {colors} from '../styles/Colors';
 
 const ProgressBar = ({total, pass, UserProfile}) => {
   // Hàm tính toán tiến trình
-  const calculateProgress = UserProfile => {
-    const totalFields = Object.keys(UserProfile).length;
-    let filledFields = 0;
+  // const calculateProgress = UserProfile => {
+  //   const totalFields = 5; //Object.keys(UserProfile).length;
+  //   let filledFields = 0;
 
-    // Duyệt qua mỗi trường và kiểm tra nếu có giá trị
-    Object.values(UserProfile).forEach(value => {
-      if (value !== '') {
-        filledFields += 1;
-      }
-    });
+  //   // Duyệt qua mỗi trường và kiểm tra nếu có giá trị
+  //   Object.values(UserProfile).forEach(value => {
+  //     if (value !== '') {
+  //       filledFields += 1;
+  //     }
+  //   });
 
-    // Tính toán tiến trình
-    const progress = (filledFields / totalFields) * 100;
-    return progress;
-  };
-  const progress = calculateProgress(UserProfile);
+  //   // Tính toán tiến trình
+  //   const progress = (filledFields / totalFields) * 100;
+  //   return progress;
+  // };
+  const progress = 5; //calculateProgress(UserProfile);
 
   return (
     <View style={styles.container}>

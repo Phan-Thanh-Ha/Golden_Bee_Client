@@ -46,13 +46,12 @@ const JobDoneModal = forwardRef((_, ref) => {
   const dispatch = useDispatch();
 
   // Snap points for the bottom sheet
-  const snapPoints = useMemo(() => ['60%', '100%'], []);
+  const snapPoints = useMemo(() => ['60%', '90%'], []);
 
   useImperativeHandle(ref, () => ({
     openModal(data) {
       setData(data);
       bottomSheetRef.current?.expand();
-      console.log('data ', data);
     },
   }));
 
