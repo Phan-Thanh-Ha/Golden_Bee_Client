@@ -1,15 +1,15 @@
-import React, {useCallback, useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import {Tab, TabView} from '@ui-kitten/components';
+import React, { useCallback, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { Tab, TabView } from '@ui-kitten/components';
 import CardNewJob from './CardNewJob';
 import CardJobDone from './CardJobDone';
 import CardDefault from './CardDefault';
-import {useDispatch, useSelector} from 'react-redux';
-import {checkCaseStatus} from '../utils/CheckCaseStaus';
-import {mainAction} from '../Redux/Action';
-import {useFocusEffect} from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkCaseStatus } from '../utils/CheckCaseStaus';
+import { mainAction } from '../Redux/Action';
+import { useFocusEffect } from '@react-navigation/native';
 
-export const TabCustom = ({modalRef, modalJobDoneRef, height}) => {
+export const TabCustom = ({ modalRef, modalJobDoneRef, height }) => {
   const userLogin = useSelector(state => state.main.userLogin);
   const dispatch = useDispatch();
   const [dataJobDone, setDataJobDone] = useState([]);
@@ -32,8 +32,9 @@ export const TabCustom = ({modalRef, modalJobDoneRef, height}) => {
       if (result.length > 0) {
         setDataJobDone(result);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
+  // console.log("dataJobDone", dataJobDone)
 
   useFocusEffect(
     useCallback(() => {
@@ -42,12 +43,12 @@ export const TabCustom = ({modalRef, modalJobDoneRef, height}) => {
   );
 
   return (
-    <View style={{height, padding: 10}}>
+    <View style={{ height, padding: 10 }}>
       <TabView
         selectedIndex={selectedIndex}
         onSelect={index => setSelectedIndex(index)}
         style={styles.tabView}>
-        <Tab style={{height: 40}} title="Việc mới">
+        <Tab style={{ height: 40 }} title="Việc mới">
           {acceptedOrder?.OrderId ? (
             <CardNewJob data={acceptedOrder} modalRef={modalRef} />
           ) : (
@@ -62,11 +63,11 @@ export const TabCustom = ({modalRef, modalJobDoneRef, height}) => {
             />
           )}
         </Tab>
-        <Tab style={{height: 40}} title="Đã hoàn thành">
+        <Tab style={{ height: 40 }} title="Đã hoàn thành">
           {dataJobDone?.length > 0 ? (
             <FlatList
               data={dataJobDone}
-              renderItem={({item, index}) => (
+              renderItem={({ item, index }) => (
                 <CardJobDone
                   key={index}
                   data={item}

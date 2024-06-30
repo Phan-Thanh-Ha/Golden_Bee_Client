@@ -67,11 +67,12 @@ const CashScreen = ({ route }) => {
         //call update firebase
         const complete = completeOrder(data?.OrderId);
         if (complete) {
-          mainAction.acceptedOrder({}, dispatch);
-          mainAction.userLogin({
+          const userChange = {
             ...userLogin,
             OfficerStatus: 0
-          }, dispatch);
+          }
+          mainAction.acceptedOrder({}, dispatch);
+          mainAction.userLogin(userChange, dispatch);
           setData(StorageNames.ORDER_SERVICE, null);
           navi.navigate(ScreenNames.CONGRATULATION, { data: data });
         }

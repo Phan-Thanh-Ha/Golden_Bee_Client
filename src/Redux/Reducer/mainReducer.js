@@ -7,6 +7,7 @@ const initialState = {
   locationTime: {},
   acceptedOrder: {},
   myOrdersAccepted: [],
+  initValueFirebase: false,
 };
 export default function (state = initialState, action = {}) {
   switch (action.type) {
@@ -44,6 +45,11 @@ export default function (state = initialState, action = {}) {
       return {
         ...state,
         locationTime: action.payload,
+      };
+    case mainTypes.INIT_VALUE_FIREBASE:
+      return {
+        ...state,
+        initValueFirebase: action.payload,
       };
     default:
       return state;

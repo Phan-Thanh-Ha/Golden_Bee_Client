@@ -15,7 +15,6 @@ import Day from '../../components/svg/Day';
 import StorageNames from '../../Constants/StorageNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { mainAction } from '../../Redux/Action';
-import { responsivescreen } from '../../utils/responsive-screen';
 import { GROUP_USER_ID, getData, removeData, setData } from '../../utils';
 import BtnToggle from '../../components/BtnToggle';
 import ModalConfirm from '../../components/modal/ModalConfirm';
@@ -80,7 +79,7 @@ const AccountScreen = () => {
       OVG_spOfficer_Wallet_Money();
     }, [acceptedOrder]),
   );
-  const [totalPoint, setTotalPoint] = React.useState(0);
+  const [totalPoint, setTotalPoint] = React.useState(userLogin?.Surplus);
 
   const OVG_spOfficer_Wallet_Money = async () => {
     const userLogin = await getData(StorageNames.USER_PROFILE);
@@ -95,19 +94,14 @@ const AccountScreen = () => {
       };
 
       const result = await mainAction.API_spCallServer(params, dispatch);
-      if (result) {
+      if (result && result[0]?.TotalPoint !== userLogin?.Surplus) {
         setTotalPoint(result[0]?.TotalPoint);
-        setData(StorageNames.USER_PROFILE, {
+        const userChange = {
           ...userLogin,
           Surplus: result[0]?.TotalPoint,
-        });
-        mainAction.userLogin(
-          {
-            ...userLogin,
-            Surplus: result[0]?.TotalPoint,
-          },
-          dispatch,
-        );
+        };
+        setData(StorageNames.USER_PROFILE, userChange);
+        mainAction.userLogin(userChange, dispatch);
       }
     } catch (error) { }
   };
@@ -241,7 +235,7 @@ const AccountScreen = () => {
             </Text>
             <View style={MainStyles.flexRow}>
               <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>
-                {userLogin.StateOnline ? 'Bật' : 'Tắt'} nhận đơn
+                {userLogin?.StateOnline ? 'Bật' : 'Tắt'} nhận đơn
               </Text>
               <BtnToggle
                 value={userLogin?.StateOnline}

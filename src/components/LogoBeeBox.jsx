@@ -9,7 +9,6 @@ const LogoBeeBox = ({ color = colors.MAIN_BLUE_CLIENT, sizeImage = 120, sizeText
       <View
         style={{
           alignItems: 'center',
-          marginTop: 35
         }}>
         <Image
           source={logo_bee_blue}

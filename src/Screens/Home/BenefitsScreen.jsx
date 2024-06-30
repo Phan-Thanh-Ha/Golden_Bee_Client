@@ -147,13 +147,6 @@ export default BenefitsScreen = () => {
           </View>
         </View>
       </View>
-      <Text
-        style={{
-          marginTop: 40,
-          color: colors.WHITE,
-          textAlign: 'center',
-        }}
-      >Hãy chờ phiên bản tiếp theo để được truy cập nhiều hơn nhé !</Text>
       <Box height={100} />
     </LayoutGradientBlue>
   );

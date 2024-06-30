@@ -98,7 +98,7 @@ export default TabNotification = () => {
         <View>
           <CardZaloChat />
           <Layout style={MainStyles.tabContainerDefault}>
-            <Text style={MainStyles.textDefault}>Hoặc chờ phiên bản tiếp theo để trò chuyện cùng nhau nhé !</Text>
+            <Text style={MainStyles.textDefault}></Text>
           </Layout>
         </View>
       </Tab>
@@ -107,7 +107,6 @@ export default TabNotification = () => {
         title='Thông báo'>
         <View>
           <View>
-            {/* compoent fillter */}
           </View>
           <CardDefault title='chưa có thông báo mới' />
         </View>

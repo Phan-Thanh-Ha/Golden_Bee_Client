@@ -64,3 +64,4 @@ yarn.lock
 Podfile.lock
 yarn-debug.log
 .yarn/cache
+.yarn

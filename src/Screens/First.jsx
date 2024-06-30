@@ -1,7 +1,7 @@
-import { Image, SafeAreaView, View, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { Image, SafeAreaView, View, StyleSheet, Alert } from 'react-native';
 import LogoBee from '../components/LogoBee';
 import { colors } from '../styles/Colors';
-import { useEffect } from 'react';
 import { image_banner_1 } from '../assets';
 import { ScreenNames } from '../Constants';
 import { getData } from '../utils';
@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { mainAction } from '../Redux/Action';
 import Geolocation from '@react-native-community/geolocation';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 const First = () => {
   const navi = useNavigation();
@@ -18,37 +19,48 @@ const First = () => {
   useEffect(() => {
     const startUp = async () => {
       try {
-        // Lấy vị trí người dùng
-        Geolocation.getCurrentPosition(
-          position => {
-            if (position.coords) {
-              const params = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              };
-              // Cập nhật vị trí trong Redux
-              mainAction.locationUpdate(params, dispatch);
-              // Tiếp tục xử lý logic sau khi lấy vị trí
-              getRouter();
-            }
-          },
-          error => {
-            // console.log('Error getting location:', error);
-            // Nếu không lấy được vị trí, tiếp tục xử lý logic
-            getRouter();
-          },
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-        );
+        const permission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+
+        if (permission === RESULTS.GRANTED) {
+          getCurrentLocation();
+        } else {
+          const requestResult = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+          if (requestResult === RESULTS.GRANTED) {
+            getCurrentLocation();
+          } else {
+            Alert.alert('Permission Denied', 'Location permission is required to proceed.');
+            navi.navigate(ScreenNames.AUTH_HOME);
+          }
+        }
       } catch (error) {
-        // console.error('Failed to fetch data:', error);
+        console.error('Failed to request location permission:', error);
       }
+    };
+
+    const getCurrentLocation = () => {
+      Geolocation.getCurrentPosition(
+        position => {
+          if (position.coords) {
+            const params = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            mainAction.locationUpdate(params, dispatch);
+            getRouter();
+          }
+        },
+        error => {
+          console.error('Error getting location:', error);
+          getRouter();
+        },
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      );
     };
 
     startUp();
   }, []);
 
   const checkUploadCCCD = async (userLogin, serviceAccepted) => {
-    // Nếu có thông tin người dùng, cập nhật thông tin người dùng và dịch vụ được chấp nhận trong Redux
     mainAction.userLogin(userLogin, dispatch);
     mainAction.acceptedOrder(serviceAccepted, dispatch);
     if (
@@ -58,7 +70,6 @@ const First = () => {
       userLogin.FilesCV === '' ||
       userLogin.Avatar === ''
     ) {
-      // Nếu chưa có thông tin CCCD, điều hướng đến màn hình cập nhật CCCD
       navi.navigate(ScreenNames.UPDATE_PROFILE, {
         data: {
           FilesBC: userLogin.FilesBC,
@@ -75,17 +86,15 @@ const First = () => {
 
   const getRouter = async () => {
     try {
-      // Lấy thông tin người dùng và dịch vụ được chấp nhận từ AsyncStorage
       const userLogin = await getData(StorageNames.USER_PROFILE);
       const serviceAccepted = await getData(StorageNames.ORDER_SERVICE);
-      // Nếu không có thông tin người dùng, điều hướng đến màn hình xác thực
       if (!userLogin) {
         navi.navigate(ScreenNames.AUTH_HOME);
       } else {
         checkUploadCCCD(userLogin, serviceAccepted);
       }
     } catch (error) {
-      // console.error('Failed to fetch the user from AsyncStorage:', error);
+      console.error('Failed to fetch the user from AsyncStorage:', error);
     }
   };
 

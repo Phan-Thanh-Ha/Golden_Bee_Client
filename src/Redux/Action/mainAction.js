@@ -1,4 +1,4 @@
-import mainTypes from './mainTypes';
+import mainTypes from "./mainTypes";
 
 export function closeError(params, cb) {
   return {
@@ -86,5 +86,12 @@ export function checkPermission(params, dispatch) {
       resolve,
       reject,
     });
+  });
+}
+
+export function setInitValueFirebase(status, dispatch) {
+  return dispatch({
+    type: mainTypes.INIT_VALUE_FIREBASE,
+    payload: status,
   });
 }

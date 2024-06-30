@@ -7,24 +7,24 @@ import { colors } from '../../styles/Colors';
 const ListenOrderTotal = ({ myOrders, isModalVisible, setModalVisible, onConfirm }) => {
   const handleConfirm = () => {
     onConfirm();
-    console.log('User confirmed');
     setModalVisible(false);
   };
+
 
   return (
     <AlertModal
       isVisible={isModalVisible}
       isAuto={false}
       onConfirm={handleConfirm}
-      title="Lỗi nhận đơn quá số lượng"
-      backdropCloseable={false}
+      title="Thông báo"
       isCancelable={false}
+      onClose={() => setModalVisible(false)}
       isConfirmable={true}
     >
       <View>
         <View style={MainStyles.flexRowCenter}>
           <Text style={[{ textAlign: 'center' }]}>
-            Bạn đang có {myOrders?.length} đơn dịch vụ được nhận, vượt quá số lượng có thể, vui lòng liên hệ quản trị viên Ong Vàng để được giải quyết!
+            Bạn đang có {myOrders?.length} đơn dịch vụ được nhận, vượt quá số lượng đơn được phép nhận, vui lòng liên hệ quản trị viên Ong Vàng để được giải quyết!
           </Text>
         </View>
         <View>

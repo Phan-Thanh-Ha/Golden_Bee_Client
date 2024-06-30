@@ -53,7 +53,7 @@ const LoginForm = () => {
         func: 'AVG_spOfficer_Login',
       };
       const result = await mainAction.API_spCallServer(params, dispatch);
-      console.log('rs : ', result);
+      // console.log("rs : ", result);
       if (result?.Status === 'OK') {
         const token = await mainAction.checkPermission(null, dispatch);
         if (token) {
@@ -83,17 +83,20 @@ const LoginForm = () => {
             result?.Result[0]?.FilesBC &&
             result?.Result[0]?.FilesImage
           ) {
+            setLoading(false);
             navi.navigate(ScreenNames.MAIN_NAVIGATOR);
           } else {
+            setLoading(false);
             navi.navigate(ScreenNames.UPDATE_PROFILE);
           }
           setLoading(false);
         }
         setLoading(false);
       } else {
-        AlertToaster('error', result?.ReturnMess);
         setLoading(false);
+        AlertToaster('error', result?.ReturnMess);
       }
+      setLoading(false);
     } catch (error) {
       setLoading(false);
     }

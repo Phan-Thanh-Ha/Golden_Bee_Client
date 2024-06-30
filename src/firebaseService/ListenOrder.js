@@ -1,5 +1,6 @@
 import { firebase } from "@react-native-firebase/database";
 import { deepEqualObject } from "../utils/Equals";
+import { setInitValueFirebase } from "../Redux/Action/mainAction";
 
 export const databaseOrder = firebase
   .app()
@@ -7,35 +8,6 @@ export const databaseOrder = firebase
     "https://golden-bee-651eb-default-rtdb.asia-southeast1.firebasedatabase.app"
   )
   .ref("/order");
-
-export const acceptOrder = async (
-  orderId,
-  staffId,
-  staffName,
-  staffPhone,
-  LatitudeStaff,
-  LongitudeStaff
-) => {
-  if (!staffId || orderId === null) {
-    console.error("Invalid value for staffId or orderId:", staffId, orderId);
-    return false;
-  }
-  try {
-    await databaseOrder.child(orderId).update({
-      StaffId: staffId,
-      StaffName: staffName,
-      StaffPhone: staffPhone,
-      LatitudeStaff: LatitudeStaff,
-      LongitudeStaff: LongitudeStaff,
-      StatusOrder: 1,
-    });
-    console.log("Order accepted successfully:", { orderId, staffId });
-    return true;
-  } catch (error) {
-    console.error("Error accepting order: ", error);
-    return false;
-  }
-};
 
 export const OVG_FBRT_ListenMyOrders = (
   staffId,
@@ -45,7 +17,8 @@ export const OVG_FBRT_ListenMyOrders = (
   setOrderRemove,
   setModalOrderRemoveVisible,
   setOrderAdd,
-  setModalOrderAddVisible
+  setModalOrderAddVisible,
+  dispatch
 ) => {
   if (!staffId) {
     console.error("Invalid value for staffId:", staffId);
@@ -69,7 +42,6 @@ export const OVG_FBRT_ListenMyOrders = (
       if (existingOrderIndex > -1) {
         const updatedOrders = [...prevOrders];
         updatedOrders[existingOrderIndex] = { ...order, OrderId: orderId };
-        // setModalOrderChangeVisible(true);
         return updatedOrders;
       } else {
         return prevOrders;
@@ -121,37 +93,9 @@ export const OVG_FBRT_ListenMyOrders = (
       }
 
       setOrderRemove(orderRemoved);
-      // if (updatedOrders.length === 0) {
-      //   // Tự động nhận đơn hàng mới khi không có đơn hàng nào
-      //   acceptNewOrderForStaff(staffId);
-      // }
       return updatedOrders;
     });
   };
-
-  // const acceptNewOrderForStaff = async (staffId) => {
-  //   // Giả sử có một hàm tìm đơn hàng mới chưa được nhận
-  //   const newOrder = await findNewOrder();
-  //   if (newOrder) {
-  //     const { OrderId, StaffName, StaffPhone, LatitudeStaff, LongitudeStaff } =
-  //       newOrder;
-  //     const success = await acceptOrder(
-  //       OrderId,
-  //       staffId,
-  //       StaffName,
-  //       StaffPhone,
-  //       LatitudeStaff,
-  //       LongitudeStaff
-  //     );
-  //     if (success) {
-  //       console.log("New order accepted for staff:", staffId);
-  //     } else {
-  //       console.error("Failed to accept new order for staff:", staffId);
-  //     }
-  //   } else {
-  //     console.log("No new order available to accept.");
-  //   }
-  // };
 
   try {
     console.log("Initializing and listening for orders for staff:", staffId);
@@ -171,6 +115,9 @@ export const OVG_FBRT_ListenMyOrders = (
         setMyOrders([]);
         console.log("No initial orders found.");
       }
+
+      // Đặt initValueFirebase thành true sau khi tải dữ liệu
+      dispatch(setInitValueFirebase(true, dispatch));
 
       initialLoadComplete = true;
 
