@@ -7,94 +7,48 @@ import { ScreenNames } from '../Constants';
 import { getData } from '../utils';
 import StorageNames from '../Constants/StorageNames';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { mainAction } from '../Redux/Action';
-import Geolocation from '@react-native-community/geolocation';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 const First = () => {
   const navi = useNavigation();
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    const startUp = async () => {
-      try {
-        const permission = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-
-        if (permission === RESULTS.GRANTED) {
-          getCurrentLocation();
-        } else {
-          const requestResult = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-          if (requestResult === RESULTS.GRANTED) {
-            getCurrentLocation();
-          } else {
-            Alert.alert('Permission Denied', 'Location permission is required to proceed.');
-            navi.navigate(ScreenNames.AUTH_HOME);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to request location permission:', error);
-      }
-    };
-
-    const getCurrentLocation = () => {
-      Geolocation.getCurrentPosition(
-        position => {
-          if (position.coords) {
-            const params = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            };
-            mainAction.locationUpdate(params, dispatch);
-            getRouter();
-          }
-        },
-        error => {
-          console.error('Error getting location:', error);
-          getRouter();
-        },
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-      );
-    };
-
-    startUp();
+    getRouter();
   }, []);
 
-  const checkUploadCCCD = async (userLogin, serviceAccepted) => {
-    mainAction.userLogin(userLogin, dispatch);
-    mainAction.acceptedOrder(serviceAccepted, dispatch);
-    if (
-      userLogin.FilesBC === '' ||
-      userLogin.FilesCCCD === '' ||
-      userLogin.FilesCCCD_BackSide === '' ||
-      userLogin.FilesCV === '' ||
-      userLogin.Avatar === ''
-    ) {
-      navi.navigate(ScreenNames.UPDATE_PROFILE, {
-        data: {
-          FilesBC: userLogin.FilesBC,
-          FilesCCCD: userLogin.FilesCCCD,
-          FilesCCCD_BackSide: userLogin.FilesCCCD_BackSide,
-          FilesCV: userLogin.FilesCV,
-          Avatar: userLogin.Avatar,
-        },
-      });
-    } else {
-      navi.navigate(ScreenNames.MAIN_NAVIGATOR);
+  const checkUploadCCCD = async (userLogin) => {
+    try {
+      if (
+        !userLogin?.FilesBC ||
+        !userLogin?.FilesCCCD ||
+        !userLogin?.FilesCCCD_BackSide ||
+        !userLogin?.FilesCV ||
+        !userLogin?.FilesImage
+      ) {
+        console.log('Missing user files, navigating to UPDATE_PROFILE');
+        navi.navigate(ScreenNames.UPDATE_PROFILE);
+      } else {
+        console.log('All user files present, navigating to MAIN_NAVIGATOR');
+        navi.navigate(ScreenNames.MAIN_NAVIGATOR);
+      }
+    } catch (error) {
+      console.error('Error in checkUploadCCCD:', error);
+      navi.navigate(ScreenNames.AUTH_HOME);
     }
   };
 
   const getRouter = async () => {
     try {
       const userLogin = await getData(StorageNames.USER_PROFILE);
-      const serviceAccepted = await getData(StorageNames.ORDER_SERVICE);
+      console.log('User login data:', userLogin);
       if (!userLogin) {
+        console.log('User not found, navigating to AUTH_HOME');
         navi.navigate(ScreenNames.AUTH_HOME);
       } else {
-        checkUploadCCCD(userLogin, serviceAccepted);
+        checkUploadCCCD(userLogin);
       }
     } catch (error) {
       console.error('Failed to fetch the user from AsyncStorage:', error);
+      navi.navigate(ScreenNames.AUTH_HOME);
     }
   };
 

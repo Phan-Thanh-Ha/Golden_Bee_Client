@@ -63,7 +63,7 @@ const AccountScreen = () => {
     try {
       await removeData(StorageNames.USER_PROFILE);
       mainAction.userLogin(null, dispatch);
-      navi.navigate(ScreenNames.AUTH_HOME);
+      navi.navigate(ScreenNames.ABOUT);
     } catch (error) { }
   };
   const handleClearAccount = async () => {

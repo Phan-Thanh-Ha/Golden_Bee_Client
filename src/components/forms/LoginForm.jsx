@@ -1,22 +1,22 @@
 import React from 'react';
-import {View, Text, Pressable} from 'react-native';
-import {Formik} from 'formik';
+import { View, Text, Pressable } from 'react-native';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 import CustomInput from './CustomInput';
 import CustomLabel from './CustomLabel';
 import CustomFormError from './CustomFormError';
 import Button from '../buttons/Button';
-import {ScreenNames} from '../../Constants';
+import { ScreenNames } from '../../Constants';
 import LogoBeeBox from '../LogoBeeBox';
 import MainStyle from '../../styles/MainStyle';
-import {AlertToaster, GROUP_USER_ID} from '../../utils';
-import {mainAction} from '../../Redux/Action';
-import {useDispatch} from 'react-redux';
-import {setData} from '../../utils/LocalStorage';
+import { AlertToaster, GROUP_USER_ID } from '../../utils';
+import { mainAction } from '../../Redux/Action';
+import { useDispatch } from 'react-redux';
+import { setData } from '../../utils/LocalStorage';
 import StorageNames from '../../Constants/StorageNames';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import ModalUserNotActive from '../modal/ModalUserNotActive';
-import {Linking} from 'react-native';
+import { Linking } from 'react-native';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const LoginForm = () => {
   const onConfirm = () => {
     Linking.openURL(`tel:${'0922277782'}`);
     setModalVisible(false);
-  };
+  }
   const validationSchema = yup.object().shape({
     phoneNumber: yup
       .string()
@@ -53,7 +53,7 @@ const LoginForm = () => {
         func: 'AVG_spOfficer_Login',
       };
       const result = await mainAction.API_spCallServer(params, dispatch);
-      // console.log("rs : ", result);
+      console.log("rs : ", result);
       if (result?.Status === 'OK') {
         const token = await mainAction.checkPermission(null, dispatch);
         if (token) {
@@ -68,30 +68,30 @@ const LoginForm = () => {
           };
           await mainAction.API_spCallServer(params, dispatch);
         }
-        if (result?.Result[0]?.State === 10) {
-          setModalVisible(true);
+        // if (result?.Result[0]?.State === 10) {
+        //   setModalVisible(true);
+        //   setLoading(false);
+        //   return
+        // } else {
+        await setData(StorageNames.USER_PROFILE, result.Result[0]);
+        mainAction.userLogin(result.Result[0], dispatch);
+        AlertToaster("success", "Đăng nhập thành công !");
+        if (
+          result?.Result[0]?.FilesCCCD_BackSide &&
+          result?.Result[0]?.FilesCCCD &&
+          result?.Result[0]?.FilesCV &&
+          result?.Result[0]?.FilesBC &&
+          result?.Result[0]?.FilesImage
+        ) {
           setLoading(false);
-          return;
+          navi.navigate(ScreenNames.MAIN_NAVIGATOR);
         } else {
-          await setData(StorageNames.USER_PROFILE, result.Result[0]);
-          mainAction.userLogin(result.Result[0], dispatch);
-          AlertToaster('success', 'Đăng nhập thành công !');
-          if (
-            result?.Result[0]?.FilesCCCD_BackSide &&
-            result?.Result[0]?.FilesCCCD &&
-            result?.Result[0]?.FilesCV &&
-            result?.Result[0]?.FilesBC &&
-            result?.Result[0]?.FilesImage
-          ) {
-            setLoading(false);
-            navi.navigate(ScreenNames.MAIN_NAVIGATOR);
-          } else {
-            setLoading(false);
-            navi.navigate(ScreenNames.UPDATE_PROFILE);
-          }
           setLoading(false);
+          navi.navigate(ScreenNames.UPDATE_PROFILE);
         }
         setLoading(false);
+        // }
+        // setLoading(false);
       } else {
         setLoading(false);
         AlertToaster('error', result?.ReturnMess);
@@ -104,10 +104,10 @@ const LoginForm = () => {
 
   return (
     <Formik
-      initialValues={{phoneNumber: '', password: ''}}
+      initialValues={{ phoneNumber: '', password: '' }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}>
-      {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+      {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <View style={MainStyle.containerForm}>
           <LogoBeeBox />
           <Text style={MainStyle.subTitleForm}>Chào mừng bạn trở lại</Text>
@@ -149,14 +149,12 @@ const LoginForm = () => {
               <Text style={MainStyle.regisBtn}>Đăng ký</Text>
             </Pressable>
           </View>
-          <ModalUserNotActive
-            title={
-              'Tài khoản của bạn chưa được kích hoạt, vui lòng liên hệ quản trị viên để được kích hoạt và sử dụng dịch vụ ! '
-            }
+          {/* <ModalUserNotActive
+            title={"Tài khoản của bạn chưa được kích hoạt, vui lòng liên hệ quản trị viên để được kích hoạt và sử dụng dịch vụ ! "}
             isModalVisible={isModalVisible}
             setModalVisible={setModalVisible}
             onConfirm={onConfirm}
-          />
+          /> */}
         </View>
       )}
     </Formik>

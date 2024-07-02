@@ -22,8 +22,6 @@ const RegisterForm = ({ setSubmit, navigation }) => {
 
   const validationSchema = yup.object().shape({
     fullName: yup.string().required('Thông tin bắt buộc'),
-    idNumber: yup.string().optional(),
-    // idNumber: yup.string().matches(/^[0-9]{12}$/, 'CMND/CCCD phải là chuỗi 12 ký tự số').required('Thông tin bắt buộc'),
     phoneNumber: yup.string().matches(/^[0-9]{10}$/, 'Số điện thoại không hợp lệ').required('Thông tin bắt buộc'),
     password: yup.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự').required('Thông tin bắt buộc'),
     confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Xác nhận mật khẩu không khớp').required('Thông tin bắt buộc'),
@@ -36,8 +34,6 @@ const RegisterForm = ({ setSubmit, navigation }) => {
         OfficerName: values.fullName,
         Phone: values.phoneNumber,
         Password: values.password,
-        Identified: "",
-        // Identified: values.idNumber,
         GroupUserId: 10060
       };
       const params = {
@@ -67,7 +63,7 @@ const RegisterForm = ({ setSubmit, navigation }) => {
 
   return (
     <Formik
-      initialValues={{ fullName: '', idNumber: '', phoneNumber: '', password: '', confirmPassword: '' }}
+      initialValues={{ fullName: '', phoneNumber: '', password: '', confirmPassword: '' }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
@@ -83,15 +79,6 @@ const RegisterForm = ({ setSubmit, navigation }) => {
             value={values.fullName}
           />
           <CustomFormError>{touched.fullName && errors.fullName}</CustomFormError>
-
-          {/* <CustomLabel>CMND/CCCD:</CustomLabel>
-          <CustomInput
-            placeholder="Nhập CMND/CCCD"
-            onChangeText={handleChange('idNumber')}
-            onBlur={handleBlur('idNumber')}
-            value={values.idNumber}
-          /> */}
-          <CustomFormError>{touched.idNumber && errors.idNumber}</CustomFormError>
 
           <CustomLabel>Số điện thoại:</CustomLabel>
           <CustomInput

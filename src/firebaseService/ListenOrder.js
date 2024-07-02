@@ -21,7 +21,7 @@ export const OVG_FBRT_ListenMyOrders = (
   dispatch
 ) => {
   if (!staffId) {
-    console.error("Invalid value for staffId:", staffId);
+    console.log("Invalid value for staffId:", staffId);
     return;
   }
 

@@ -12,26 +12,26 @@ import {responsivescreen} from '../../utils/responsive-screen';
 
 const UpdateProfileScreen = () => {
   const route = useRoute();
-  // const userLogin = useSelector(state => state.main.userLogin);
-  // const total = () => {
-  //   let i = 0;
-  //   if (userLogin?.FilesBC) {
-  //     i += 1;
-  //   }
-  //   if (userLogin?.FilesCCCD) {
-  //     i += 1;
-  //   }
-  //   if (userLogin?.FilesCCCD_BackSide) {
-  //     i += 1;
-  //   }
-  //   if (userLogin?.FilesCV) {
-  //     i += 1;
-  //   }
-  //   if (userLogin?.Avatar) {
-  //     i += 1;
-  //   }
-  //   return i;
-  // }
+  const userLogin = useSelector(state => state.main.userLogin);
+  const total = () => {
+    let i = 0;
+    if (userLogin?.FilesBC) {
+      i += 1;
+    }
+    if (userLogin?.FilesCCCD) {
+      i += 1;
+    }
+    if (userLogin?.FilesCCCD_BackSide) {
+      i += 1;
+    }
+    if (userLogin?.FilesCV) {
+      i += 1;
+    }
+    if (userLogin?.FilesImage) {
+      i += 1;
+    }
+    return i;
+  }
   const UserProfile =
     route.params && route.params.data ? route.params.data : undefined;
   const navigation = useNavigation();

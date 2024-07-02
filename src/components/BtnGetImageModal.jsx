@@ -1,36 +1,32 @@
-import React, {useRef, useCallback, useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-  TouchableWithoutFeedback,
 } from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {useDispatch} from 'react-redux';
-import {Image} from 'react-native-compressor';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { useDispatch } from 'react-redux';
+import { Image } from 'react-native-compressor';
 import FastImage from 'react-native-fast-image';
 import ProgressImage from 'react-native-image-progress';
-import {ProgressBar} from '@ui-kitten/components';
+import { ProgressBar } from '@ui-kitten/components';
 import Modal from 'react-native-modal';
-import ImageCropPicker from 'react-native-image-crop-picker';
-import {mainAction} from '../Redux/Action';
-import {colors} from '../styles/Colors';
-import {APIImage} from '../Config/Api';
-import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../styles/MainStyle';
-import {ic_image_edit, ic_trash, ic_upload, ic_upload_image} from '../assets';
+import { mainAction } from '../Redux/Action';
+import { colors } from '../styles/Colors';
+import MainStyles, { SCREEN_HEIGHT } from '../styles/MainStyle';
+import { ic_upload } from '../assets';
+import { APIImage } from '../Config/Api';
 
-const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
+const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight, total = 1 }) => {
   const dispatch = useDispatch();
   const [isUpload, setIsUpload] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
   const [imageList, setImageList] = useState([]);
   const [currentID, setCurrentID] = useState(1);
   const [isLoadingMedia, setIsLoadingMedia] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [imageToCrop, setImageToCrop] = useState(null);
   const [isOptionsModalVisible, setIsOptionsModalVisible] = useState(false);
 
   const optionsMedia = {
@@ -39,15 +35,15 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
   };
 
   const choosePhoto = async () => {
-    // setIsOptionsModalVisible(false); // Đóng modal
+    setIsOptionsModalVisible(false);
     try {
       const image = await launchImageLibrary({
         mediaType: 'photo',
-        selectionLimit: 1,
+        selectionLimit: total,
       });
       if (image && image.assets && image.assets.length > 0) {
-        setImageToCrop(image.assets[0].uri);
-        setIsModalVisible(true);
+        setSelectedImages(image.assets.map(asset => asset.uri));
+        uploadImage(image.assets.map(asset => asset.uri));
       }
     } catch (error) {
       console.error('Error choosing photo:', error);
@@ -55,53 +51,32 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
   };
 
   const takePhoto = async () => {
-    setIsOptionsModalVisible(false); // Đóng modal
+    setIsOptionsModalVisible(false);
     try {
       const result = await launchCamera({
         mediaType: 'photo',
         presentationStyle: 'overFullScreen',
       });
       if (result && result.assets && result.assets.length > 0) {
-        setImageToCrop(result.assets[0].uri);
-        setIsModalVisible(true);
+        setSelectedImages([result.assets[0].uri]);
+        uploadImage([result.assets[0].uri]);
       }
     } catch (error) {
       console.error('Error taking photo:', error);
     }
   };
 
-  const cropImageAndUpload = async () => {
-    try {
-      const croppedImage = await ImageCropPicker.openCropper({
-        path: imageToCrop,
-        width: btnWidth,
-        height: btnHeight,
-      });
-      setIsModalVisible(false);
-      uploadImage(croppedImage.path);
-    } catch (error) {
-      if (error.message.includes('User cancelled image selection')) {
-        cancelCrop();
-      } else {
-        console.error('Error cropping image:', error);
-      }
-    }
-  };
-
-  const uploadImage = async imageUri => {
+  const uploadImage = async imageUris => {
     setIsLoadingMedia(true);
     try {
-      const result = await Image.compress(imageUri, optionsMedia);
-      if (!result) {
+      const compressedImages = await Promise.all(
+        imageUris.map(uri => Image.compress(uri, optionsMedia))
+      );
+      if (compressedImages.length === 0) {
         setIsLoadingMedia(false);
       } else {
-        const arrayTempImage = [result];
-        setSelectedImage({
-          id: currentID,
-          source: result,
-          name: result.slice(result.lastIndexOf('/') + 1),
-        });
-        setIsUpload(true); /////////////////////////////////////////////////// ????????
+        const arrayTempImage = compressedImages;
+        setIsUpload(true);
         API_spCallPostImage(arrayTempImage);
       }
     } catch (error) {
@@ -143,13 +118,10 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
       }
       if (result.length > 0) {
         setIsLoadingMedia(false);
-        setSelectedImage({
-          source: APIImage + result[0],
-        });
         setImageUrl(result);
         setImageList(prevList => [
           ...prevList,
-          {id: currentID, source: APIImage + result[0]},
+          { id: currentID, source: APIImage + result[0] },
         ]);
         setCurrentID(prevID => prevID + 1);
       }
@@ -160,28 +132,14 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
 
   const deleteImage = () => {
     setIsUpload(false);
-    setSelectedImage(null);
+    setSelectedImages([]);
     setImageList(
-      imageList.filter(image => image.source !== selectedImage.source),
+      imageList.filter(image => image.source !== selectedImages[0]),
     );
   };
 
   const toggleOptionsModal = () => {
     setIsOptionsModalVisible(!isOptionsModalVisible);
-  };
-
-  const toggleImageModal = () => {
-    setIsModalVisible(!isModalVisible);
-  };
-
-  const cancelCrop = () => {
-    setIsModalVisible(false);
-    setImageToCrop(null);
-  };
-
-  const closeModalOnOutsidePress = () => {
-    setIsModalVisible(false);
-    setImageToCrop(null);
   };
 
   return (
@@ -199,7 +157,7 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
                 alignItems: 'center',
               },
             ]}>
-            <FastImage source={ic_upload} style={{width: 45, height: 45}} />
+            <FastImage source={ic_upload} style={{ width: 45, height: 45 }} />
             <Text style={MainStyles.textBtnUpload}>
               Tải lên hoặc chụp hình ảnh
             </Text>
@@ -209,9 +167,9 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
 
       {isLoadingMedia && (
         <View style={styles.imageContainer}>
-          {selectedImage && (
+          {selectedImages.length > 0 && (
             <ProgressImage
-              source={{uri: selectedImage.source}}
+              source={{ uri: selectedImages[0] }}
               indicator={() => (
                 <ActivityIndicator
                   animating={true}
@@ -232,13 +190,22 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
         </View>
       )}
 
-      {selectedImage && !isLoadingMedia && (
+      {selectedImages.length > 0 && !isLoadingMedia && (
         <View style={styles.imageContainer}>
-          <TouchableOpacity onPress={toggleImageModal}>
-            <FastImage
-              source={{uri: selectedImage.source}}
-              style={{width: btnWidth, height: btnHeight, borderRadius: 5}}
-            />
+          <TouchableOpacity onPress={toggleOptionsModal}>
+            <View style={{ position: 'relative' }}>
+              <FastImage
+                source={{ uri: selectedImages[0] }}
+                style={{ width: btnWidth, height: btnHeight, borderRadius: 5 }}
+              />
+              {selectedImages.length > 1 && (
+                <View style={styles.multipleImageIndicator}>
+                  <Text style={styles.multipleImageText}>
+                    +{selectedImages.length - 1}
+                  </Text>
+                </View>
+              )}
+            </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.deleteButton} onPress={deleteImage}>
             <Text style={styles.deleteButtonText}>X</Text>
@@ -273,61 +240,11 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight}) => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.option} onPress={toggleOptionsModal}>
             <Text
-              style={{color: colors.ERROR, fontSize: 16, fontWeight: '700'}}>
+              style={{ color: colors.ERROR, fontSize: 16, fontWeight: '700' }}>
               Hủy
             </Text>
           </TouchableOpacity>
         </View>
-      </Modal>
-
-      <Modal
-        isVisible={isModalVisible}
-        backdropOpacity={0.8}
-        backdropColor="rgba(0,0,0,0.9)"
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-        style={styles.modal}
-        onBackdropPress={closeModalOnOutsidePress}>
-        <TouchableWithoutFeedback onPress={closeModalOnOutsidePress}>
-          <View style={styles.modalContainer}>
-            <FastImage
-              source={{uri: imageToCrop}}
-              style={styles.fullScreenImage}
-              resizeMode="contain"
-            />
-            {isUpload ? null : (
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={styles.uploadButton}
-                  onPress={() => {
-                    setIsModalVisible(false);
-                    uploadImage(imageToCrop);
-                  }}>
-                  <FastImage
-                    source={ic_upload_image}
-                    style={{width: 35, height: 35}}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.cropButton}
-                  onPress={cropImageAndUpload}>
-                  <FastImage
-                    source={ic_image_edit}
-                    style={{width: 35, height: 35}}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.cancelButton}
-                  onPress={cancelCrop}>
-                  <FastImage
-                    source={ic_trash}
-                    style={{width: 35, height: 35}}
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
@@ -362,61 +279,12 @@ const styles = StyleSheet.create({
     color: colors.MAIN_COLOR_CLIENT,
     fontWeight: 'bold',
   },
-  modal: {
-    justifyContent: 'center',
-    margin: 0,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    padding: 10,
-    margin: 20,
-  },
-  fullScreenImage: {
-    width: '100%',
-    height: '80%',
-    borderRadius: 10,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 20,
-  },
-  cropButton: {
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    flex: 1,
-    marginHorizontal: 5,
-  },
-  cancelButton: {
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    flex: 1,
-    marginHorizontal: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-  },
-  uploadButton: {
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    flex: 1,
-    marginHorizontal: 5,
-  },
   bottomModal: {
     justifyContent: 'flex-end',
     margin: 0,
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: colors.WHITE,
     padding: 22,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -424,11 +292,19 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   option: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    width: '100%',
-    alignItems: 'center',
+    padding: 15,
+  },
+  multipleImageIndicator: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 5,
+    padding: 5,
+  },
+  multipleImageText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 

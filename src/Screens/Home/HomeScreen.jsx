@@ -20,6 +20,8 @@ import { setData } from '../../utils';
 import StorageNames from '../../Constants/StorageNames';
 import ListenOrderTotal from '../../components/firebaseListen/ListenTotalOrder';
 import { Linking } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import CheckRoute from '../../utils/CheckRoute';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -38,6 +40,29 @@ const HomeScreen = () => {
   const handleConfirmOrderTotal = () => {
     Linking.openURL(`tel:${'0922277782'}`);
   };
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        if (position.coords) {
+          const params = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          mainAction.locationUpdate(params, dispatch);
+        }
+      },
+      error => {
+        console.error('Error getting location:', error);
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
+  useFocusEffect(
+    useCallback(() => {
+      getCurrentLocation();
+    }, []),
+  );
+
   useEffect(() => {
     if (initValueFirebase) {
       if (myOrdersAccepted?.length > 1) {
@@ -171,6 +196,7 @@ const HomeScreen = () => {
           <MyOrders />
         ) : null
       }
+      {/* <CheckRoute /> */}
       <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
       <TabCustom
         modalRef={modalRef}
