@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Input, Icon } from '@ui-kitten/components';
 import { colors } from '../../styles/Colors';
 
-const CustomInput = ({ style, bgColor = '#FFFFFF', textColor = '#000000', type = 'text', showPasswordToggle = false, ...props }) => {
+const CustomInput = ({ style, bgColor = '#FFFFFF', textColor = '#000000', type = 'text', showPasswordToggle = false, borderColor, ...props }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -13,7 +13,7 @@ const CustomInput = ({ style, bgColor = '#FFFFFF', textColor = '#000000', type =
   return (
     <View style={[styles.container, style]}>
       <Input
-        style={[styles.input, { backgroundColor: bgColor, color: textColor }]}
+        style={[styles.input, { backgroundColor: bgColor, color: textColor, borderColor: borderColor || '#E0E0E0' }]}
         placeholderTextColor="#A0A0A0"
         secureTextEntry={type === 'password' && !isPasswordVisible}
         autoCorrect={false}
@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
+    borderWidth: 1,
+    borderRadius: 5,
   },
   icon: {
     position: 'absolute',

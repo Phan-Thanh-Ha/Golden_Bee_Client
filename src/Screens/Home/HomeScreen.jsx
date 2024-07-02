@@ -1,27 +1,26 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import {colors} from '../../styles/Colors';
-import {TabCustom} from '../../components/TabCustom';
+import { colors } from '../../styles/Colors';
+import { TabCustom } from '../../components/TabCustom';
 import JobDetailsModal from '../../components/JobDetailsModal';
-import {responsivescreen} from '../../utils/responsive-screen';
+import { responsivescreen } from '../../utils/responsive-screen';
 import {
   acceptOrder,
   listenForNewOrders,
   updateLocation,
 } from '../../firebaseService/HandleOrder';
-import {useDispatch, useSelector} from 'react-redux';
-import {filterAndSortOrders} from '../../utils/FilterOrder';
-import {mainAction} from '../../Redux/Action';
+import { useDispatch, useSelector } from 'react-redux';
+import { filterAndSortOrders } from '../../utils/FilterOrder';
+import { mainAction } from '../../Redux/Action';
 import JobDoneModal from '../../components/JobDoneModal';
 import MyOrders from '../../components/firebaseListen/MyOrders';
 import Geolocation from '@react-native-community/geolocation';
-import {setData} from '../../utils';
+import { setData } from '../../utils';
 import StorageNames from '../../Constants/StorageNames';
 import ListenOrderTotal from '../../components/firebaseListen/ListenTotalOrder';
-import {Linking} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
-import CheckRoute from '../../utils/CheckRoute';
+import { Linking } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -39,6 +38,7 @@ const HomeScreen = () => {
   const [modalOrderTotalVisible, setModalOrderTotalVisible] = useState(false);
   const handleConfirmOrderTotal = () => {
     Linking.openURL(`tel:${'0922277782'}`);
+    setModalOrderTotalVisible(false);
   };
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
@@ -55,7 +55,7 @@ const HomeScreen = () => {
       error => {
         console.log('Error getting location:', error);
       },
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
   };
   useFocusEffect(
@@ -113,7 +113,7 @@ const HomeScreen = () => {
         return;
       }
       return;
-    } catch (error) {}
+    } catch (error) { }
   }, []);
   useEffect(() => {
     if (initValueFirebase) {
@@ -139,8 +139,8 @@ const HomeScreen = () => {
     if (initValueFirebase) {
       if (
         userLogin?.StateOnline &&
-        myOrdersAccepted?.length === 0 &&
-        userLogin?.Surplus > 200000
+        myOrdersAccepted?.length === 0
+        // userLogin?.Surplus > 200000
         // userLogin?.OfficerStatus === 0
       ) {
         if (
@@ -166,7 +166,7 @@ const HomeScreen = () => {
     const updateCurrentLocation = () => {
       Geolocation.getCurrentPosition(
         position => {
-          const {latitude, longitude} = position.coords;
+          const { latitude, longitude } = position.coords;
           if (acceptedOrder?.StatusOrder === 2) {
             updateLocation(acceptedOrder?.OrderId, latitude, longitude);
           }
@@ -174,7 +174,7 @@ const HomeScreen = () => {
         error => {
           console.log(error);
         },
-        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
       );
     };
 

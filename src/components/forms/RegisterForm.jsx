@@ -77,6 +77,7 @@ const RegisterForm = ({ setSubmit, navigation }) => {
             onChangeText={handleChange('fullName')}
             onBlur={handleBlur('fullName')}
             value={values.fullName}
+            borderColor={touched.fullName && errors.fullName ? 'red' : '#E0E0E0'}
           />
           <CustomFormError>{touched.fullName && errors.fullName}</CustomFormError>
 
@@ -86,6 +87,7 @@ const RegisterForm = ({ setSubmit, navigation }) => {
             onChangeText={handleChange('phoneNumber')}
             onBlur={handleBlur('phoneNumber')}
             value={values.phoneNumber}
+            borderColor={touched.phoneNumber && errors.phoneNumber ? 'red' : '#E0E0E0'}
           />
           <CustomFormError>{touched.phoneNumber && errors.phoneNumber}</CustomFormError>
 
@@ -97,6 +99,7 @@ const RegisterForm = ({ setSubmit, navigation }) => {
             value={values.password}
             type='password'
             showPasswordToggle={true}
+            borderColor={touched.password && errors.password ? 'red' : '#E0E0E0'}
           />
           <CustomFormError>{touched.password && errors.password}</CustomFormError>
 
@@ -108,6 +111,7 @@ const RegisterForm = ({ setSubmit, navigation }) => {
             value={values.confirmPassword}
             type='password'
             showPasswordToggle={true}
+            borderColor={touched.confirmPassword && errors.confirmPassword ? 'red' : '#E0E0E0'}
           />
           <CustomFormError>{touched.confirmPassword && errors.confirmPassword}</CustomFormError>
           <Button

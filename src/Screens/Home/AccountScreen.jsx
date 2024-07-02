@@ -92,8 +92,9 @@ const AccountScreen = () => {
         Json: JSON.stringify(pr),
         func: 'OVG_spOfficer_Wallet_Money',
       };
-
+      console.log('OVG_spOfficer_Wallet_Money', params);
       const result = await mainAction.API_spCallServer(params, dispatch);
+      console.log('OVG_spOfficer_Wallet_Money', result);
       if (result && result[0]?.TotalPoint !== userLogin?.Surplus) {
         setTotalPoint(result[0]?.TotalPoint);
         const userChange = {
