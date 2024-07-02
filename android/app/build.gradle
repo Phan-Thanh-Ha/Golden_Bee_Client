@@ -81,7 +81,6 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
-    deleteDebugFilesForVariant: { false }
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -140,7 +139,7 @@ android {
         applicationId "com.golden_bee_clients"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 6
+        versionCode 8
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         multiDexEnabled true
@@ -238,8 +237,11 @@ android {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.release
-            minifyEnabled enableProguardInReleaseBuilds
+            minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
         }
     }
 
@@ -262,13 +264,14 @@ android {
 
 dependencies {
   // Import the Firebase BoM
-  implementation platform('com.google.firebase:firebase-bom:33.1.0')
-  implementation("com.google.firebase:firebase-database")
+    implementation platform('com.google.firebase:firebase-bom:33.1.0')
+    implementation("com.google.firebase:firebase-database")
 
+    implementation project(':react-native-splash-screen')
 
   // TODO: Add the dependencies for Firebase products you want to use
   // When using the BoM, don't specify versions in Firebase dependencies
-  implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-analytics'
 
   // cấu hình debug trên trình duyệt
   implementation project(':react-native-screens')

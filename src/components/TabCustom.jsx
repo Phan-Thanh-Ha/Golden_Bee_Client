@@ -58,6 +58,7 @@ export const TabCustom = ({ modalRef, modalJobDoneRef, height }) => {
                   userLogin?.StateOnline,
                   userLogin?.Surplus,
                   myOrdersAccepted?.length,
+                  userLogin?.State
                 ).status
               }
             />

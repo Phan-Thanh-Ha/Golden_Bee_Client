@@ -40,26 +40,10 @@ const MainStackNavigator = () => {
         initialRouteName={ScreenNames.FIRST}
       >
         <MainStack.Screen name={ScreenNames.DEMO} component={Demo} />
-        <MainStack.Screen
-          name={ScreenNames.FIRST}
-          component={First}
-          options={{ gestureEnabled: false, gestureDirection: "horizontal" }}
-        />
-        <MainStack.Screen
-          name={ScreenNames.SPLASH}
-          component={SplashScreen}
-          options={{ gestureEnabled: false, gestureDirection: "horizontal" }}
-        />
-        <MainStack.Screen
-          name={ScreenNames.AUTH_HOME}
-          component={AuthHome}
-          options={{ gestureEnabled: false, gestureDirection: "horizontal" }}
-        />
-        <MainStack.Screen
-          name={ScreenNames.ABOUT}
-          component={AboutScreen}
-          options={{ gestureEnabled: false, gestureDirection: "horizontal" }}
-        />
+        <MainStack.Screen name={ScreenNames.FIRST} component={First} />
+        <MainStack.Screen name={ScreenNames.SPLASH} component={SplashScreen} />
+        <MainStack.Screen name={ScreenNames.AUTH_HOME} component={AuthHome} />
+        <MainStack.Screen name={ScreenNames.ABOUT} component={AboutScreen} />
         <MainStack.Screen name={ScreenNames.LOGIN} component={LoginScreen} />
         <MainStack.Screen
           name={ScreenNames.REGISTER}
@@ -77,25 +61,15 @@ const MainStackNavigator = () => {
           name={ScreenNames.CONFIRM_OTP_PASSWORD}
           component={ConfirmOtpForgotPassword}
         />
-        <MainStack.Screen
-          name={ScreenNames.HOME}
-          component={HomeScreen}
-          options={{ gestureEnabled: false, gestureDirection: "horizontal" }}
-        />
-        <MainStack.Screen
-          name={ScreenNames.EMAIL}
-          component={EmailScreen}
-          options={{ gestureEnabled: false, gestureDirection: "horizontal" }}
-        />
+        <MainStack.Screen name={ScreenNames.HOME} component={HomeScreen} />
+        <MainStack.Screen name={ScreenNames.EMAIL} component={EmailScreen} />
         <MainStack.Screen
           name={ScreenNames.ACCOUNT}
           component={AccountScreen}
-          options={{ gestureEnabled: false, gestureDirection: "horizontal" }}
         />
         <MainStack.Screen
           name={ScreenNames.BENEFITS}
           component={BenefitsScreen}
-          options={{ gestureEnabled: false, gestureDirection: "horizontal" }}
         />
         <MainStack.Screen
           name={ScreenNames.MAIN_NAVIGATOR}
@@ -104,7 +78,6 @@ const MainStackNavigator = () => {
         <MainStack.Screen
           name={ScreenNames.UPDATE_PROFILE}
           component={UpdateProfileScreen}
-          options={{ gestureEnabled: false, gestureDirection: "horizontal" }}
         />
         <MainStack.Screen
           name={ScreenNames.ADD_PROFILE}
@@ -123,14 +96,10 @@ const MainStackNavigator = () => {
           name={ScreenNames.BOOKING_TIME}
           component={BookingTimeScreen}
         />
+        <MainStack.Screen name={ScreenNames.FIRE_STORE} component={Check} />
         <MainStack.Screen
-          name={ScreenNames.FIRE_STORE} //checking firestore
-          component={Check}
-        />
-        <MainStack.Screen
-          name={ScreenNames.CONGRATULATION} //checking firestore
+          name={ScreenNames.CONGRATULATION}
           component={CongratulationsScreen}
-          options={{ gestureEnabled: false, gestureDirection: "horizontal" }}
         />
       </MainStack.Navigator>
     </NavigationContainer>

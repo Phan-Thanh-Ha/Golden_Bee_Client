@@ -1,32 +1,33 @@
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
-import { Formik } from 'formik';
+import {View, Text, Pressable} from 'react-native';
+import {Formik} from 'formik';
 import * as yup from 'yup';
 import CustomInput from './CustomInput';
 import CustomLabel from './CustomLabel';
 import CustomFormError from './CustomFormError';
 import Button from '../buttons/Button';
-import { ScreenNames } from '../../Constants';
+import {ScreenNames} from '../../Constants';
 import LogoBeeBox from '../LogoBeeBox';
 import MainStyle from '../../styles/MainStyle';
-import { AlertToaster, GROUP_USER_ID } from '../../utils';
-import { mainAction } from '../../Redux/Action';
-import { useDispatch } from 'react-redux';
-import { setData } from '../../utils/LocalStorage';
+import {AlertToaster, GROUP_USER_ID} from '../../utils';
+import {mainAction} from '../../Redux/Action';
+import {useDispatch} from 'react-redux';
+import {setData} from '../../utils/LocalStorage';
 import StorageNames from '../../Constants/StorageNames';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import ModalUserNotActive from '../modal/ModalUserNotActive';
-import { Linking } from 'react-native';
+import {Linking} from 'react-native';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navi = useNavigation();
+  const [loginMessage, setLoginMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [isModalVisible, setModalVisible] = React.useState(false);
   const onConfirm = () => {
     Linking.openURL(`tel:${'0922277782'}`);
     setModalVisible(false);
-  }
+  };
   const validationSchema = yup.object().shape({
     phoneNumber: yup
       .string()
@@ -53,7 +54,7 @@ const LoginForm = () => {
         func: 'AVG_spOfficer_Login',
       };
       const result = await mainAction.API_spCallServer(params, dispatch);
-      console.log("rs : ", result);
+      console.log('rs : ', result);
       if (result?.Status === 'OK') {
         const token = await mainAction.checkPermission(null, dispatch);
         if (token) {
@@ -75,7 +76,8 @@ const LoginForm = () => {
         // } else {
         await setData(StorageNames.USER_PROFILE, result.Result[0]);
         mainAction.userLogin(result.Result[0], dispatch);
-        AlertToaster("success", "Đăng nhập thành công !");
+        AlertToaster('success', 'Đăng nhập thành công !');
+        setLoginMessage('');
         if (
           result?.Result[0]?.FilesCCCD_BackSide &&
           result?.Result[0]?.FilesCCCD &&
@@ -94,20 +96,23 @@ const LoginForm = () => {
         // setLoading(false);
       } else {
         setLoading(false);
+        setLoginMessage(result?.ReturnMess);
         AlertToaster('error', result?.ReturnMess);
       }
       setLoading(false);
     } catch (error) {
+      console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  error:', error);
       setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
     <Formik
-      initialValues={{ phoneNumber: '', password: '' }}
+      initialValues={{phoneNumber: '', password: ''}}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}>
-      {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+      {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <View style={MainStyle.containerForm}>
           <LogoBeeBox />
           <Text style={MainStyle.subTitleForm}>Chào mừng bạn trở lại</Text>
@@ -140,6 +145,7 @@ const LoginForm = () => {
               <Text style={MainStyle.subLinkForm}>Quên mật khẩu ?</Text>
             </Pressable>
           </View>
+          {loginMessage ? <Text style={[MainStyle.textErrFormActive, { textAlign: 'center' }]}>{loginMessage}</Text> : ''}
           <Button onPress={handleSubmit} isLoading={loading} disable={loading}>
             {'Đăng nhập'}
           </Button>

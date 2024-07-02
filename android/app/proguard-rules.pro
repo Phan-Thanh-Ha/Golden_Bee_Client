@@ -12,3 +12,4 @@
 -keep class com.facebook.hermes.** { *; }
 -dontwarn com.facebook.react.**
 -dontwarn com.facebook.hermes.**
+-keep public class com.horcrux.svg.** {*;}

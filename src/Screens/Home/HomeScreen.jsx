@@ -1,26 +1,26 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import { colors } from '../../styles/Colors';
-import { TabCustom } from '../../components/TabCustom';
+import {colors} from '../../styles/Colors';
+import {TabCustom} from '../../components/TabCustom';
 import JobDetailsModal from '../../components/JobDetailsModal';
-import { responsivescreen } from '../../utils/responsive-screen';
+import {responsivescreen} from '../../utils/responsive-screen';
 import {
   acceptOrder,
   listenForNewOrders,
   updateLocation,
 } from '../../firebaseService/HandleOrder';
-import { useDispatch, useSelector } from 'react-redux';
-import { filterAndSortOrders } from '../../utils/FilterOrder';
-import { mainAction } from '../../Redux/Action';
+import {useDispatch, useSelector} from 'react-redux';
+import {filterAndSortOrders} from '../../utils/FilterOrder';
+import {mainAction} from '../../Redux/Action';
 import JobDoneModal from '../../components/JobDoneModal';
 import MyOrders from '../../components/firebaseListen/MyOrders';
 import Geolocation from '@react-native-community/geolocation';
-import { setData } from '../../utils';
+import {setData} from '../../utils';
 import StorageNames from '../../Constants/StorageNames';
 import ListenOrderTotal from '../../components/firebaseListen/ListenTotalOrder';
-import { Linking } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import {Linking} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import CheckRoute from '../../utils/CheckRoute';
 
 const HomeScreen = () => {
@@ -48,13 +48,14 @@ const HomeScreen = () => {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           };
+          console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  params:', params);
           mainAction.locationUpdate(params, dispatch);
         }
       },
       error => {
-        console.error('Error getting location:', error);
+        console.log('Error getting location:', error);
       },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
   };
   useFocusEffect(
@@ -72,7 +73,6 @@ const HomeScreen = () => {
       }
     }
   }, [myOrdersAccepted]);
-
 
   const OVG_spOfficer_Booking_Save = useCallback(async fistOrder => {
     try {
@@ -92,20 +92,28 @@ const HomeScreen = () => {
 
       const result = await mainAction.API_spCallServer(params, dispatch);
       if (result?.Status === 'OK') {
-        const accepting = acceptOrder(fistOrder.OrderId, userLogin?.OfficerID, userLogin?.OfficerName, userLogin?.Phone, location?.latitude, location?.longitude, userLogin?.Avatar);
+        const accepting = acceptOrder(
+          fistOrder.OrderId,
+          userLogin?.OfficerID,
+          userLogin?.OfficerName,
+          userLogin?.Phone,
+          location?.latitude,
+          location?.longitude,
+          userLogin?.Avatar,
+        );
         if (accepting) {
           const userChange = {
             ...userLogin,
-            OfficerStatus: 1
-          }
-          setData(StorageNames.USER_PROFILE, userChange)
+            OfficerStatus: 1,
+          };
+          setData(StorageNames.USER_PROFILE, userChange);
           mainAction.userLogin(userChange, dispatch);
           return;
         }
         return;
       }
       return;
-    } catch (error) { }
+    } catch (error) {}
   }, []);
   useEffect(() => {
     if (initValueFirebase) {
@@ -120,13 +128,12 @@ const HomeScreen = () => {
         }
       }
     }
-
   }, [
     userLogin?.StateOnline,
     acceptedOrder?.OrderId,
     acceptOrder?.StatusOrder,
     userLogin?.Surplus,
-    initValueFirebase
+    initValueFirebase,
   ]);
   useEffect(() => {
     if (initValueFirebase) {
@@ -153,22 +160,21 @@ const HomeScreen = () => {
         }
       }
     }
-
   }, [newOrders]);
 
   useEffect(() => {
     const updateCurrentLocation = () => {
       Geolocation.getCurrentPosition(
         position => {
-          const { latitude, longitude } = position.coords;
+          const {latitude, longitude} = position.coords;
           if (acceptedOrder?.StatusOrder === 2) {
             updateLocation(acceptedOrder?.OrderId, latitude, longitude);
           }
         },
         error => {
-          console.error(error);
+          console.log(error);
         },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
       );
     };
 
@@ -191,11 +197,7 @@ const HomeScreen = () => {
 
   return (
     <LayoutGradientBlue>
-      {
-        userLogin?.OfficerID ? (
-          <MyOrders />
-        ) : null
-      }
+      {userLogin?.OfficerID ? <MyOrders /> : null}
       {/* <CheckRoute /> */}
       <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
       <TabCustom

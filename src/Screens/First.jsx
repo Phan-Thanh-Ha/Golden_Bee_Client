@@ -7,9 +7,12 @@ import { ScreenNames } from '../Constants';
 import { getData } from '../utils';
 import StorageNames from '../Constants/StorageNames';
 import { useNavigation } from '@react-navigation/native';
+import { mainAction } from '../Redux/Action';
+import { useDispatch } from 'react-redux';
 
 const First = () => {
   const navi = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getRouter();
@@ -41,13 +44,12 @@ const First = () => {
       const userLogin = await getData(StorageNames.USER_PROFILE);
       console.log('User login data:', userLogin);
       if (!userLogin) {
-        console.log('User not found, navigating to AUTH_HOME');
         navi.navigate(ScreenNames.AUTH_HOME);
       } else {
+        mainAction.userLogin(userLogin, dispatch);
         checkUploadCCCD(userLogin);
       }
     } catch (error) {
-      console.error('Failed to fetch the user from AsyncStorage:', error);
       navi.navigate(ScreenNames.AUTH_HOME);
     }
   };

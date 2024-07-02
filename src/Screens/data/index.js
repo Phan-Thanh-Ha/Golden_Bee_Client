@@ -293,3 +293,26 @@ export const dataJobDone = [
     StaffPhone: "0906702589",
   },
 ];
+
+export const dataNotifi = [
+  {
+    BookingServiceCode: "OVG-28062402404376",
+    BookingTime: "2024-06-28T14:40:43.760",
+    CustomerName: " PhanHa",
+    Id: 341,
+    Note: "",
+    Phone: "0943214791",
+    ServiceName: "Giúp việc theo giờ",
+    Address: "100 Lý Chính Thắng, phải 8, Quận 3, Hồ Chí Minh, Việt Nam",
+  },
+  {
+    BookingServiceCode: "OVG-28062402404376",
+    BookingTime: "2024-06-28T14:40:43.760",
+    CustomerName: " PhanHa",
+    Id: 34,
+    Note: "",
+    Phone: "0943214791",
+    ServiceName: "Giúp việc theo giờ",
+    Address: "100 Lý Chính Thắng, phải 8, Quận 3, Hồ Chí Minh, Việt Nam",
+  },
+];

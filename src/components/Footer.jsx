@@ -1,11 +1,12 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {colors} from '../styles/Colors';
+import {Version_Customer} from '../utils';
 
 const Footer = () => {
   return (
     <View style={styles.footer}>
-      <Text style={styles.footerText}>version 1.3 - CAK Solutions</Text>
+      <Text style={styles.footerText}>{Version_Customer}</Text>
     </View>
   );
 };

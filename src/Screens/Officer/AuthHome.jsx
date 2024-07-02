@@ -10,8 +10,10 @@ import { removeData } from "../../utils";
 import StorageNames from "../../Constants/StorageNames";
 import { mainAction } from "../../Redux/Action";
 import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
-const AuthHome = ({ navigation }) => {
+const AuthHome = () => {
+  const navi = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
     removeData(StorageNames.USER_PROFILE);
@@ -19,10 +21,10 @@ const AuthHome = ({ navigation }) => {
     mainAction.userLogout(dispatch);
   }, []);
   const handleLogin = () => {
-    navigation.navigate(ScreenNames.LOGIN);
+    navi.navigate(ScreenNames.LOGIN);
   }
   const handleRegister = () => {
-    navigation.navigate(ScreenNames.REGISTER);
+    navi.navigate(ScreenNames.REGISTER);
   }
   return (
     <LayoutAbout>

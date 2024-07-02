@@ -10,7 +10,6 @@ import { colors } from '../../styles/Colors';
 import Rating from '../../components/Rating';
 import Box from '../../components/Box';
 import { FormatMoney } from '../../utils/FormatMoney';
-import ToggleCustom, { Toggle } from '../../components/ToggleCustom';
 import Day from '../../components/svg/Day';
 import StorageNames from '../../Constants/StorageNames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +17,7 @@ import { mainAction } from '../../Redux/Action';
 import { GROUP_USER_ID, getData, removeData, setData } from '../../utils';
 import BtnToggle from '../../components/BtnToggle';
 import ModalConfirm from '../../components/modal/ModalConfirm';
+import { APIImage } from '../../Config/Api';
 
 const AccountScreen = () => {
   const navi = useNavigation();
@@ -122,7 +122,9 @@ const AccountScreen = () => {
           <Text style={MainStyles.labelTitle}>Thông tin</Text>
           <View style={MainStyles.flexRowFlexStart}>
             <Image
-              source={coin_icon}
+              source={{
+                uri: APIImage + userLogin?.FilesImage,
+              }}
               style={{
                 width: 80,
                 height: 120,

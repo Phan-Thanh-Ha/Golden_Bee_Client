@@ -33,7 +33,7 @@ android/java_pid21540.hprof
 #
 node_modules/
 npm-debug.log
-yarn-error.log
+# yarn-error.log
 
 # BUCK
 buck-out/
@@ -62,6 +62,6 @@ buck-out/
 package-lock.json
 yarn.lock
 Podfile.lock
-yarn-debug.log
-.yarn/cache
+# yarn-debug.log
+
 .yarn

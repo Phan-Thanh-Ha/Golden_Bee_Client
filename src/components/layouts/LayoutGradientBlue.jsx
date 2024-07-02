@@ -4,6 +4,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from "../../styles/Colors";
+import StatusBarCustom from '../StatusBarCustom';
 
 const LayoutGradientBlue = ({ children }) => {
   return (
