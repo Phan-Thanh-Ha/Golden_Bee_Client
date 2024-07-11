@@ -5,16 +5,15 @@ import * as yup from 'yup';
 import Toast from 'react-native-toast-message';
 import CustomInput from './CustomInput'; // Import CustomInput component
 import CustomLabel from './CustomLabel';
-import { colors } from "../../styles/Colors";
-import CustomFormError from "./CustomFormError";
-import ArrowRight from "../svg/ArrowRight"; // Import CustomLabel component
-import Button from "../buttons/Button";
-import { ScreenNames } from "../../Constants";
-import MainStyle from "../../styles/MainStyle";
+import { colors } from '../../styles/Colors';
+import CustomFormError from './CustomFormError';
+import ArrowRight from '../svg/ArrowRight'; // Import CustomLabel component
+import Button from '../buttons/Button';
+import { ScreenNames } from '../../Constants';
+import MainStyle from '../../styles/MainStyle';
 import { mainAction } from '../../Redux/Action';
 import { useDispatch } from 'react-redux';
 import { AlertToaster } from '../../utils';
-
 
 const RegisterForm = ({ setSubmit, navigation }) => {
   const dispatch = useDispatch();
@@ -22,64 +21,81 @@ const RegisterForm = ({ setSubmit, navigation }) => {
 
   const validationSchema = yup.object().shape({
     fullName: yup.string().required('Thông tin bắt buộc'),
-    phoneNumber: yup.string().matches(/^[0-9]{10}$/, 'Số điện thoại không hợp lệ').required('Thông tin bắt buộc'),
-    password: yup.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự').required('Thông tin bắt buộc'),
-    confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Xác nhận mật khẩu không khớp').required('Thông tin bắt buộc'),
+    phoneNumber: yup
+      .string()
+      .matches(/^[0-9]{10}$/, 'Số điện thoại không hợp lệ')
+      .required('Thông tin bắt buộc'),
+    password: yup
+      .string()
+      .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
+      .required('Thông tin bắt buộc'),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password'), null], 'Xác nhận mật khẩu không khớp')
+      .required('Thông tin bắt buộc'),
   });
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async values => {
     setIsLoading(true);
     try {
       const pr = {
         OfficerName: values.fullName,
         Phone: values.phoneNumber,
         Password: values.password,
-        GroupUserId: 10060
+        GroupUserId: 10060,
       };
       const params = {
         Json: JSON.stringify(pr),
-        func: "OVG_spRegister_Officer",
+        func: 'OVG_spRegister_Officer',
       };
-      console.log(params);
+      // console.log(params);
 
       const result = await mainAction.API_spCallServer(params, dispatch);
-      if (result[0]?.Status === "OK") {
+      if (result[0]?.Status === 'OK') {
         AlertToaster('success', 'Xác thực OTP để hoàn tất đăng ký !');
         navigation.navigate(ScreenNames.ACTIVE_ACCOUNT, {
-          data: values
-        })
+          data: values,
+        });
         setIsLoading(false);
       } else {
-        AlertToaster('error', "Đăng ký không thành công !", result[0]?.ResultMessage);
+        AlertToaster(
+          'error',
+          'Đăng ký không thành công !',
+          result[0]?.ResultMessage,
+        );
         setIsLoading(false);
       }
       setIsLoading(false);
-
     } catch (error) {
       setIsLoading(false);
     }
   };
 
-
   return (
     <Formik
-      initialValues={{ fullName: '', phoneNumber: '', password: '', confirmPassword: '' }}
+      initialValues={{
+        fullName: '',
+        phoneNumber: '',
+        password: '',
+        confirmPassword: '',
+      }}
       validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
+      onSubmit={handleSubmit}>
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-        <View
-          style={MainStyle.containerForm}
-        >
+        <View style={MainStyle.containerForm}>
           <CustomLabel>Họ và tên:</CustomLabel>
           <CustomInput
             placeholder="Nhập họ và tên"
             onChangeText={handleChange('fullName')}
             onBlur={handleBlur('fullName')}
             value={values.fullName}
-            borderColor={touched.fullName && errors.fullName ? 'red' : '#E0E0E0'}
+            borderColor={
+              touched.fullName && errors.fullName ? 'red' : '#E0E0E0'
+            }
           />
-          <CustomFormError>{touched.fullName && errors.fullName}</CustomFormError>
+          <CustomFormError>
+            {touched.fullName && errors.fullName}
+          </CustomFormError>
 
           <CustomLabel>Số điện thoại:</CustomLabel>
           <CustomInput
@@ -87,9 +103,13 @@ const RegisterForm = ({ setSubmit, navigation }) => {
             onChangeText={handleChange('phoneNumber')}
             onBlur={handleBlur('phoneNumber')}
             value={values.phoneNumber}
-            borderColor={touched.phoneNumber && errors.phoneNumber ? 'red' : '#E0E0E0'}
+            borderColor={
+              touched.phoneNumber && errors.phoneNumber ? 'red' : '#E0E0E0'
+            }
           />
-          <CustomFormError>{touched.phoneNumber && errors.phoneNumber}</CustomFormError>
+          <CustomFormError>
+            {touched.phoneNumber && errors.phoneNumber}
+          </CustomFormError>
 
           <CustomLabel>Mật khẩu:</CustomLabel>
           <CustomInput
@@ -97,11 +117,15 @@ const RegisterForm = ({ setSubmit, navigation }) => {
             onChangeText={handleChange('password')}
             onBlur={handleBlur('password')}
             value={values.password}
-            type='password'
+            type="password"
             showPasswordToggle={true}
-            borderColor={touched.password && errors.password ? 'red' : '#E0E0E0'}
+            borderColor={
+              touched.password && errors.password ? 'red' : '#E0E0E0'
+            }
           />
-          <CustomFormError>{touched.password && errors.password}</CustomFormError>
+          <CustomFormError>
+            {touched.password && errors.password}
+          </CustomFormError>
 
           <CustomLabel>Xác nhận mật khẩu:</CustomLabel>
           <CustomInput
@@ -109,17 +133,22 @@ const RegisterForm = ({ setSubmit, navigation }) => {
             onChangeText={handleChange('confirmPassword')}
             onBlur={handleBlur('confirmPassword')}
             value={values.confirmPassword}
-            type='password'
+            type="password"
             showPasswordToggle={true}
-            borderColor={touched.confirmPassword && errors.confirmPassword ? 'red' : '#E0E0E0'}
+            borderColor={
+              touched.confirmPassword && errors.confirmPassword
+                ? 'red'
+                : '#E0E0E0'
+            }
           />
-          <CustomFormError>{touched.confirmPassword && errors.confirmPassword}</CustomFormError>
+          <CustomFormError>
+            {touched.confirmPassword && errors.confirmPassword}
+          </CustomFormError>
           <Button
             isLoading={isLoading}
             disable={isLoading}
             onPress={handleSubmit}
-            icon={() => (<ArrowRight color={colors.WHITE} />)}
-          >
+            icon={() => <ArrowRight color={colors.WHITE} />}>
             Tiếp tục
           </Button>
           <View style={MainStyle.regis}>
@@ -138,16 +167,16 @@ const styles = StyleSheet.create({
   regis: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: "center",
-    margin: 10
+    justifyContent: 'center',
+    margin: 10,
   },
   regisSub: {
     fontSize: 15,
-    marginRight: 10
+    marginRight: 10,
   },
   regisBtn: {
     fontSize: 15,
-    color: colors.MAIN_BLUE_CLIENT
+    color: colors.MAIN_BLUE_CLIENT,
   },
   container: {
     margin: 15,
@@ -174,6 +203,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     justifyContent: 'center',
   },
-})
+});
 
 export default RegisterForm;

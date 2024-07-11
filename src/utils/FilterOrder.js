@@ -1,5 +1,5 @@
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  const toRadians = (degree) => degree * (Math.PI / 180);
+  const toRadians = degree => degree * (Math.PI / 180);
 
   const R = 6371; // Bán kính Trái Đất (km)
   const dLat = toRadians(lat2 - lat1);
@@ -19,17 +19,14 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 // Hàm lọc và sắp xếp đơn hàng
 export const filterAndSortOrders = (orders, myLatitude, myLongitude) => {
   // Lọc các đơn hàng trong phạm vi 5km
-  const filteredOrders = orders.filter((order) => {
+  const filteredOrders = orders.filter(order => {
     const distance = calculateDistance(
       myLatitude,
       myLongitude,
-      order.LatitudeCustomer,
-      order.LongitudeCustomer
+      order?.LatitudeCustomer,
+      order?.LongitudeCustomer,
     );
-    console.log(
-      `Distance to order ${order.OrderId}: ${distance.toFixed(2)} km`
-    );
-    return distance <= 50000000000;
+    return distance <= 5;
   });
 
   // Sắp xếp các đơn hàng theo khoảng cách tăng dần
@@ -38,13 +35,13 @@ export const filterAndSortOrders = (orders, myLatitude, myLongitude) => {
       myLatitude,
       myLongitude,
       a.LatitudeCustomer,
-      a.LongitudeCustomer
+      a.LongitudeCustomer,
     );
     const distanceB = calculateDistance(
       myLatitude,
       myLongitude,
       b.LatitudeCustomer,
-      b.LongitudeCustomer
+      b.LongitudeCustomer,
     );
     return distanceA - distanceB;
   });

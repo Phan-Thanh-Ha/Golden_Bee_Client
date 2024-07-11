@@ -1,34 +1,152 @@
-import React, { useEffect } from "react";
-import { View, Platform } from "react-native";
-import { check, PERMISSIONS, RESULTS, request } from "react-native-permissions";
-
-const permissions = [
-  PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-  PERMISSIONS.ANDROID.CAMERA,
-  PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-  PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-  PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION, // Add this line
-];
-
+import React, { useEffect, useState } from "react";
+import { PermissionsAndroid, View } from "react-native";
+import RNPermissions, {
+  check,
+  PERMISSIONS,
+  RESULTS,
+  request,
+} from "react-native-permissions";
 export const RequestPermission = () => {
-  const requestPermission = async (permission) => {
-    const status = await check(permission);
-    if (status !== RESULTS.GRANTED) {
-      return request(permission);
+  const androidWriteStorage = async () => {
+    const statusAndroid = await check(
+      PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
+    );
+    if (statusAndroid !== RESULTS.GRANTED) {
+      request(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE).then(() => {
+        androidCamera();
+      });
+    } else {
+      androidCamera();
     }
   };
-
-  const requestAllPermissions = async () => {
-    for (let permission of permissions) {
-      await requestPermission(permission);
+  const androidCamera = async () => {
+    const statusAndroid = await check(PERMISSIONS.ANDROID.CAMERA);
+    if (statusAndroid !== RESULTS.GRANTED) {
+      request(PERMISSIONS.ANDROID.CAMERA).then(() => {
+        androidReadStorage();
+      });
+    } else {
+      androidReadStorage();
+    }
+  };
+  const androidReadStorage = async () => {
+    const statusAndroid = await check(
+      PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+    );
+    if (statusAndroid !== RESULTS.GRANTED) {
+      request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(() => {
+        androidRecordAudio();
+      });
+    } else {
+      androidRecordAudio();
+    }
+  };
+  const androidRecordAudio = async () => {
+    const statusAndroid = await check(
+      PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+    );
+    if (statusAndroid !== RESULTS.GRANTED) {
+      request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(() => {
+        androidFineLocation();
+      });
+    } else {
+      androidFineLocation();
+    }
+  };
+  const androidFineLocation = async () => {
+    const statusAndroid = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+    if (statusAndroid !== RESULTS.GRANTED) {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      ).then(() => {
+        androidRecordVideo();
+      });
+    } else {
+      androidRecordVideo();
+    }
+  };
+  const androidRecordVideo = async () => {
+    const statusAndroid = await check(PERMISSIONS.ANDROID.RECORD_AUDIO);
+    if (statusAndroid !== RESULTS.GRANTED) {
+      request(PERMISSIONS.ANDROID.RECORD_AUDIO);
+    } else {
+      androidMocked();
+    }
+  };
+  const androidMocked = async () => {
+    const statusAndroid = await check(PERMISSIONS.ANDROID.RECORD_AUDIO);
+    if (statusAndroid !== RESULTS.GRANTED) {
+      request(PERMISSIONS.ANDROID.RECORD_AUDIO);
+    } else {
+      androidBluetoothConnect();
+    }
+  };
+  const androidBluetoothConnect = async () => {
+    const statusAndroid = await check(PERMISSIONS.ANDROID.BLUETOOTH_CONNECT);
+    if (statusAndroid !== RESULTS.GRANTED) {
+      request(PERMISSIONS.ANDROID.BLUETOOTH_CONNECT);
+    } else {
+      androidBluetoothScan();
+    }
+  };
+  const androidBluetoothScan = async () => {
+    const statusAndroid = await check(PERMISSIONS.ANDROID.BLUETOOTH_SCAN);
+    if (statusAndroid !== RESULTS.GRANTED) {
+      request(PERMISSIONS.ANDROID.BLUETOOTH_SCAN);
+    } else {
+      androidBluetooth();
+    }
+  };
+  const androidBluetooth = async () => {
+    const statusAndroid = await check(PERMISSIONS.ANDROID.BLUETOOTH);
+    if (statusAndroid !== RESULTS.GRANTED) {
+      request(PERMISSIONS.ANDROID.BLUETOOTH);
+    } else {
+      androidBluetoothAccess();
+    }
+  };
+  const androidBluetoothAccess = async () => {
+    const statusAndroid = await check(
+      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION
+    );
+    if (statusAndroid !== RESULTS.GRANTED) {
+      request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+    }
+  };
+  const iosCamera = async () => {
+    const statusIOS = await check(PERMISSIONS.IOS.CAMERA);
+    if (statusIOS !== RESULTS.GRANTED) {
+      request(PERMISSIONS.IOS.CAMERA).then(() => iosPhotoLib());
+    }
+  };
+  const iosLocation = async () => {
+    const statusIOS = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+    if (statusIOS !== RESULTS.GRANTED) {
+      request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then(() => iosLocation());
+    }
+  };
+  const iosRecord = async () => {
+    const statusIOS = await check(PERMISSIONS.IOS.RECORD_AUDIO);
+    if (statusIOS !== RESULTS.GRANTED) {
+      request(PERMISSIONS.IOS.RECORD_AUDIO).then(() => iosLocation());
+    }
+  };
+  const iosPhotoLib = async () => {
+    const statusIOS = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+    if (statusIOS !== RESULTS.GRANTED) {
+      request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(() => iosRecord());
+    }
+  };
+  const iosMicroPhone = async () => {
+    const statusIOS = await check(PERMISSIONS.IOS.MICROPHONE);
+    if (statusIOS !== RESULTS.GRANTED) {
+      request(PERMISSIONS.IOS.MICROPHONE).then(() => iosMicroPhone());
     }
   };
 
   useEffect(() => {
-    if (Platform.OS === "android") {
-      requestAllPermissions();
-    }
-    // Add iOS permissions here
+    Platform.OS === "android" && androidWriteStorage();
+    Platform.OS === "ios" && iosCamera();
   }, []);
 
   return <View />;

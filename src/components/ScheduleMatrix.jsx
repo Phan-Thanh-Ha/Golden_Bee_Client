@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { colors } from '../styles/Colors';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import {colors} from '../styles/Colors';
 import Button from './buttons/Button';
 
 // const periods = ['Morning', 'Afternoon', 'Evening', 'Night'];
@@ -8,9 +14,10 @@ import Button from './buttons/Button';
 const periods = ['Sáng', 'Trưa', 'Chiều', 'Tối'];
 const days = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'thứ 6', 'thứ 7', 'CN'];
 
-
-const ScheduleMatrix = ({ initialSchedule, onBook }) => {
-  const [schedule, setSchedule] = useState(initialSchedule || Array(4).fill(Array(7).fill(false)));
+const ScheduleMatrix = ({initialSchedule, onBook}) => {
+  const [schedule, setSchedule] = useState(
+    initialSchedule || Array(4).fill(Array(7).fill(false)),
+  );
 
   useEffect(() => {
     if (initialSchedule) {
@@ -25,7 +32,7 @@ const ScheduleMatrix = ({ initialSchedule, onBook }) => {
           return !day;
         }
         return day;
-      })
+      }),
     );
     setSchedule(newSchedule);
   };
@@ -35,18 +42,16 @@ const ScheduleMatrix = ({ initialSchedule, onBook }) => {
     schedule.forEach((period, periodIndex) => {
       period.forEach((day, dayIndex) => {
         if (day) {
-          selectedTimes.push({ day: days[dayIndex], period: periods[periodIndex] });
+          selectedTimes.push({
+            day: days[dayIndex],
+            period: periods[periodIndex],
+          });
         }
       });
     });
     if (onBook) {
       onBook(selectedTimes);
     }
-    // console.log('Selected times:', selectedTimes);
-  };
-
-  const handleReset = () => {
-    setSchedule(Array(4).fill(Array(7).fill(false)));
   };
 
   return (
@@ -71,22 +76,31 @@ const ScheduleMatrix = ({ initialSchedule, onBook }) => {
                 style={[
                   styles.cell,
                   styles.button,
-                  schedule[periodIndex][dayIndex] ? styles.available : styles.unavailable
+                  schedule[periodIndex][dayIndex]
+                    ? styles.available
+                    : styles.unavailable,
                 ]}
-                onPress={() => handleToggle(periodIndex, dayIndex)}
-              >
-                <Text style={schedule[periodIndex][dayIndex] ? styles.availableText : styles.unavailableText}>
+                onPress={() => handleToggle(periodIndex, dayIndex)}>
+                <Text
+                  style={
+                    schedule[periodIndex][dayIndex]
+                      ? styles.availableText
+                      : styles.unavailableText
+                  }>
                   {schedule[periodIndex][dayIndex] ? 'Rảnh' : 'Bận'}
                 </Text>
               </TouchableOpacity>
             ))}
           </View>
         ))}
-        <Button fontSize={15} paddingHorizontal={10} paddingVertical={7} onPress={handleBook}>
+        <Button
+          fontSize={15}
+          paddingHorizontal={10}
+          paddingVertical={7}
+          onPress={handleBook}>
           Cập nhật
         </Button>
         <View style={styles.buttonContainer}>
-
           {/* <Button title="Book" onPress={handleBook} />
           <Button title="Reset" onPress={handleReset} /> */}
         </View>

@@ -1,37 +1,24 @@
-import {
-  Image,
-  Linking,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import Header from '../../components/Header';
-import {colors} from '../../styles/Colors';
-import React, {useEffect, useState} from 'react';
-import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../styles/MainStyle';
-import {camera_icon, image_banner_5} from '../../assets';
+import { colors } from '../../styles/Colors';
+import React, { useState } from 'react';
+import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
 import Button from '../../components/buttons/Button';
-import {ScreenNames} from '../../Constants';
+import { ScreenNames } from '../../Constants';
 import CustomLabel from '../../components/forms/CustomLabel';
 import LayoutBottom from '../../components/layouts/LayoutBottom';
 import BtnGetImageModal from '../../components/BtnGetImageModal';
-import {AlertToaster} from '../../utils/AlertToaster';
 import ArrowRight from '../../components/svg/ArrowRight';
-import {useDispatch, useSelector} from 'react-redux';
-import {mainAction} from '../../Redux/Action';
-import {setData} from '../../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { mainAction } from '../../Redux/Action';
+import { setData } from '../../utils';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import AlertConfirm from '../../components/modal/AlertConfirm';
-import ImageUploadComponent from '../../components/ImageUploadComponent';
+import StorageNames from '../../Constants/StorageNames';
 
-const AddProfileScreen = ({navigation, route}) => {
-  // const [ImageUrl, setImageUrl] = useState([]);
-  // console.log("ImageUrl", ImageUrl);
+const AddProfileScreen = ({ route }) => {
   const [cmndFront, setCmndFront] = useState([]);
   const [cmndBack, setCmndBack] = useState([]);
   const [confirmAddress, setConfirmAddress] = useState([]);
@@ -44,10 +31,7 @@ const AddProfileScreen = ({navigation, route}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [title, setTitle] = useState('');
-  const UserProfile =
-    route.params && route.params.data ? route.params.data : undefined;
   const onConfirm = () => {
-    Linking.openURL(`tel:${'0922277782'}`);
     navi.navigate(ScreenNames.MAIN_NAVIGATOR);
     setIsUpdate(false);
   };
@@ -124,126 +108,72 @@ const AddProfileScreen = ({navigation, route}) => {
       return false;
     } else return true;
   };
-  const testApp = () => {
-    navi.navigate(ScreenNames.MAIN_NAVIGATOR);
-  };
+  // const testApp = () => {
+  //   navi.navigate(ScreenNames.MAIN_NAVIGATOR);
+  // }
   const CRM2_spProfileOfficer_Save = async () => {
     setIsLoading(true);
     const valid = validateForm();
-    // console.log("is valid : ", valid);
-    // if (valid) {
-    //   try {
-    //     const pr = {
-    //       GroupUserId: 10060,
-    //       IdProfileOfficer: 0,
-    //       OfficerID: userLogin?.OfficerID,
-    //       OfficerName: userLogin?.OfficerName,
-    //       FilesCCCD: cmndFront.join(''),
-    //       FilesCCCD_BackSide: cmndBack.join(''),
-    //       FilesCV: confirmAddress.join(''),
-    //       FilesImage: avatar.join(''),
-    //       FilesBC: background.join(''),
-    //     };
-    //     console.log('pr : ', pr);
-    //     const params = {
-    //       Json: JSON.stringify(pr),
-    //       func: 'CRM2_spProfileOfficer_Save',
-    //     };
-
-    //     const result = await mainAction.API_spCallServer(params, dispatch);
-    //     console.log('result : ', result);
-    //     // Cập nhật xuống localStore để lưu trạng thái đã cập nhật hồ sơ
-    //     if (result.Status === 'Success') {
-    //       await setData(StorageNames.USER_PROFILE, {
-    //         ...userLogin,
-    //         FilesCCCD: cmndFront.join(''),
-    //         FilesCCCD_BackSide: cmndBack.join(''),
-    //         FilesCV: confirmAddress.join(''),
-    //         FilesImage: avatar.join(''),
-    //         FilesBC: background.join(''),
-    //       });
-    //       mainAction.userLogin({
-    //         ...userLogin,
-    //         FilesCCCD: cmndFront.join(''),
-    //         FilesCCCD_BackSide: cmndBack.join(''),
-    //         FilesCV: confirmAddress.join(''),
-    //         FilesImage: avatar.join(''),
-    //         FilesBC: background.join(''),
-    //       }, dispatch);
-    //       console.log('check result ', result);
-    //       setIsLoading(false);
-    //       // AlertToaster('success', 'Cập nhật hồ sơ thành công !');
-    //       setIsLoading(false);
-    //       if (userLogin?.State === 10 || !userLogin?.State) {
-    //         setTitle("Hồ sơ của bạn đã được cập nhật thành công ! Vui lòng liên hệ Admin Ong Vàng để được hỗ trợ kích hoạt tài khoản");
-    //         setIsUpdate(true);
-    //       } else {
-    //         navi.navigate(ScreenNames.MAIN_NAVIGATOR);
-    //       }
-    //     }
-    //     setIsLoading(false);
-    //   } catch (error) {
-    //     setIsLoading(false);
-    //     console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  error:', error);
-    //   }
-    //   setIsLoading(false);
-    // }
-    try {
-      const pr = {
-        GroupUserId: 10060,
-        IdProfileOfficer: 0,
-        OfficerID: userLogin?.OfficerID,
-        OfficerName: userLogin?.OfficerName,
-        FilesCCCD: cmndFront.join(''),
-        FilesCCCD_BackSide: cmndBack.join(''),
-        FilesCV: confirmAddress.join(''),
-        FilesImage: avatar.join(''),
-        FilesBC: background.join(''),
-      };
-      console.log('pr : ', pr);
-      const params = {
-        Json: JSON.stringify(pr),
-        func: 'CRM2_spProfileOfficer_Save',
-      };
-
-      const result = await mainAction.API_spCallServer(params, dispatch);
-      console.log('result : ', result);
-      // Cập nhật xuống localStore để lưu trạng thái đã cập nhật hồ sơ
-      if (result.Status === 'Success') {
-        await setData(StorageNames.USER_PROFILE, {
-          ...userLogin,
+    if (valid) {
+      // console.log('valid : ', valid);
+      try {
+        // console.log('satus : ', cmndBack);
+        const pr = {
+          GroupUserId: 10060,
+          IdProfileOfficer: 0,
+          OfficerID: userLogin?.OfficerID,
+          OfficerName: userLogin?.OfficerName,
           FilesCCCD: cmndFront.join(''),
           FilesCCCD_BackSide: cmndBack.join(''),
           FilesCV: confirmAddress.join(''),
           FilesImage: avatar.join(''),
           FilesBC: background.join(''),
-        });
-        mainAction.userLogin(
-          {
+        };
+        const params = {
+          Json: JSON.stringify(pr),
+          func: 'CRM2_spProfileOfficer_Save',
+        };
+
+        // console.log('params : ', params);
+        const result = await mainAction.API_spCallServer(params, dispatch);
+        // console.log('result : ', result);
+        // Cập nhật xuống localStore để lưu trạng thái đã cập nhật hồ sơ
+        if (result?.Status === 'Success') {
+          await setData(StorageNames.USER_PROFILE, {
             ...userLogin,
             FilesCCCD: cmndFront.join(''),
             FilesCCCD_BackSide: cmndBack.join(''),
             FilesCV: confirmAddress.join(''),
             FilesImage: avatar.join(''),
             FilesBC: background.join(''),
-          },
-          dispatch,
-        );
-        console.log('check result ', result);
-        setIsLoading(false);
-        // AlertToaster('success', 'Cập nhật hồ sơ thành công !');
-        setIsLoading(false);
-        if (userLogin?.State === 10 || !userLogin?.State) {
-          setTitle(
-            'Hồ sơ của bạn đã được cập nhật thành công ! Vui lòng liên hệ Admin Ong Vàng để được hỗ trợ kích hoạt tài khoản',
+          });
+          mainAction.userLogin(
+            {
+              ...userLogin,
+              FilesCCCD: cmndFront.join(''),
+              FilesCCCD_BackSide: cmndBack.join(''),
+              FilesCV: confirmAddress.join(''),
+              FilesImage: avatar.join(''),
+              FilesBC: background.join(''),
+            },
+            dispatch,
           );
-          setIsUpdate(true);
-        } else {
-          navi.navigate(ScreenNames.MAIN_NAVIGATOR);
+          setIsLoading(false);
+          setIsLoading(false);
+          if (userLogin?.State === 10 || !userLogin?.State) {
+            setTitle('Hồ sơ của bạn đã được cập nhật thành công !');
+            setIsUpdate(true);
+          } else {
+            setIsLoading(false);
+            // navi.navigate(ScreenNames.MAIN_NAVIGATOR);
+          }
+          setIsLoading(false);
         }
+        setIsLoading(false);
+      } catch {
+        setIsLoading(false);
+        // console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  error:', error);
       }
-      setIsLoading(false);
-    } catch (error) {
       setIsLoading(false);
     }
     setIsLoading(false);
@@ -331,20 +261,21 @@ const AddProfileScreen = ({navigation, route}) => {
         </View>
       </ScrollView>
       <LayoutBottom>
-        {/* <Button
+        <Button
           onPress={CRM2_spProfileOfficer_Save}
           bgColor={colors.PRIMARY_GREEN}
           icon={() => <ArrowRight color={colors.WHITE} />}
           isLoading={isLoading}
           disable={isLoading}>
           Cập nhật
-        </Button> */}
-        <Button
+        </Button>
+        {/* <Button
           onPress={testApp}
           bgColor={colors.PRIMARY_GREEN}
-          icon={() => <ArrowRight color={colors.WHITE} />}>
+          icon={() => <ArrowRight color={colors.WHITE} />}
+        >
           Tiếp tục
-        </Button>
+        </Button> */}
       </LayoutBottom>
       <ModalUserNotActive
         title={title}

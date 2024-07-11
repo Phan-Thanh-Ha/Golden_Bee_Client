@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,20 +6,20 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {useDispatch} from 'react-redux';
-import {Image} from 'react-native-compressor';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { useDispatch } from 'react-redux';
+import { Image } from 'react-native-compressor';
 import FastImage from 'react-native-fast-image';
 import ProgressImage from 'react-native-image-progress';
-import {ProgressBar} from '@ui-kitten/components';
+import { ProgressBar } from '@ui-kitten/components';
 import Modal from 'react-native-modal';
-import {mainAction} from '../Redux/Action';
-import {colors} from '../styles/Colors';
-import MainStyles, {SCREEN_HEIGHT} from '../styles/MainStyle';
-import {ic_upload} from '../assets';
-import {APIImage} from '../Config/Api';
+import { mainAction } from '../Redux/Action';
+import { colors } from '../styles/Colors';
+import MainStyles, { SCREEN_HEIGHT } from '../styles/MainStyle';
+import { ic_upload } from '../assets';
+import { APIImage } from '../Config/Api';
 
-const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight, total = 1}) => {
+const BtnGetImageModal = ({ setImageUrl, btnWidth, btnHeight, total = 1 }) => {
   const dispatch = useDispatch();
   const [isUpload, setIsUpload] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -123,7 +123,7 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight, total = 1}) => {
         setImageUrl(result);
         setImageList(prevList => [
           ...prevList,
-          {id: currentID, source: APIImage + result[0]},
+          { id: currentID, source: APIImage + result[0] },
         ]);
         setCurrentID(prevID => prevID + 1);
       }
@@ -134,6 +134,7 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight, total = 1}) => {
   };
 
   const deleteImage = () => {
+    setImageUrl([]);
     setIsUpload(false);
     setSelectedImages([]);
     setImageList(imageList.filter(image => image.source !== selectedImages[0]));
@@ -158,7 +159,7 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight, total = 1}) => {
                 alignItems: 'center',
               },
             ]}>
-            <FastImage source={ic_upload} style={{width: 45, height: 45}} />
+            <FastImage source={ic_upload} style={{ width: 45, height: 45 }} />
             <Text style={MainStyles.textBtnUpload}>
               Tải lên hoặc chụp hình ảnh
             </Text>
@@ -170,7 +171,7 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight, total = 1}) => {
         <View style={styles.imageContainer}>
           {selectedImages.length > 0 && (
             <ProgressImage
-              source={{uri: selectedImages[0]}}
+              source={{ uri: selectedImages[0] }}
               indicator={() => (
                 <ActivityIndicator
                   animating={true}
@@ -194,10 +195,10 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight, total = 1}) => {
       {selectedImages.length > 0 && !isLoadingMedia && (
         <View style={styles.imageContainer}>
           <TouchableOpacity onPress={toggleOptionsModal}>
-            <View style={{position: 'relative'}}>
+            <View style={{ position: 'relative' }}>
               <FastImage
-                source={{uri: selectedImages[0]}}
-                style={{width: btnWidth, height: btnHeight, borderRadius: 5}}
+                source={{ uri: selectedImages[0] }}
+                style={{ width: btnWidth, height: btnHeight, borderRadius: 5 }}
               />
               {selectedImages.length > 1 && (
                 <View style={styles.multipleImageIndicator}>
@@ -241,7 +242,7 @@ const BtnGetImageModal = ({setImageUrl, btnWidth, btnHeight, total = 1}) => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.option} onPress={toggleOptionsModal}>
             <Text
-              style={{color: colors.ERROR, fontSize: 16, fontWeight: '700'}}>
+              style={{ color: colors.ERROR, fontSize: 16, fontWeight: '700' }}>
               Hủy
             </Text>
           </TouchableOpacity>

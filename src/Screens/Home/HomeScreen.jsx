@@ -20,7 +20,6 @@ import { setData } from '../../utils';
 import StorageNames from '../../Constants/StorageNames';
 import ListenOrderTotal from '../../components/firebaseListen/ListenTotalOrder';
 import { Linking } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -33,36 +32,61 @@ const HomeScreen = () => {
   const myOrdersAccepted = useSelector(state => state.main.myOrdersAccepted);
   const initValueFirebase = useSelector(state => state.main.initValueFirebase);
   const locationIntervalRef = useRef(null);
-
-  // region Kiểm tra tổng đơn
   const [modalOrderTotalVisible, setModalOrderTotalVisible] = useState(false);
-  const handleConfirmOrderTotal = () => {
-    Linking.openURL(`tel:${'0922277782'}`);
-    setModalOrderTotalVisible(false);
-  };
-  const getCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        if (position.coords) {
-          const params = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          };
-          console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  params:', params);
-          mainAction.locationUpdate(params, dispatch);
-        }
-      },
-      error => {
-        console.log('Error getting location:', error);
-      },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
-  };
-  useFocusEffect(
-    useCallback(() => {
-      getCurrentLocation();
-    }, []),
-  );
+  const [log, setLog] = useState([]);
+
+  // nếu chưa có đơn nào thì lấy danh sách đơn hàng chưa có ai nhận
+  // useEffect(() => {
+  //   if (userLogin) {
+  //     if (
+  //       userLogin?.StateOnline &&
+  //       userLogin?.Surplus > 200000 &&
+  //       userLogin?.OfficerStatus === 0 &&
+  //       myOrdersAccepted?.length === 0
+  //     ) {
+  //       listenForNewOrders(newOrders, setNewOrders);
+  //     }
+  //   }
+  // }, [
+  //   userLogin?.StateOnline,
+  //   userLogin?.Surplus,
+  //   userLogin?.OfficerStatus,
+  //   initValueFirebase,
+  //   myOrdersAccepted?.length,
+  // ]);
+
+  // // fillter và nhận 1 đơn hàng gần nht'
+  // useEffect(() => {
+  //   if (initValueFirebase) {
+  //     if (
+  //       userLogin?.StateOnline &&
+  //       myOrdersAccepted?.length === 0 &&
+  //       userLogin?.Surplus > 200000 &&
+  //       userLogin?.OfficerStatus === 0
+  //     ) {
+  //       if (newOrders.length > 0) {
+  //         const ordersSnapshot = newOrders;
+  //         const orders = filterAndSortOrders(
+  //           ordersSnapshot,
+  //           location?.latitude,
+  //           location?.longitude,
+  //         );
+  //         if (orders.length > 0) {
+  //           const fistOrder = orders[0];
+  //           OVG_spOfficer_Booking_Save(fistOrder);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }, [
+  //   newOrders,
+  //   userLogin?.OfficerStatus,
+  //   myOrdersAccepted?.length,
+  //   userLogin?.Surplus,
+  //   userLogin?.StateOnline,
+  //   initValueFirebase,
+  //   location
+  // ]);
 
   useEffect(() => {
     if (initValueFirebase) {
@@ -74,131 +98,102 @@ const HomeScreen = () => {
     }
   }, [myOrdersAccepted]);
 
-  const OVG_spOfficer_Booking_Save = useCallback(async fistOrder => {
-    try {
-      const pr = {
-        OfficerId: userLogin?.OfficerID,
-        BookingId: parseInt(fistOrder?.OrderId),
-        LatOfficer: location?.latitude,
-        LngOfficer: location?.longitude,
-        OfficerName: userLogin?.OfficerName,
-        IsConfirm: 1,
-        GroupUserId: 10060,
-      };
-      const params = {
-        Json: JSON.stringify(pr),
-        func: 'OVG_spOfficer_Booking_Save',
-      };
+  const handleConfirmOrderTotal = () => {
+    Linking.openURL(`tel:${'0922277782'}`);
+    setModalOrderTotalVisible(false);
+  };
 
-      const result = await mainAction.API_spCallServer(params, dispatch);
-      if (result?.Status === 'OK') {
-        const accepting = acceptOrder(
-          fistOrder.OrderId,
-          userLogin?.OfficerID,
-          userLogin?.OfficerName,
-          userLogin?.Phone,
-          location?.latitude,
-          location?.longitude,
-          userLogin?.Avatar,
-        );
-        if (accepting) {
-          const userChange = {
-            ...userLogin,
-            OfficerStatus: 1,
-          };
-          setData(StorageNames.USER_PROFILE, userChange);
-          mainAction.userLogin(userChange, dispatch);
-          return;
-        }
-        return;
-      }
-      return;
-    } catch (error) { }
-  }, []);
-  useEffect(() => {
-    if (initValueFirebase) {
-      if (userLogin?.OfficerID) {
-        if (
-          userLogin?.StateOnline &&
-          userLogin?.Surplus > 200000 &&
-          !acceptedOrder?.OrderId
-          // userLogin?.OfficerStatus === 0
-        ) {
-          listenForNewOrders(newOrders, setNewOrders);
-        }
-      }
-    }
-  }, [
-    userLogin?.StateOnline,
-    acceptedOrder?.OrderId,
-    acceptOrder?.StatusOrder,
-    userLogin?.Surplus,
-    initValueFirebase,
-  ]);
-  useEffect(() => {
-    if (initValueFirebase) {
-      if (
-        userLogin?.StateOnline &&
-        myOrdersAccepted?.length === 0
-        // userLogin?.Surplus > 200000
-        // userLogin?.OfficerStatus === 0
-      ) {
-        if (
-          myOrdersAccepted === null ||
-          (myOrdersAccepted?.length === 0 && userLogin?.StateOnline)
-        ) {
-          const orders = filterAndSortOrders(
-            newOrders,
-            location?.latitude,
-            location?.longitude,
-          );
-          if (orders.length > 0) {
-            const fistOrder = orders[0];
-            console.log('check fist order ', fistOrder);
-            OVG_spOfficer_Booking_Save(fistOrder);
-          }
-        }
-      }
-    }
-  }, [newOrders]);
+  // const OVG_spOfficer_Booking_Save = useCallback(async fistOrder => {
+  //   try {
+  //     const pr = {
+  //       OfficerId: userLogin?.OfficerID,
+  //       BookingId: parseInt(fistOrder?.OrderId),
+  //       LatOfficer: location?.latitude,
+  //       LngOfficer: location?.longitude,
+  //       OfficerName: userLogin?.OfficerName,
+  //       IsConfirm: 1,
+  //       GroupUserId: 10060,
+  //     };
+  //     const params = {
+  //       Json: JSON.stringify(pr),
+  //       func: 'OVG_spOfficer_Booking_Save',
+  //     };
 
+  //     const result = await mainAction.API_spCallServer(params, dispatch);
+  //     if (result?.Status === 'OK') {
+  //       const accepting = acceptOrder(
+  //         fistOrder.OrderId,
+  //         userLogin?.OfficerID,
+  //         userLogin?.OfficerName,
+  //         userLogin?.Phone,
+  //         location?.latitude,
+  //         location?.longitude,
+  //         userLogin?.Avatar,
+  //       );
+  //       if (accepting) {
+  //         const userChange = {
+  //           ...userLogin,
+  //           OfficerStatus: 1,
+  //         };
+  //         setData(StorageNames.USER_PROFILE, userChange);
+  //         mainAction.userLogin(userChange, dispatch);
+  //         return;
+  //       }
+  //       return;
+  //     }
+  //     return;
+  //   } catch (error) { }
+  // }, []);
+
+  // Hàm lắng nghe thay đổi việc Cập nhật vị tri njaan viên di chuyển
   useEffect(() => {
-    const updateCurrentLocation = () => {
-      Geolocation.getCurrentPosition(
-        position => {
-          const { latitude, longitude } = position.coords;
-          if (acceptedOrder?.StatusOrder === 2) {
-            updateLocation(acceptedOrder?.OrderId, latitude, longitude);
-          }
-        },
-        error => {
-          console.log(error);
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-      );
-    };
 
     if (acceptedOrder?.StatusOrder === 2) {
-      updateCurrentLocation(); // Cập nhật ngay lập tức
-      locationIntervalRef.current = setInterval(updateCurrentLocation, 20000); // Cập nhật mỗi 20 giây
-    } else {
-      if (locationIntervalRef.current) {
-        clearInterval(locationIntervalRef.current);
-        locationIntervalRef.current = null;
+      try {
+        const updateCurrentLocation = () => {
+          Geolocation.getCurrentPosition(
+            position => {
+              if (position.coords) {
+                const params = {
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                };
+                // console.log('updateCurrentLocation', params);
+                updateLocation(acceptedOrder?.OrderId, position.coords.latitude, position.coords.longitude);
+                mainAction.locationUpdate(params, dispatch);
+              }
+            },
+            error => {
+              console.log('Error getting location:', error);
+            },
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+          );
+        };
+
+        if (acceptedOrder?.StatusOrder === 2) {
+          updateCurrentLocation();
+          locationIntervalRef.current = setInterval(updateCurrentLocation, 10000);
+        } else {
+          if (locationIntervalRef.current) {
+            clearInterval(locationIntervalRef.current);
+            locationIntervalRef.current = null;
+          }
+        }
+
+        return () => {
+          if (locationIntervalRef.current) {
+            clearInterval(locationIntervalRef.current);
+          }
+        };
+      } catch (e) {
+        console.log(e);
       }
     }
-
-    return () => {
-      if (locationIntervalRef.current) {
-        clearInterval(locationIntervalRef.current);
-      }
-    };
   }, [acceptedOrder?.StatusOrder]);
 
   return (
     <LayoutGradientBlue>
-      {userLogin?.OfficerID ? <MyOrders /> : null}
-      {/* <CheckRoute /> */}
+      {userLogin ? <MyOrders /> : null}
       <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
       <TabCustom
         modalRef={modalRef}

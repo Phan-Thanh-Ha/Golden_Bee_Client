@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {Text, View} from 'react-native';
+import React, { useState } from 'react';
+import { Text, View } from 'react-native';
 import AlertModal from '../AlertModal';
 import MainStyles from '../../styles/MainStyle';
-import {colors} from '../../styles/Colors';
+import { colors } from '../../styles/Colors';
 
-const showOrderChangeModal = ({orderChange, onConfirm}) => {
+const showOrderChangeModal = ({ orderChange, onConfirm }) => {
   const [isModalVisible, setModalVisible] = useState(true);
 
   const hideModal = () => {
@@ -13,7 +13,7 @@ const showOrderChangeModal = ({orderChange, onConfirm}) => {
 
   const handleConfirm = () => {
     onConfirm();
-    console.log('User confirmed');
+    // console.log('User confirmed');
     hideModal();
   };
 
@@ -30,7 +30,7 @@ const showOrderChangeModal = ({orderChange, onConfirm}) => {
         {orderChange?.orderId ? (
           <View style={[MainStyles.cardJob]}>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
+              <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
                 {orderChange?.DataService?.ServiceName}
               </Text>
             </View>
@@ -49,7 +49,7 @@ const showOrderChangeModal = ({orderChange, onConfirm}) => {
               <View style={MainStyles.line} />
             </View>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={[{textAlign: 'center'}]}>
+              <Text style={[{ textAlign: 'center' }]}>
                 {
                   'Quản trị viên đã cập nhật đơn dịch vụ của bạn, vui lòng kiểm tra lại thông tin dịch vụ !'
                 }

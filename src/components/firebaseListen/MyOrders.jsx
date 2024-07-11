@@ -22,7 +22,7 @@ const MyOrders = () => {
   const [modalOrderChangeVisible, setModalOrderChangeVisible] = useState(false);
 
   const handleConfirmOrderChange = () => {
-    console.log('handleConfirmOrderChange');
+    // console.log('handleConfirmOrderChange');
   };
 
   /* remove */
@@ -30,7 +30,7 @@ const MyOrders = () => {
   const [modalOrderRemoveVisible, setModalOrderRemoveVisible] = useState(false);
 
   const handleConfirmOrderRemove = () => {
-    console.log('handleConfirmOrderRemove');
+    // console.log('handleConfirmOrderRemove');
   };
 
   /* Add */
@@ -38,7 +38,7 @@ const MyOrders = () => {
   const [modalOrderAddVisible, setModalOrderAddVisible] = useState(false);
 
   const handleConfirmOrderAdd = () => {
-    console.log('handleConfirmOrderAdd');
+    // console.log('handleConfirmOrderAdd');
   };
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const MyOrders = () => {
       setModalOrderRemoveVisible,
       setOrderAdd,
       setModalOrderAddVisible,
-      dispatch
+      dispatch,
     );
 
     return () => {
@@ -78,10 +78,10 @@ const MyOrders = () => {
     }
   }, [myOrders]);
 
-  console.log('-----------------------------------------------------');
+  // console.log('-----------------------------------------------------');
   console.log('myOrders', myOrders);
-  console.log('initValueFirebase', initValueFirebase); // Log giá trị initValueFirebase
-  console.log('-----------------------------------------------------');
+  // console.log('initValueFirebase', initValueFirebase); // Log giá trị initValueFirebase
+  // console.log('-----------------------------------------------------');
 
   return (
     <View>

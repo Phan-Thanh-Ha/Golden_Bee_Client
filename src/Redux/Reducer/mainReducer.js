@@ -19,7 +19,7 @@ export default function (state = initialState, action = {}) {
 
     case mainTypes.USER_PROFILE:
       {
-        console.log("user in redux", action.payload);
+        // console.log("user in redux", action.payload);
       }
       return {
         ...state,
@@ -27,7 +27,7 @@ export default function (state = initialState, action = {}) {
       };
     case mainTypes.ACCEPTED_ORDER:
       {
-        console.log("oder accepted in redux", action.payload);
+        // console.log("oder accepted in redux", action.payload);
       }
       return {
         ...state,
@@ -35,7 +35,7 @@ export default function (state = initialState, action = {}) {
       };
     case mainTypes.MY_ORDER_ACCEPTED:
       {
-        console.log("my oder accepted in redux", action.payload);
+        // console.log("my oder accepted in redux", action.payload);
       }
       return {
         ...state,

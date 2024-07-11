@@ -9,7 +9,7 @@ import {ScreenNames} from '../../Constants';
 import ProgressBar from '../../components/ProgressBar';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {responsivescreen} from '../../utils/responsive-screen';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const UpdateProfileScreen = () => {
   const route = useRoute();
@@ -32,8 +32,7 @@ const UpdateProfileScreen = () => {
       i += 1;
     }
     return i;
-  }
-  console.log(total());
+  };
   const UserProfile =
     route.params && route.params.data ? route.params.data : undefined;
   const navigation = useNavigation();

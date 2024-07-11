@@ -23,13 +23,12 @@ export const listenForAcceptedOrders = (
     return;
   }
   try {
-    console.log("Listening for accepted orders for staff:", staffId);
+    // console.log("Listening for accepted orders for staff:", staffId);
     databaseOrder
       .orderByChild("StaffId")
       .equalTo(staffId)
       .on("value", (snapshot) => {
         const orders = snapshot.val();
-        // console.log("Accepted orders snapshot received:", orders);
         if (orders && orders !== acceptedOrder) {
           const acceptedOrders = [];
           Object.keys(orders).forEach((orderId) => {
@@ -42,20 +41,45 @@ export const listenForAcceptedOrders = (
         }
       });
   } catch (error) {
-    console.error("Error listening for accepted orders: ", error);
+    // console.error("Error listening for accepted orders: ", error);
   }
 };
 
+export const fetchUnassignedOrders = async () => {
+  // console.log("Fetching unassigned orders with StaffId equal to ''");
+  try {
+    const snapshot = await databaseOrder
+      .orderByChild("StaffId")
+      .equalTo("")
+      .once("value");
+
+    const orders = snapshot.val();
+    // console.log("Unassigned orders snapshot received:", orders);
+
+    const unassignedOrders = [];
+    if (orders) {
+      Object.keys(orders).forEach((orderId) => {
+        const order = orders[orderId];
+        unassignedOrders.push(order);
+      });
+    }
+
+    return unassignedOrders; // Trả về danh sách đơn hàng chưa có nhân viên nhận
+  } catch (error) {
+    // console.error("Error fetching unassigned orders: ", error);
+    return [];
+  }
+};
 // Lắng nghe đơn hàng mới cho nhân viên
 export const listenForNewOrders = (newOrders, setNewOrders) => {
-  console.log("Listening for new orders with StaffId equal to ''");
+  // console.log("Listening for new orders with StaffId equal to ''");
   try {
     databaseOrder
       .orderByChild("StaffId")
       .equalTo("")
       .on("value", (snapshot) => {
         const orders = snapshot.val();
-        console.log("New orders snapshot received:", orders);
+        // console.log("New orders snapshot received:", orders);
         if (orders && orders !== newOrders) {
           const newOrders = [];
           Object.keys(orders).forEach((orderId) => {
@@ -68,7 +92,7 @@ export const listenForNewOrders = (newOrders, setNewOrders) => {
         }
       });
   } catch (error) {
-    console.error("Error listening for new orders: ", error);
+    // console.error("Error listening for new orders: ", error);
   }
 };
 // Nhận đơn hàng
@@ -87,7 +111,7 @@ export const acceptOrder = async (
     typeof staffId !== "boolean" &&
     orderId !== null
   ) {
-    console.error("Invalid value for customerId:", staffId);
+    // console.error("Invalid value for customerId:", staffId);
     return;
   }
   try {
@@ -100,10 +124,10 @@ export const acceptOrder = async (
       StaffAvatar: staffAvatar,
       StatusOrder: 1,
     });
-    console.log("Order accepted successfully:", { orderId, staffId });
+    // console.log("Order accepted successfully:", { orderId, staffId });
     return true;
   } catch (error) {
-    console.error("Error accepting order: ", error);
+    // console.error("Error accepting order: ", error);
     return false;
   }
 };
@@ -125,15 +149,15 @@ export const updateLocation = async (
     typeof orderId !== "boolean" &&
     orderId !== null
   ) {
-    console.error("Invalid value for customerId:", orderId);
+    // console.error("Invalid value for customerId:", orderId);
     return;
   }
   try {
     await databaseOrder.child(orderId).update(location);
-    console.log("location updated successfully:", location);
+    // console.log("location updated successfully:", location);
     return location;
   } catch (error) {
-    console.error("Error placing location: ", error);
+    // console.error("Error placing location: ", error);
     return false;
   }
 };
@@ -149,15 +173,15 @@ export const updateStatusOrder = async (orderId, statusOrder) => {
     typeof orderId !== "boolean" &&
     orderId !== null
   ) {
-    console.error("Invalid value for customerId:", orderId);
+    // console.error("Invalid value for customerId:", orderId);
     return;
   }
   try {
     await databaseOrder.child(orderId).update(status);
-    console.log("location updated successfully:", status);
+    // console.log("location updated successfully:", status);
     return status;
   } catch (error) {
-    console.error("Error placing status: ", error);
+    // console.error("Error placing status: ", error);
     return false;
   }
 };
@@ -166,20 +190,20 @@ export const updateStatusOrder = async (orderId, statusOrder) => {
 export const completeOrder = async (orderId) => {
   try {
     await databaseOrder.child(orderId).remove();
-    console.log("Order completed and removed successfully:", orderId);
+    // console.log("Order completed and removed successfully:", orderId);
     return true;
   } catch (error) {
-    console.error("Error completing order: ", error);
+    // console.error("Error completing order: ", error);
     return false;
   }
 };
 
 // Kiểm tra và xóa đơn hàng chưa nhận sau 10 phút
 export const checkAndDeleteExpiredOrders = () => {
-  console.log("Checking and deleting expired orders");
+  // console.log("Checking and deleting expired orders");
   databaseOrder.on("value", (snapshot) => {
     const orders = snapshot.val();
-    console.log("Orders snapshot received for deletion check:", orders);
+    // console.log("Orders snapshot received for deletion check:", orders);
     if (orders) {
       Object.keys(orders).forEach((orderId) => {
         const order = orders[orderId];
@@ -193,14 +217,14 @@ export const checkAndDeleteExpiredOrders = () => {
 
 // Hàm lắng nghe thay đổi và nhận đơn hàng cho nhân viên
 export const listenNewOrders = (setNewOrders) => {
-  console.log("Listening for new orders with StaffId equal to ''");
+  // console.log("Listening for new orders with StaffId equal to ''");
   try {
     databaseOrder
       .orderByChild("StaffId")
       .equalTo("")
       .on("value", (snapshot) => {
         const orders = snapshot.val();
-        console.log("New orders snapshot received:", orders);
+        // console.log("New orders snapshot received:", orders);
         if (orders) {
           const newOrdersArray = Object.keys(orders).map(
             (orderId) => orders[orderId]
@@ -211,7 +235,7 @@ export const listenNewOrders = (setNewOrders) => {
         }
       });
   } catch (error) {
-    console.error("Error listening for new orders: ", error);
+    // console.error("Error listening for new orders: ", error);
   }
 };
 // Hàm lắng nghe thay đổi và nhận đơn hàng cho nhân viên
@@ -230,11 +254,11 @@ export const useListenOrdersByStaffIdWithFlag = (isStaff) => {
 
   useEffect(() => {
     if (typeof isStaff !== "boolean") {
-      console.error("Invalid value for isStaff:", isStaff);
+      // console.error("Invalid value for isStaff:", isStaff);
       return;
     }
 
-    console.log("Listening for orders with isStaff:", isStaff);
+    // console.log("Listening for orders with isStaff:", isStaff);
 
     const ordersRef = databaseOrder.orderByChild("isStaff").equalTo(isStaff);
 
@@ -258,14 +282,14 @@ export const useListenOrdersByStaffIdWithFlag = (isStaff) => {
         if (childSnapshot.exists()) {
           if (orders.some((order) => order.orderId === orderId)) {
             // Đơn hàng đã tồn tại, đây là sự kiện sửa đổi
-            console.log(`Order modified: ${orderId}`, orderData);
+            // console.log(`Order modified: ${orderId}`, orderData);
           } else {
             // Đơn hàng mới được thêm vào
-            console.log(`Order added: ${orderId}`, orderData);
+            // console.log(`Order added: ${orderId}`, orderData);
           }
         } else {
           // Đơn hàng bị xóa
-          console.log(`Order removed: ${orderId}`);
+          // console.log(`Order removed: ${orderId}`);
         }
       });
 

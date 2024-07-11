@@ -60,6 +60,7 @@ export function doneOderAcepted(dispatch) {
   });
 }
 export function locationUpdate(location, dispatch) {
+  // console.log("locationUpdate------------------------------", location);
   return dispatch({
     type: mainTypes.LOCATION_TIME,
     payload: location,

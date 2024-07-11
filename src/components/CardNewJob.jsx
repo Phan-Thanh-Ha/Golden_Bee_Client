@@ -14,7 +14,6 @@ import {
   ic_clearning,
   ic_clearning_basic,
   ic_glass,
-  ic_hourse_clearning,
   ic_living_room,
   ic_location,
   ic_note,
@@ -24,6 +23,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { mainAction } from '../Redux/Action';
 import { updateStatusOrder } from '../firebaseService/HandleOrder';
+import { RoundUpNumber } from '../utils/RoundUpNumber';
 
 const CardNewJob = ({ data, modalRef }) => {
   const navigation = useNavigation();
@@ -33,6 +33,13 @@ const CardNewJob = ({ data, modalRef }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const acceptedOrder = useSelector(state => state.main.acceptedOrder);
   const location = useSelector(state => state.main.locationTime);
+  const payment = () => {
+    if (data?.DataService?.Payment) {
+      navigation.navigate(ScreenNames.PAYMENT, { data });
+    } else {
+      navigation.navigate(ScreenNames.CASH, { data });
+    }
+  }
   const OVG_spOfficer_Booking_Save = async data => {
     setIsLoading(true);
     try {
@@ -75,13 +82,6 @@ const CardNewJob = ({ data, modalRef }) => {
   const handleReadyGo = () => {
     updateStatusOrder(data?.OrderId, 2);
   };
-  const HandlePayment = () => {
-    navigation.navigate(ScreenNames.PAYMENT, { data });
-  };
-
-  const HandleCash = () => {
-    navigation.navigate(ScreenNames.CASH, { data });
-  };
 
   const openModal = () => {
     modalRef.current?.openModal(data);
@@ -90,6 +90,13 @@ const CardNewJob = ({ data, modalRef }) => {
     <View>
       <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
         🔸{item.ServiceDetailName}
+      </Text>
+    </View>
+  );
+  const renderVoucher = ({ item }) => (
+    <View>
+      <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
+        🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
       </Text>
     </View>
   );
@@ -135,6 +142,15 @@ const CardNewJob = ({ data, modalRef }) => {
                   </Text>
                 </View>
               ) : null}
+              {
+                data?.DataService?.SelectOption ? (
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Text style={MainStyles.textCardJob}>
+                      ⚙️  {data?.DataService?.SelectOption?.OptionName}
+                    </Text>
+                  </View>
+                ) : null
+              }
             </View>
           </View>
           <View style={MainStyles.rowMargin}>
@@ -143,7 +159,7 @@ const CardNewJob = ({ data, modalRef }) => {
                 <Image source={ic_glass} style={{ width: 22, height: 22 }} />
                 <Text style={MainStyles.textCardJob}>
                   {' '}
-                  trong {data?.DataService?.TimeWorking} giờ
+                  trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
                 </Text>
               </View>
               <View style={MainStyles.flexRowFlexEnd}>
@@ -210,6 +226,26 @@ const CardNewJob = ({ data, modalRef }) => {
               </Text>
             </View>
           </View>
+          {
+            data?.DataService?.Voucher?.length > 0 ? (
+              <View style={MainStyles.rowMargin}>
+                <View style={MainStyles.flexRowFlexStart}>
+                  <Text style={MainStyles.textCardJob}>
+                    🎁   Đã áp mã voucher :
+                  </Text>
+                </View>
+                {data?.DataService?.Voucher?.length > 0 ? (
+                  <FlatList
+                    data={data?.DataService?.Voucher}
+                    renderItem={renderVoucher}
+                    keyExtractor={item => item?.VoucherId.toString()}
+                  />
+                ) : null}
+              </View>
+            ) : null
+          }
+
+
           <View style={MainStyles.cardContentJob}>
             <Text
               style={{
@@ -230,7 +266,7 @@ const CardNewJob = ({ data, modalRef }) => {
                   fontSize: 18,
                   fontWeight: '700',
                 }}>
-                {FormatMoney(data?.DataService?.TotalPrice)} vnđ
+                {FormatMoney(data?.DataService?.PriceAfterDiscount)} vnđ
               </Text>
             </View>
           </View>
@@ -278,21 +314,10 @@ const CardNewJob = ({ data, modalRef }) => {
                 <Button
                   paddingHorizontal={10}
                   paddingVertical={8}
-                  bgColor={colors.SOFT_GREEN}
-                  textColor={colors.WHITE}
-                  fontSize={14}
-                  onPress={HandlePayment}>
-                  Chuyển khoản
-                </Button>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Button
-                  paddingHorizontal={10}
-                  paddingVertical={8}
                   bgColor={colors.DEFAULT_GREEN}
-                  fontSize={14}
-                  onPress={HandleCash}>
-                  Tiền mặt
+                  fontSize={16}
+                  onPress={payment}>
+                  💰    Thanh toán dịch vụ
                 </Button>
               </View>
             </View>

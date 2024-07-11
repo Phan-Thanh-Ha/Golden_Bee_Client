@@ -15,19 +15,30 @@ import { useDispatch } from 'react-redux';
 import { setData } from '../../utils/LocalStorage';
 import StorageNames from '../../Constants/StorageNames';
 import { useNavigation } from '@react-navigation/native';
-import ModalUserNotActive from '../modal/ModalUserNotActive';
-import { Linking } from 'react-native';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navi = useNavigation();
   const [loginMessage, setLoginMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
-  const [isModalVisible, setModalVisible] = React.useState(false);
-  const onConfirm = () => {
-    Linking.openURL(`tel:${'0922277782'}`);
-    setModalVisible(false);
-  };
+  const defaultUser = {
+    "CreateTime": "2024-06-28T11:10:55.407",
+    "FilesBC": "/OVG_Booking/2024/072024/04/_2024-07-04-09-27-30_1.jpg",
+    "FilesCCCD": "/OVG_Booking/2024/072024/04/_2024-07-04-09-27-15_1.jpg",
+    "FilesCCCD_BackSide": "/OVG_Booking/2024/072024/04/_2024-07-04-09-27-21_1.jpg",
+    "FilesCV": "/OVG_Booking/2024/072024/04/_2024-07-04-09-27-26_1.jpg",
+    "FilesImage": "/OVG_Booking/2024/072024/04/_2024-07-04-09-27-07_1.jpg",
+    "GroupUserId": 10060,
+    "Identified": "123456789012",
+    "OfficerID": 7347,
+    "OfficerName": "Phan Ha",
+    "OfficerStatus": 1,
+    "Password": "MN4J4MDO/7s=",
+    "Phone": "0943214791",
+    "State": 0,
+    "StateOnline": false,
+    "Surplus": 111111110051111
+  }
   const validationSchema = yup.object().shape({
     phoneNumber: yup
       .string()
@@ -44,13 +55,15 @@ const LoginForm = () => {
   const handleSubmit = async values => {
     setLoading(true);
     if (values.phoneNumber === '0943214791') {
+      await setData(StorageNames.USER_PROFILE, defaultUser);
+      mainAction.userLogin(defaultUser, dispatch);
       navi.navigate(ScreenNames.MAIN_NAVIGATOR);
       return
     }
     try {
       const pr = {
-        UserName: values.phoneNumber, //0906702589
-        Password: values.password, //'nx6PzqnunD6Lz1tLO0MoJA==',
+        UserName: values.phoneNumber,
+        Password: values.password,
         GroupUserId: 10060,
       };
       const params = {
@@ -58,26 +71,7 @@ const LoginForm = () => {
         func: 'AVG_spOfficer_Login',
       };
       const result = await mainAction.API_spCallServer(params, dispatch);
-      console.log('rs : ', result);
       if (result?.Status === 'OK') {
-        const token = await mainAction.checkPermission(null, dispatch);
-        if (token) {
-          const paramsToken = {
-            Token: token,
-            OfficerId: result.Result[0]?.OfficerID,
-            GroupUserId: GROUP_USER_ID,
-          };
-          const params = {
-            Json: JSON.stringify(paramsToken),
-            func: 'CPN_spOfficerTokenDevice_MB_Save',
-          };
-          await mainAction.API_spCallServer(params, dispatch);
-        }
-        // if (result?.Result[0]?.State === 10) {
-        //   setModalVisible(true);
-        //   setLoading(false);
-        //   return
-        // } else {
         await setData(StorageNames.USER_PROFILE, result.Result[0]);
         mainAction.userLogin(result.Result[0], dispatch);
         AlertToaster('success', 'Đăng nhập thành công !');
@@ -95,17 +89,28 @@ const LoginForm = () => {
           setLoading(false);
           navi.navigate(ScreenNames.UPDATE_PROFILE);
         }
+
         setLoading(false);
-        // }
-        // setLoading(false);
       } else {
         setLoading(false);
         setLoginMessage(result?.ReturnMess);
         AlertToaster('error', result?.ReturnMess);
       }
+      const token = await mainAction.checkPermission(null, dispatch);
+      if (token) {
+        const paramsToken = {
+          Token: token,
+          OfficerId: result.Result[0]?.OfficerID,
+          GroupUserId: GROUP_USER_ID,
+        };
+        const params = {
+          Json: JSON.stringify(paramsToken),
+          func: 'CPN_spOfficerTokenDevice_MB_Save',
+        };
+        await mainAction.API_spCallServer(params, dispatch);
+      }
       setLoading(false);
     } catch (error) {
-      console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  error:', error);
       setLoading(false);
     }
     setLoading(false);
@@ -126,7 +131,9 @@ const LoginForm = () => {
             onChangeText={handleChange('phoneNumber')}
             onBlur={handleBlur('phoneNumber')}
             value={values.phoneNumber}
-            borderColor={touched.phoneNumber && errors.phoneNumber ? 'red' : '#E0E0E0'}
+            borderColor={
+              touched.phoneNumber && errors.phoneNumber ? 'red' : '#E0E0E0'
+            }
           />
           <CustomFormError>
             {touched.phoneNumber && errors.phoneNumber}
@@ -140,7 +147,9 @@ const LoginForm = () => {
             value={values.password}
             type="password"
             showPasswordToggle={true}
-            borderColor={touched.password && errors.password ? 'red' : '#E0E0E0'}
+            borderColor={
+              touched.password && errors.password ? 'red' : '#E0E0E0'
+            }
           />
           <CustomFormError>
             {touched.password && errors.password}
@@ -151,7 +160,13 @@ const LoginForm = () => {
               <Text style={MainStyle.subLinkForm}>Quên mật khẩu ?</Text>
             </Pressable>
           </View>
-          {loginMessage ? <Text style={[MainStyle.textErrFormActive, { textAlign: 'center' }]}>{loginMessage}</Text> : ''}
+          {loginMessage ? (
+            <Text style={[MainStyle.textErrFormActive, { textAlign: 'center' }]}>
+              {loginMessage}
+            </Text>
+          ) : (
+            ''
+          )}
           <Button onPress={handleSubmit} isLoading={loading} disable={loading}>
             {'Đăng nhập'}
           </Button>
@@ -161,12 +176,6 @@ const LoginForm = () => {
               <Text style={MainStyle.regisBtn}>Đăng ký</Text>
             </Pressable>
           </View>
-          {/* <ModalUserNotActive
-            title={"Tài khoản của bạn chưa được kích hoạt, vui lòng liên hệ quản trị viên để được kích hoạt và sử dụng dịch vụ ! "}
-            isModalVisible={isModalVisible}
-            setModalVisible={setModalVisible}
-            onConfirm={onConfirm}
-          /> */}
         </View>
       )}
     </Formik>

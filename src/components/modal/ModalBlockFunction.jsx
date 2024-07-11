@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Text, View, StyleSheet } from "react-native";
-import AlertModal from "../AlertModal";
-import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../styles/MainStyle";
-import { colors } from "../../styles/Colors";
+import { Image, Text, View, StyleSheet } from 'react-native';
+import AlertModal from '../AlertModal';
+import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
+import { colors } from '../../styles/Colors';
 import axios from 'axios';
 
-const ModalBlockFunction = ({ data = {}, isModalVisible, setModalVisible, onConfirm, title }) => {
-  const [imageUrl, setImageUrl] = useState('')
+const ModalBlockFunction = ({
+  data = {},
+  isModalVisible,
+  setModalVisible,
+  onConfirm,
+  title,
+}) => {
+  const [imageUrl, setImageUrl] = useState('');
 
   const showModal = () => {
     setModalVisible(true);
@@ -18,25 +24,25 @@ const ModalBlockFunction = ({ data = {}, isModalVisible, setModalVisible, onConf
 
   const handleConfirm = () => {
     onConfirm();
-    console.log('User confirmed');
+    // console.log('User confirmed');
     hideModal();
   };
 
   useEffect(() => {
-    QRCodeACB(data)
+    QRCodeACB(data);
   }, [data]);
 
-  const QRCodeACB = async (data) => {
+  const QRCodeACB = async data => {
     let COD = data?.COD;
     let Code = data?.Code;
     try {
       let requestData = JSON.stringify({
-        "accountNo": "22772868",
-        "accountName": "CTY CP DAU TU THUONG MAI ONG VANG",
-        "acqId": "970416",
-        "addInfo": "OVG_1234564988",
-        "amount": 10000,
-        "template": "print"
+        accountNo: '22772868',
+        accountName: 'CTY CP DAU TU THUONG MAI ONG VANG',
+        acqId: '970416',
+        addInfo: 'OVG_1234564988',
+        amount: 100000,
+        template: 'print',
       });
 
       let config = {
@@ -45,9 +51,10 @@ const ModalBlockFunction = ({ data = {}, isModalVisible, setModalVisible, onConf
         url: 'https://api.vietqr.io/v2/generate',
         headers: {
           'Content-Type': 'application/json',
-          'Cookie': 'connect.sid=s%3A1VQ0Mid2KYT7kJ0rbRr4vmKixGsaBX1n.2frCeq8MFDEjhGWWNqycze3%2FwrcwAOCcgujLV94bTJA'
+          Cookie:
+            'connect.sid=s%3A1VQ0Mid2KYT7kJ0rbRr4vmKixGsaBX1n.2frCeq8MFDEjhGWWNqycze3%2FwrcwAOCcgujLV94bTJA',
         },
-        data: requestData
+        data: requestData,
       };
 
       const response = await axios.request(config);
@@ -57,7 +64,7 @@ const ModalBlockFunction = ({ data = {}, isModalVisible, setModalVisible, onConf
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <AlertModal
@@ -67,21 +74,14 @@ const ModalBlockFunction = ({ data = {}, isModalVisible, setModalVisible, onConf
       onConfirm={handleConfirm}
       title="Thông tin thanh toán"
       backdropCloseable={false}
-      isCancelable={false}
-    >
+      isCancelable={false}>
       <View style={styles.container}>
         <View style={styles.card}>
-          {
-            imageUrl ? (
-              <View style={styles.imageContainer}>
-                <Image
-                  source={{ uri: imageUrl }}
-                  style={styles.image}
-                />
-              </View>
-            ) : null
-          }
-
+          {imageUrl ? (
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: imageUrl }} style={styles.image} />
+            </View>
+          ) : null}
         </View>
       </View>
     </AlertModal>

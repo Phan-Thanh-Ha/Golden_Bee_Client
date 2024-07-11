@@ -62,6 +62,7 @@ export const BottomTabNavigator = () => {
               routeName === selectedTab
                 ? colors.TEXT_COLOR_BLUE_TAB
                 : colors.TEXT_COLOR_GRAY_TAB,
+            fontSize: 10,
           }}
         >
           {displayName}

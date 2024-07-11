@@ -21,7 +21,6 @@ export const OVG_FBRT_ListenMyOrders = (
   dispatch
 ) => {
   if (!staffId) {
-    console.log("Invalid value for staffId:", staffId);
     return;
   }
 
@@ -30,8 +29,6 @@ export const OVG_FBRT_ListenMyOrders = (
   const handleOrderChange = (snapshot) => {
     const order = snapshot.val();
     const orderId = snapshot.key;
-    console.log("Order changed:", { ...order, orderId });
-
     setOrderChange({ ...order, orderId });
 
     setMyOrders((prevOrders) => {
@@ -64,7 +61,6 @@ export const OVG_FBRT_ListenMyOrders = (
       } else {
         const updatedOrders = [...prevOrders, { ...order, OrderId: orderId }];
         const orderAdded = { ...order, orderId };
-        console.log("Order added:", orderAdded);
 
         if (
           orderAdded?.StatusOrder === 0 ||
@@ -83,7 +79,6 @@ export const OVG_FBRT_ListenMyOrders = (
     const order = snapshot.val();
     const orderId = snapshot.key;
     const orderRemoved = { ...order, orderId };
-    console.log("Order removed:", orderRemoved);
 
     setMyOrders((prevOrders) => {
       const updatedOrders = prevOrders.filter((o) => o.OrderId !== orderId);
@@ -98,8 +93,6 @@ export const OVG_FBRT_ListenMyOrders = (
   };
 
   try {
-    console.log("Initializing and listening for orders for staff:", staffId);
-
     const myOrdersRef = databaseOrder.orderByChild("StaffId").equalTo(staffId);
 
     myOrdersRef.once("value", (snapshot) => {
@@ -110,10 +103,8 @@ export const OVG_FBRT_ListenMyOrders = (
           OrderId: orderId,
         }));
         setMyOrders(initialOrders);
-        console.log("Initial orders loaded:", initialOrders);
       } else {
         setMyOrders([]);
-        console.log("No initial orders found.");
       }
 
       // Đặt initValueFirebase thành true sau khi tải dữ liệu

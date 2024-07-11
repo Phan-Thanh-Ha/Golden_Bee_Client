@@ -15,7 +15,7 @@ const Check = () => {
 
   const handleConfirm = () => {
     // Xử lý khi người dùng nhấn nút xác nhận
-    console.log('User confirmed');
+    // console.log('User confirmed');
     hideModal();
   };
 
@@ -25,17 +25,15 @@ const Check = () => {
       <AlertModal
         isVisible={isModalVisible}
         onClose={hideModal}
-        isAuto={false}  // Thay đổi thành false nếu không muốn modal tự động đóng
+        isAuto={false} // Thay đổi thành false nếu không muốn modal tự động đóng
         // autoCloseTime={5000} // Ví dụ: Đóng sau 5 giây
         onConfirm={handleConfirm}
         title="Thông báo"
-        backdropCloseable={false}
-      >
+        backdropCloseable={false}>
         Đây là nội dung của alert.
       </AlertModal>
     </View>
   );
 };
-
 
 export default Check;

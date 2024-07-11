@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import {initializeApp} from 'firebase/app';
 import {
   getDatabase,
   ref,
@@ -11,19 +11,19 @@ import {
   equalTo,
   update,
   remove,
-} from "firebase/database";
+} from 'firebase/database';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB_rVEn4ImOdNFGoUPNCj-UrXE3tygWIEY",
-  authDomain: "golden-bee-651eb.firebaseapp.com",
+  apiKey: 'AIzaSyB_rVEn4ImOdNFGoUPNCj-UrXE3tygWIEY',
+  authDomain: 'golden-bee-651eb.firebaseapp.com',
   databaseURL:
-    "https://golden-bee-651eb-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "golden-bee-651eb",
-  storageBucket: "golden-bee-651eb.appspot.com",
-  messagingSenderId: "616914078130",
-  appId: "1:616914078130:web:602db051750307802ebcab",
-  measurementId: "G-NWK8EZ7GQX",
+    'https://golden-bee-651eb-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'golden-bee-651eb',
+  storageBucket: 'golden-bee-651eb.appspot.com',
+  messagingSenderId: '616914078130',
+  appId: '1:616914078130:web:602db051750307802ebcab',
+  measurementId: 'G-NWK8EZ7GQX',
 };
 
 // Initialize Firebase
@@ -31,21 +31,21 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 // Reference to the orders in the database
-const databaseOrder = ref(database, "/order");
+const databaseOrder = ref(database, '/order');
 
 // Function to place an order
 export const placeOrder = async (
   customerId,
   orderId,
   latitudeCustomer,
-  longitudeCustomer
+  longitudeCustomer,
 ) => {
   const newOrder = {
     CustomerId: customerId,
     OrderId: orderId,
-    StaffId: "",
-    StaffName: "",
-    StaffPhone: "",
+    StaffId: '',
+    StaffName: '',
+    StaffPhone: '',
     LatitudeCustomer: latitudeCustomer,
     LongitudeCustomer: longitudeCustomer,
     createAt: Date.now(),
@@ -53,28 +53,25 @@ export const placeOrder = async (
 
   try {
     await set(child(databaseOrder, orderId), newOrder);
-    console.log("Order placed successfully:", newOrder);
     return newOrder;
   } catch (error) {
-    console.error("Error placing order: ", error);
+    console.error('Error placing order: ', error);
     return null;
   }
 };
 
 // Function to listen for order updates for a customer
 export const listenForOrderUpdates = (customerId, setCustomerOrder) => {
-  console.log("Listening for order updates for client:", customerId);
   const customerOrdersQuery = query(
     databaseOrder,
-    orderByChild("CustomerId"),
-    equalTo(customerId)
+    orderByChild('CustomerId'),
+    equalTo(customerId),
   );
 
-  onValue(customerOrdersQuery, (snapshot) => {
+  onValue(customerOrdersQuery, snapshot => {
     const orders = snapshot.val();
-    console.log("Orders snapshot received:", orders);
     if (orders) {
-      Object.keys(orders).forEach((orderId) => {
+      Object.keys(orders).forEach(orderId => {
         const order = orders[orderId];
         setCustomerOrder(order); // Update customer order state
       });
@@ -84,8 +81,7 @@ export const listenForOrderUpdates = (customerId, setCustomerOrder) => {
   });
 
   // Listen for order removal
-  onChildRemoved(customerOrdersQuery, (snapshot) => {
-    console.log("Order removed:", snapshot.val());
+  onChildRemoved(customerOrdersQuery, snapshot => {
     setCustomerOrder(null); // When an order is removed, update the state
     removeData(StorageNames.ORDER_SERVICE); // Remove from local storage
   });
@@ -93,19 +89,17 @@ export const listenForOrderUpdates = (customerId, setCustomerOrder) => {
 
 // Function to listen for new orders for staff
 export const listenForNewOrders = (newOrders, setNewOrders) => {
-  console.log("Listening for new orders with StaffId equal to ''");
   const newOrdersQuery = query(
     databaseOrder,
-    orderByChild("StaffId"),
-    equalTo("")
+    orderByChild('StaffId'),
+    equalTo(''),
   );
 
-  onValue(newOrdersQuery, (snapshot) => {
+  onValue(newOrdersQuery, snapshot => {
     const orders = snapshot.val();
-    console.log("New orders snapshot received:", orders);
     if (orders && orders !== newOrders) {
       const newOrdersList = [];
-      Object.keys(orders).forEach((orderId) => {
+      Object.keys(orders).forEach(orderId => {
         const order = orders[orderId];
         newOrdersList.push(order);
       });
@@ -120,7 +114,7 @@ export const listenForNewOrders = (newOrders, setNewOrders) => {
 export const updateLocation = async (
   orderId,
   LatitudeStaff,
-  LongitudeStaff
+  LongitudeStaff,
 ) => {
   const location = {
     LatitudeStaff: LatitudeStaff,
@@ -129,10 +123,9 @@ export const updateLocation = async (
 
   try {
     await update(child(databaseOrder, orderId), location);
-    console.log("Location updated successfully:", location);
     return location;
   } catch (error) {
-    console.error("Error updating location: ", error);
+    console.error('Error updating location: ', error);
     return false;
   }
 };
@@ -145,10 +138,9 @@ export const updateStatusOrder = async (orderId, statusOrder) => {
 
   try {
     await update(child(databaseOrder, orderId), status);
-    console.log("Status updated successfully:", status);
     return status;
   } catch (error) {
-    console.error("Error updating status: ", error);
+    console.error('Error updating status: ', error);
     return false;
   }
 };
@@ -157,21 +149,19 @@ export const updateStatusOrder = async (orderId, statusOrder) => {
 export const listenForAcceptedOrders = (
   staffId,
   acceptedOrder,
-  setAcceptedOrders
+  setAcceptedOrders,
 ) => {
-  console.log("Listening for accepted orders for staff:", staffId);
   const acceptedOrdersQuery = query(
     databaseOrder,
-    orderByChild("StaffId"),
-    equalTo(staffId)
+    orderByChild('StaffId'),
+    equalTo(staffId),
   );
 
-  onValue(acceptedOrdersQuery, (snapshot) => {
+  onValue(acceptedOrdersQuery, snapshot => {
     const orders = snapshot.val();
-    console.log("Accepted orders snapshot received:", orders);
     if (orders && orders !== acceptedOrder) {
       const acceptedOrdersList = [];
-      Object.keys(orders).forEach((orderId) => {
+      Object.keys(orders).forEach(orderId => {
         const order = orders[orderId];
         acceptedOrdersList.push(order);
       });
@@ -189,7 +179,7 @@ export const acceptOrder = async (
   staffName,
   staffPhone,
   LatitudeStaff,
-  LongitudeStaff
+  LongitudeStaff,
 ) => {
   try {
     await update(child(databaseOrder, orderId), {
@@ -200,22 +190,20 @@ export const acceptOrder = async (
       LongitudeStaff: LongitudeStaff,
       StatusOrder: 1,
     });
-    console.log("Order accepted successfully:", { orderId, staffId });
     return true;
   } catch (error) {
-    console.error("Error accepting order: ", error);
+    console.error('Error accepting order: ', error);
     return false;
   }
 };
 
 // Function to complete an order
-export const completeOrder = async (orderId) => {
+export const completeOrder = async orderId => {
   try {
     await remove(child(databaseOrder, orderId));
-    console.log("Order completed and removed successfully:", orderId);
     return true;
   } catch (error) {
-    console.error("Error completing order: ", error);
+    console.error('Error completing order: ', error);
     return false;
   }
 };
@@ -225,20 +213,17 @@ export const deleteOrderIfNotAccepted = (orderId, createAt) => {
   const currentTime = Date.now();
   if (currentTime - createAt > 10 * 60 * 1000) {
     remove(child(databaseOrder, orderId));
-    console.log("Order deleted due to timeout:", orderId);
   }
 };
 
 // Function to check and delete expired orders
 export const checkAndDeleteExpiredOrders = () => {
-  console.log("Checking and deleting expired orders");
-  onValue(databaseOrder, (snapshot) => {
+  onValue(databaseOrder, snapshot => {
     const orders = snapshot.val();
-    console.log("Orders snapshot received for deletion check:", orders);
     if (orders) {
-      Object.keys(orders).forEach((orderId) => {
+      Object.keys(orders).forEach(orderId => {
         const order = orders[orderId];
-        if (order.StaffId === "") {
+        if (order.StaffId === '') {
           deleteOrderIfNotAccepted(orderId, order.createAt);
         }
       });

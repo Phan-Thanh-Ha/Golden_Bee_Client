@@ -3,11 +3,12 @@ import { Text, View } from 'react-native';
 import AlertModal from '../AlertModal';
 import MainStyles from '../../styles/MainStyle';
 
-const ModalUserNotActive = ({
+const BlockModal = ({
   title,
   isModalVisible,
   setModalVisible,
   onConfirm,
+  isConfirmable = true,
 }) => {
   const handleConfirm = () => {
     onConfirm();
@@ -23,6 +24,7 @@ const ModalUserNotActive = ({
       title="Thông báo"
       backdropCloseable={false}
       isCancelable={false}
+      isConfirmable={isConfirmable}
     >
       <View>
         <View style={[MainStyles.cardJob]}>
@@ -38,4 +40,4 @@ const ModalUserNotActive = ({
   );
 };
 
-export default ModalUserNotActive;
+export default BlockModal;

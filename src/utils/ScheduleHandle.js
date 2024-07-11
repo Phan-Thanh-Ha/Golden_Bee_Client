@@ -14,7 +14,6 @@
 //   const [schedule, setSchedule] = useState(initialArray);
 
 //   const handleBook = (selectedTimes) => {
-//     console.log("Selected times from parent:", selectedTimes);
 //   };
 
 //   const updateSchedule = () => {
@@ -41,4 +40,4 @@ export const initialArray = [
   [0, 0, 0, 0, 0, 0, 0], // Afternoon
   [0, 0, 0, 0, 0, 0, 0], // Evening
   [0, 0, 0, 0, 0, 0, 0], // Night
-].map((row) => row.map((cell) => cell === 1));
+].map(row => row.map(cell => cell === 1));

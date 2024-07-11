@@ -1,10 +1,4 @@
 export const checkCaseStatus = (statusOnline, surplus, numOrder, state) => {
-  if (state === 10) {
-    return {
-      status:
-        "Tài khoản của bạn chưa được kích hoạt, vui lòng liên hệ quản trị viên đẻ được kích hoạt",
-    };
-  }
   if (statusOnline === false) {
     return {
       status: "Bạn đang tắt trạng thái nhận việc",
@@ -22,6 +16,12 @@ export const checkCaseStatus = (statusOnline, surplus, numOrder, state) => {
         "Bạn đang được nhận " +
         numOrder +
         " đơn dịch vụ, vui lòng liên hệ quản trị viên để giải quyết",
+    };
+  }
+  if (state === 10) {
+    return {
+      status:
+        "Tài khoản của bạn chưa được kích hoạt, vui lòng liên hệ quản trị viên đẻ được kích hoạt",
     };
   }
   return {

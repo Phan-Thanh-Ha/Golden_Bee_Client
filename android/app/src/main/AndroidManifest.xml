@@ -13,7 +13,7 @@
     <!-- Quyền lưu bộ nhớ ngoại vi như thẻ SD -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Quyền khi ứng dụng không được mở -->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
     <!-- Quyền cho image crop picker -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     <!-- Quyền push notifire -->

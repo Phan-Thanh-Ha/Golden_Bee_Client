@@ -22,7 +22,7 @@ export const FormatTime = (timestamp, type) => {
     return `${hoursStr}:${minutesStr}`;
   } else {
     throw new Error(
-      'Invalid type parameter. Use 1 for "ngày/tháng/năm giờ:phút" format and 2 for "giờ:phút" format.'
+      'Invalid type parameter. Use 1 for "ngày/tháng/năm giờ:phút" format and 2 for "giờ:phút" format.',
     );
   }
 };
@@ -31,9 +31,6 @@ export const FormatTime = (timestamp, type) => {
 // const timestamp = 1718821492732;
 // const type1 = 1;
 // const type2 = 2;
-
-// console.log(parseTimestamp(timestamp, type1)); // "23/12/2024 06:38" (ví dụ)
-// console.log(parseTimestamp(timestamp, type2)); // "06:38" (ví dụ)
 export const parseTimeSql = (time, type) => {
   const date = new Date(time);
 
@@ -55,7 +52,7 @@ export const parseTimeSql = (time, type) => {
     return `${hoursStr}:${minutesStr}`;
   } else {
     throw new Error(
-      'Invalid type parameter. Use 1 for "ngày/tháng/năm giờ:phút" format and 2 for "giờ:phút" format.'
+      'Invalid type parameter. Use 1 for "ngày/tháng/năm giờ:phút" format and 2 for "giờ:phút" format.',
     );
   }
 };

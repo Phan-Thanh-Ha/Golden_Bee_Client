@@ -4,7 +4,6 @@ import mainTypes from '../Action/mainTypes';
 import {api, APIKey, API_END_POINT, IMAGES_DOMAIN} from '../../Config/Api';
 import messaging from '@react-native-firebase/messaging';
 export function* API_spCallServer(action) {
-  // console.log('🚀 ~ function*API_spCallServer ~ action:', action);
   const params = action && action.params;
 
   try {
@@ -62,7 +61,6 @@ export function* checkPermission(action) {
 }
 
 export function* API_spCallPostImage(action) {
-  console.log('API_spCallPostImage main saga action : ', action);
   try {
     //params received
     const params = action && action.params;
@@ -84,7 +82,6 @@ export function* API_spCallPostImage(action) {
   } catch (e) {
     ///something wrong
     action.reject(e);
-    console.log('catch saga', e);
   }
 }
 export default function* watchMainSagas() {

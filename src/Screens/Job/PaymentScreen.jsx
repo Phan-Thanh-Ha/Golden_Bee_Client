@@ -27,6 +27,8 @@ import BtnGetImageModal from '../../components/BtnGetImageModal';
 import ModalBlockFunction from '../../components/modal/ModalBlockFunction';
 import { StyleSheet } from 'react-native';
 import { Spinner } from '@ui-kitten/components';
+import AlertConfirm from '../../components/modal/AlertConfirm';
+import { RoundUpNumber } from '../../utils/RoundUpNumber';
 
 const PaymentScreen = ({ route }) => {
   const [isModalVisible, setIsModalVisible] = useState(true);
@@ -39,7 +41,22 @@ const PaymentScreen = ({ route }) => {
   const [more, setMore] = useState(false);
   const [imageBefore, setImageBefore] = useState([]);
   const [imageAfter, setImageAfter] = useState([]);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [isModalAlertVisible, setIsModalAlertVisible] = useState(false);
 
+  const validation = () => {
+    if (!imageBefore[0]) {
+      setAlertTitle('Vui lòng thêm hình ảnh trước khi làm việc');
+      setIsLoading(false);
+      return false;
+    }
+    if (!imageAfter[0]) {
+      setAlertTitle('Vui lòng thêm hình ảnh sau khi làm việc');
+      setIsLoading(false);
+      return false;
+    }
+    return true;
+  }
   const OVG_spOfficer_Booking_Save = async (data) => {
     setIsLoading(true);
     try {
@@ -71,9 +88,8 @@ const PaymentScreen = ({ route }) => {
             ...userLogin,
             OfficerStatus: 0
           }
-          mainAction.acceptedOrder({}, dispatch);
           mainAction.userLogin(userChange, dispatch);
-          setData(StorageNames.ORDER_SERVICE, null);
+          await setData(StorageNames.USER_PROFILE, userChange);
           navi.navigate(ScreenNames.CONGRATULATION, { data: data });
         }
         return;
@@ -84,9 +100,13 @@ const PaymentScreen = ({ route }) => {
     }
   };
   const handlePayment = () => {
-    OVG_spOfficer_Booking_Save(data);
+    const valid = validation();
+    if (valid) {
+      OVG_spOfficer_Booking_Save(data);
+    } else {
+      setIsModalAlertVisible(true);
+    }
   }
-
   const confirmGetQrCode = () => {
     setIsModalVisible(true);
   }
@@ -137,7 +157,7 @@ const PaymentScreen = ({ route }) => {
                     source={ic_glass}
                     style={{ width: 22, height: 22 }}
                   />
-                  <Text style={MainStyles.textCardJob}> trong {data?.DataService?.TimeWorking} giờ</Text>
+                  <Text style={MainStyles.textCardJob}> trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ</Text>
                 </View>
                 <View style={MainStyles.flexRowFlexEnd}>
                   <Image
@@ -279,7 +299,7 @@ const PaymentScreen = ({ route }) => {
                         fontSize: 18,
                         fontWeight: '700',
                       }
-                    }>{FormatMoney(data?.DataService?.TotalPrice)} vnđ</Text>
+                    }>{FormatMoney(data?.DataService?.PriceAfterDiscount)} vnđ</Text>
                   </View>
                 </View>
                 {/* <View>
@@ -311,6 +331,7 @@ const PaymentScreen = ({ route }) => {
             </View>
           </View>
         </View>
+        <Box height={SCREEN_HEIGHT * 0.07} />
       </ScrollView>
       <LayoutBottom>
         <View style={styles.buttonContainer}>
@@ -332,6 +353,12 @@ const PaymentScreen = ({ route }) => {
         setModalVisible={setIsModalVisible}
         onConfirm={() => setIsModalVisible(false)}
         title="Chức năng thanh toán chuyển khoản hiện tại chưa khả dụng, vui lòng sử dụng chức năng thanh toán tiền mặt thay thế !"
+      />
+      <AlertConfirm
+        title={alertTitle}
+        isModalVisible={isModalAlertVisible}
+        setModalVisible={setIsModalAlertVisible}
+        onConfirm={() => { setIsModalAlertVisible(false) }}
       />
     </LayoutGradientBlue>
   );
