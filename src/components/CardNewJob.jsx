@@ -18,7 +18,6 @@ import {
   ic_location,
   ic_note,
   ic_person,
-  ic_schedule,
 } from '../assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { mainAction } from '../Redux/Action';
@@ -29,7 +28,6 @@ const CardNewJob = ({ data, modalRef }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.main.userLogin);
-  const [confirm, setConfirm] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const acceptedOrder = useSelector(state => state.main.acceptedOrder);
   const location = useSelector(state => state.main.locationTime);

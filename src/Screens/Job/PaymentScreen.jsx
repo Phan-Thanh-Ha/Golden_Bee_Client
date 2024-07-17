@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
@@ -9,13 +9,11 @@ import Box from '../../components/Box';
 import Header from '../../components/Header';
 import { FormatMoney } from '../../utils/FormatMoney';
 import CustomLabel from '../../components/forms/CustomLabel';
-import { camera_icon, cirtificate, coin_icon, ic_chronometer, ic_clearning, ic_clearning_basic, ic_glass, ic_living_room, ic_location, ic_note, ic_person } from '../../assets';
-import Button from '../../components/buttons/Button';
+import { cirtificate, coin_icon, ic_chronometer, ic_clearning, ic_clearning_basic, ic_glass, ic_living_room, ic_location, ic_note, ic_person } from '../../assets';
 import StatusBarCustom from '../../components/StatusBarCustom';
 import LayoutBottom from '../../components/layouts/LayoutBottom';
 import { responsivescreen } from '../../utils/responsive-screen';
-import ArrowRight from '../../components/svg/ArrowRight';
-import { AlertToaster, setData } from '../../utils';
+import { setData } from '../../utils';
 import { completeOrder } from '../../firebaseService/HandleOrder';
 import { ScreenNames } from '../../Constants';
 import { useDispatch, useSelector } from 'react-redux';
@@ -67,9 +65,9 @@ const PaymentScreen = ({ route }) => {
         LngOfficer: location?.longitude,
         OfficerName: userLogin?.OfficerName,
         IsConfirm: 3,
-        TotalMoneyBooking: data?.DataService?.TotalPrice,
-        OfficerMoney: data?.DataService?.TotalPrice * 0.7,
-        AdminMoney: data?.DataService?.TotalPrice * 0.3,
+        TotalMoneyBooking: data?.DataService?.PriceAfterDiscount,
+        OfficerMoney: data?.DataService?.PriceAfterDiscount * 0.7,
+        AdminMoney: data?.DataService?.PriceAfterDiscount * 0.3,
         ImageBookingServiceBefore: imageBefore[0],
         ImageBookingServiceAfter: imageAfter[0],
         GroupUserId: 10060
@@ -90,7 +88,11 @@ const PaymentScreen = ({ route }) => {
           }
           mainAction.userLogin(userChange, dispatch);
           await setData(StorageNames.USER_PROFILE, userChange);
-          navi.navigate(ScreenNames.CONGRATULATION, { data: data });
+          // navi.navigate(ScreenNames.CONGRATULATION, { data: data });
+          navi.reset({
+            index: 0,
+            routes: [{ name: ScreenNames.CONGRATULATION, params: { data: data } }],
+          })
         }
         return;
       }

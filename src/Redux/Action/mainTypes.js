@@ -15,5 +15,6 @@ const mainTypes = {
   CHECK_PERMISSION: "CHECK_PERMISSION",
   MY_ORDER_ACCEPTED: "MY_ORDER_ACCEPTED",
   INIT_VALUE_FIREBASE: "INIT_VALUE_FIREBASE",
+  DecryptString: "DecryptString",
 };
 export default mainTypes;

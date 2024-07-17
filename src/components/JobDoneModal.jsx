@@ -16,10 +16,10 @@ import {
   FlatList,
 } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import MainStyles, {SCREEN_HEIGHT} from '../styles/MainStyle';
-import {colors} from '../styles/Colors';
-import {FormatMoney} from '../utils/FormatMoney';
-import {Spinner} from '@ui-kitten/components';
+import MainStyles, { SCREEN_HEIGHT } from '../styles/MainStyle';
+import { colors } from '../styles/Colors';
+import { FormatMoney } from '../utils/FormatMoney';
+import { Spinner } from '@ui-kitten/components';
 import {
   cirtificate,
   coin_icon,
@@ -37,8 +37,8 @@ import {
 } from '../assets';
 import LayoutBottom from './layouts/LayoutBottom';
 import Box from './Box';
-import {useDispatch} from 'react-redux';
-import {FormatTime, parseTimeSql} from '../utils/FormatTime';
+import { useDispatch } from 'react-redux';
+import { FormatTime, parseTimeSql } from '../utils/FormatTime';
 
 const JobDoneModal = forwardRef((_, ref) => {
   const [data, setData] = useState(null);
@@ -70,7 +70,7 @@ const JobDoneModal = forwardRef((_, ref) => {
               <View style={MainStyles.cardJob}>
                 <View style={MainStyles.flexRowCenter}>
                   <Text
-                    style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
+                    style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
                     Dịch vụ {data?.ServiceName.toLowerCase()}
                   </Text>
                 </View>
@@ -93,7 +93,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                     <View style={MainStyles.flexRowFlexStart}>
                       <Image
                         source={ic_person}
-                        style={{width: 22, height: 22}}
+                        style={{ width: 22, height: 22 }}
                       />
                       <Text style={MainStyles.textCardJob}>
                         {data?.TotalStaff} nhân viên
@@ -103,7 +103,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                       <View style={MainStyles.flexRowFlexStart}>
                         <Image
                           source={ic_living_room}
-                          style={{width: 22, height: 22}}
+                          style={{ width: 22, height: 22 }}
                         />
                         <Text style={MainStyles.textCardJob}>
                           {data?.TotalRoom} phòng
@@ -117,7 +117,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                     <View style={MainStyles.flexRowFlexEnd}>
                       <Image
                         source={ic_glass}
-                        style={{width: 22, height: 22}}
+                        style={{ width: 22, height: 22 }}
                       />
                       <Text style={MainStyles.textCardJob}>
                         {' '}
@@ -127,7 +127,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                     <View style={MainStyles.flexRowFlexEnd}>
                       <Image
                         source={ic_chronometer}
-                        style={{width: 22, height: 22}}
+                        style={{ width: 22, height: 22 }}
                       />
                       <Text style={MainStyles.textCardJob}>làm ngay</Text>
                     </View>
@@ -138,7 +138,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                     <View style={MainStyles.flexRowFlexStart}>
                       <Image
                         source={cirtificate}
-                        style={{width: 22, height: 22}}
+                        style={{ width: 22, height: 22 }}
                       />
                       <Text style={MainStyles.textCardJob}>
                         Dịch vụ Premium
@@ -150,7 +150,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                     <View style={MainStyles.flexRowFlexStart}>
                       <Image
                         source={ic_clearning_basic}
-                        style={{width: 22, height: 22}}
+                        style={{ width: 22, height: 22 }}
                       />
                       <Text style={MainStyles.textCardJob}>
                         Dịch vụ thông thường
@@ -162,7 +162,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                   <View style={MainStyles.flexRowFlexStart}>
                     <Image
                       source={ic_location}
-                      style={{width: 22, height: 22}}
+                      style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
                       Địa chỉ:{' '}
@@ -174,7 +174,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                   <View style={MainStyles.flexRowFlexStart}>
                     <Image
                       source={ic_clearning}
-                      style={{width: 22, height: 22}}
+                      style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
                       Dịch vụ thêm :{' '}
@@ -183,18 +183,18 @@ const JobDoneModal = forwardRef((_, ref) => {
                   </View>
                   {data?.Detail?.length > 0
                     ? data?.Detail.map(item => (
-                        <View key={item.ServiceDetailId.toString()}>
-                          <Text
-                            style={[MainStyles.textCardJob, {paddingLeft: 10}]}>
-                            🔸{item.ServiceDetailName}
-                          </Text>
-                        </View>
-                      ))
+                      <View key={item.ServiceDetailId.toString()}>
+                        <Text
+                          style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
+                          🔸{item.ServiceDetailName}
+                        </Text>
+                      </View>
+                    ))
                     : null}
                 </View>
                 <View style={MainStyles.rowMargin}>
                   <View style={MainStyles.flexRowFlexStart}>
-                    <Image source={ic_note} style={{width: 22, height: 22}} />
+                    <Image source={ic_note} style={{ width: 22, height: 22 }} />
                     <Text style={MainStyles.textCardJob}>
                       {data?.Note
                         ? 'Ghi chú: ' + data?.DataService?.NoteBooking.trim()
@@ -206,7 +206,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                   <View style={MainStyles.flexRowFlexStart}>
                     <Image
                       source={ic_schedule}
-                      style={{width: 22, height: 22}}
+                      style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
                       Ngày hoàn thành : {parseTimeSql(data?.BookingTime, 1)}
@@ -221,7 +221,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                 </Text>
                 <View style={MainStyles.rowMargin}>
                   <View style={MainStyles.flexRowFlexStart}>
-                    <Image source={ic_human} style={{width: 22, height: 22}} />
+                    <Image source={ic_human} style={{ width: 22, height: 22 }} />
                     <Text style={MainStyles.textCardJob}>
                       Tên khách hàng :{data?.CustomerName}
                     </Text>
@@ -231,7 +231,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                   <View style={MainStyles.flexRowFlexStart}>
                     <Image
                       source={ic_phone_call}
-                      style={{width: 22, height: 22}}
+                      style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
                       Số điện thoại : {data?.Phone}
@@ -260,7 +260,7 @@ const JobDoneModal = forwardRef((_, ref) => {
             Tổng tiền
           </Text>
           <View style={MainStyles.flexRowCenter}>
-            <Image source={coin_icon} style={{width: 22, height: 22}} />
+            <Image source={coin_icon} style={{ width: 22, height: 22 }} />
             <Text
               style={{
                 color: colors.MAIN_COLOR_CLIENT,

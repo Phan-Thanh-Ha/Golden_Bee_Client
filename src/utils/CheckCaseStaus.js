@@ -18,12 +18,12 @@ export const checkCaseStatus = (statusOnline, surplus, numOrder, state) => {
         " đơn dịch vụ, vui lòng liên hệ quản trị viên để giải quyết",
     };
   }
-  if (state === 10) {
-    return {
-      status:
-        "Tài khoản của bạn chưa được kích hoạt, vui lòng liên hệ quản trị viên đẻ được kích hoạt",
-    };
-  }
+  // if (state === 10) {
+  //   return {
+  //     status:
+  //       "Tài khoản của bạn chưa được kích hoạt, vui lòng liên hệ quản trị viên đẻ được kích hoạt",
+  //   };
+  // }
   return {
     status: "Ong Vàng đang tìm việc làm cho bạn",
   };

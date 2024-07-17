@@ -131,14 +131,14 @@ const AddProfileScreen = ({ route }) => {
         };
         const params = {
           Json: JSON.stringify(pr),
-          func: 'CRM2_spProfileOfficer_Save',
+          func: 'OVG_spProfileOfficer_Save',
         };
 
         // console.log('params : ', params);
         const result = await mainAction.API_spCallServer(params, dispatch);
-        // console.log('result : ', result);
+        console.log('result : ', result);
         // Cập nhật xuống localStore để lưu trạng thái đã cập nhật hồ sơ
-        if (result?.Status === 'Success') {
+        if (result?.Status === 'OK') {
           await setData(StorageNames.USER_PROFILE, {
             ...userLogin,
             FilesCCCD: cmndFront.join(''),
@@ -158,21 +158,23 @@ const AddProfileScreen = ({ route }) => {
             },
             dispatch,
           );
-          setIsLoading(false);
-          setIsLoading(false);
-          if (userLogin?.State === 10 || !userLogin?.State) {
-            setTitle('Hồ sơ của bạn đã được cập nhật thành công !');
-            setIsUpdate(true);
-          } else {
-            setIsLoading(false);
-            // navi.navigate(ScreenNames.MAIN_NAVIGATOR);
-          }
+          // setIsLoading(false);
+          // if (userLogin?.State === 10 || !userLogin?.State) {
+          setTitle('Hồ sơ của bạn đã được cập nhật thành công !');
+          setIsUpdate(true);
+          // } else {
+          //   setIsLoading(false);
+          navi.reset({
+            routes: [{ name: ScreenNames.MAIN_NAVIGATOR }],
+          })
+          // navi.navigate(ScreenNames.MAIN_NAVIGATOR);
+          // }
           setIsLoading(false);
         }
         setIsLoading(false);
       } catch {
         setIsLoading(false);
-        // console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  error:', error);
+        console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  error:', error);
       }
       setIsLoading(false);
     }

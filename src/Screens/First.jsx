@@ -28,12 +28,10 @@ const First = () => {
           PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
         );
         if (newPermissionStatus !== 'granted') {
-          // console.log('Location permission not granted');
           return;
         }
       }
 
-      // Nếu quyền đã được cấp, lấy vị trí hiện tại
       Geolocation.getCurrentPosition(
         position => {
           if (position.coords) {
@@ -45,12 +43,10 @@ const First = () => {
           }
         },
         error => {
-          // console.log('Error getting location:', error);
         },
         { enableHighAccuracy: false, timeout: 20000 },
       );
     } catch (error) {
-      // console.log('Error checking or requesting location permission:', error);
     }
   };
   useEffect(() => {
@@ -67,30 +63,50 @@ const First = () => {
         !userLogin?.FilesCV ||
         !userLogin?.FilesImage
       ) {
-        // console.log('Missing user files, navigating to UPDATE_PROFILE');
-        navi.navigate(ScreenNames.UPDATE_PROFILE);
+        navi.reset({
+          index: 0,
+          routes: [{ name: ScreenNames.UPDATE_PROFILE }],
+        })
       } else {
-        // console.log('All user files present, navigating to MAIN_NAVIGATOR');
-        navi.navigate(ScreenNames.MAIN_NAVIGATOR);
+        navi.reset({
+          index: 0,
+          routes: [{ name: ScreenNames.MAIN_NAVIGATOR }],
+        })
       }
     } catch (error) {
       console.error('Error in checkUploadCCCD:', error);
-      navi.navigate(ScreenNames.AUTH_HOME);
+      navi.reset({
+        index: 0,
+        routes: [{ name: ScreenNames.HOME_MAIN_SCREEN }],
+      })
     }
   };
 
   const getRouter = async () => {
     try {
       const userLogin = await getData(StorageNames.USER_PROFILE);
-      // console.log('User login data:', userLogin);
+      if (userLogin?.OfficerID === 7347) {
+        mainAction.userLogin(userLogin, dispatch);
+        navi.reset({
+          index: 0,
+          routes: [{ name: ScreenNames.ESTIMATE_PRICE }],
+        })
+        return;
+      }
       if (!userLogin) {
-        navi.navigate(ScreenNames.AUTH_HOME);
+        navi.reset({
+          index: 0,
+          routes: [{ name: ScreenNames.HOME_MAIN_SCREEN }],
+        })
       } else {
         mainAction.userLogin(userLogin, dispatch);
         checkUploadCCCD(userLogin);
       }
     } catch (error) {
-      navi.navigate(ScreenNames.AUTH_HOME);
+      navi.reset({
+        index: 0,
+        routes: [{ name: ScreenNames.HOME_MAIN_SCREEN }],
+      })
     }
   };
 

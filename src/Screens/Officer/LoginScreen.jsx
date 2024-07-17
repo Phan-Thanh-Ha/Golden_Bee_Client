@@ -2,15 +2,13 @@ import LayoutGradientBlue from "../../components/layouts/LayoutGradientBlue";
 import Footer from "../../components/Footer";
 import LoginForm from "../../components/forms/LoginForm";
 import { KeyboardAwareScrollView } from "@codler/react-native-keyboard-aware-scroll-view";
-import Box from "../../components/Box";
-import BackButton from "../../components/BackButton";
 import { colors } from "../../styles/Colors";
 import MainStyles from "../../styles/MainStyle";
-import { Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 const LoginScreen = () => {
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <LayoutGradientBlue>
         <KeyboardAwareScrollView
           contentContainerStyle={MainStyles.containerLogin}
@@ -21,15 +19,20 @@ const LoginScreen = () => {
           extraScrollHeight={200}
           enableOnAndroid={true}
         >
-          <BackButton color={colors.WHITE} />
-          <Text style={MainStyles.titleForgotPasswordForm}>
-            Đăng Nhập
-          </Text>
+          <Text style={styles.title}>Đăng nhập</Text>
           <LoginForm />
         </KeyboardAwareScrollView>
       </LayoutGradientBlue>
       <Footer />
-    </>
+    </View>
   );
 };
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: colors.WHITE,
+    textAlign: 'center',
+  },
+})
 export default LoginScreen;

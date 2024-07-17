@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../../styles/Colors';
 
 const LayoutBottom = ({ children }) => {
   return (
@@ -13,9 +12,9 @@ const LayoutBottom = ({ children }) => {
 const styles = StyleSheet.create({
   footer: {
     position: 'absolute',
-    bottom: 10,
-    left: 10,
-    right: 10,
+    bottom: 0,
+    left: 0,
+    right: 0,
     justifyContent: 'center',
   }
 });

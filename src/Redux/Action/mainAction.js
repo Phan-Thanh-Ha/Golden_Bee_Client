@@ -96,3 +96,15 @@ export function setInitValueFirebase(status, dispatch) {
     payload: status,
   });
 }
+
+export function DecryptString(params, dispatch) {
+  //debugger
+  return new Promise((resolve, reject) => {
+    dispatch({
+      type: mainTypes.DecryptString,
+      params,
+      resolve,
+      reject,
+    });
+  });
+}

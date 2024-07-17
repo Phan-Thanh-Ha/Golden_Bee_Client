@@ -8,11 +8,19 @@ import Box from '../../components/Box';
 import { cirtificate, coin_icon, gift } from '../../assets';
 import { FormatMoney } from '../../utils/FormatMoney';
 import StepsBar from '../../components/StepsBar';
+import { useSelector } from 'react-redux';
+import BackButton from '../../components/BackButton';
 
 
 export default BenefitsScreen = () => {
+  const userLogin = useSelector((state) => state.main.userLogin);
   return (
     <LayoutGradientBlue>
+      {
+        userLogin?.OfficerID === 7347 ? (
+          <BackButton />
+        ) : null
+      }
       <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
       <View style={MainStyles.containerTabContent}>
         <View style={{

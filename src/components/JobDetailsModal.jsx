@@ -44,8 +44,6 @@ import { RoundUpNumber } from '../utils/RoundUpNumber';
 const JobDetailsModal = forwardRef((_, ref) => {
   const [data, setData] = useState(null);
   const bottomSheetRef = useRef(null);
-  // const dispatch = useDispatch();
-  // const [dataServiceDetail, setDataServiceDetail] = useState({});
 
   // Snap points for the bottom sheet
   const snapPoints = useMemo(() => ['60%', '90%'], []);
@@ -57,6 +55,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
     },
   }));
 
+  console.log(data);
   const renderVoucher = ({ item }) => (
     <View>
       <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>

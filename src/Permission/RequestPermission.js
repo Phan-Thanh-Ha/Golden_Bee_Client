@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PermissionsAndroid, View } from "react-native";
+import { PermissionsAndroid, Platform, View } from "react-native";
 import RNPermissions, {
   check,
   PERMISSIONS,
@@ -7,6 +7,16 @@ import RNPermissions, {
   request,
 } from "react-native-permissions";
 export const RequestPermission = () => {
+  const androidReadMediaImages = async () => {
+    const statusAndroid = await check(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
+    if (statusAndroid !== RESULTS.GRANTED && Platform.Version >= 33) {
+      request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES).then(() => {
+        androidWriteStorage();
+      });
+    } else {
+      androidWriteStorage();
+    }
+  };
   const androidWriteStorage = async () => {
     const statusAndroid = await check(
       PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
@@ -35,10 +45,18 @@ export const RequestPermission = () => {
     );
     if (statusAndroid !== RESULTS.GRANTED) {
       request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(() => {
-        androidRecordAudio();
+        androidFineLocation();
       });
     } else {
-      androidRecordAudio();
+      androidFineLocation();
+    }
+  };
+  const androidFineLocation = async () => {
+    const statusAndroid = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+    if (statusAndroid !== RESULTS.GRANTED) {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      );
     }
   };
   const androidRecordAudio = async () => {
@@ -51,18 +69,6 @@ export const RequestPermission = () => {
       });
     } else {
       androidFineLocation();
-    }
-  };
-  const androidFineLocation = async () => {
-    const statusAndroid = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-    if (statusAndroid !== RESULTS.GRANTED) {
-      await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-      ).then(() => {
-        androidRecordVideo();
-      });
-    } else {
-      androidRecordVideo();
     }
   };
   const androidRecordVideo = async () => {
@@ -145,7 +151,7 @@ export const RequestPermission = () => {
   };
 
   useEffect(() => {
-    Platform.OS === "android" && androidWriteStorage();
+    Platform.OS === "android" && androidReadMediaImages();
     Platform.OS === "ios" && iosCamera();
   }, []);
 

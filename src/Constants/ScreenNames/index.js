@@ -35,6 +35,10 @@ const ScreenNames = {
 
   // CongratulationsScreen
   CONGRATULATION: "CONGRATULATION",
+  HOME_MAIN_SCREEN: "HOME_MAIN_SCREEN",
+  ADMIN_SCREEN: "ADMIN_SCREEN",
+  ESTIMATE_PRICE: "ESTIMATE_PRICE",
+  SERVICE_ESTIMATE: "SERVICE_ESTIMATE",
 };
 
 export default ScreenNames;

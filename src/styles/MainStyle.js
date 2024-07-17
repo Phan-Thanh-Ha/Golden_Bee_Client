@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
-import { colors } from "./Colors";
+import { colors, themeColors } from "./Colors";
 import { responsivescreen } from "../utils/responsive-screen";
 
 export const SCREEN_WIDTH = Dimensions.get("screen").width;
@@ -182,7 +182,7 @@ const MainStyles = StyleSheet.create({
     marginBottom: 20,
   },
   containerLogin: {
-    flexGrow: 1,
+    justifyContent: "center",
   },
   titleLogin: {
     fontSize: 30,
@@ -400,9 +400,9 @@ const MainStyles = StyleSheet.create({
   },
   scrollTab: {},
   screenTitle: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "bold",
-    color: "#fff",
+    color: themeColors.primaryText,
     textAlign: "center",
     marginBottom: 10,
   },

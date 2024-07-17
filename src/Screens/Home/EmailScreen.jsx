@@ -6,10 +6,18 @@ import { colors } from '../../styles/Colors';
 import MainStyles from '../../styles/MainStyle';
 import Box from '../../components/Box';
 import TabNotification from '../../components/TabNotification';
+import { useSelector } from 'react-redux';
+import BackButton from '../../components/BackButton';
 
 const EmailScreen = () => {
+  const userLogin = useSelector((state) => state.main.userLogin);
   return (
     <LayoutGradientBlue>
+      {
+        userLogin?.OfficerID === 7347 ? (
+          <BackButton />
+        ) : null
+      }
       <ScrollView>
         <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
         <View style={MainStyles.containerTabContent}>

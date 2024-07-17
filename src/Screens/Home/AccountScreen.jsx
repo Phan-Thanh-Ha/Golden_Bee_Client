@@ -20,6 +20,7 @@ import ModalConfirm from '../../components/modal/ModalConfirm';
 import { APIImage } from '../../Config/Api';
 import Geolocation from '@react-native-community/geolocation';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
+import BackButton from '../../components/BackButton';
 const AccountScreen = () => {
   const navi = useNavigation();
   const dispatch = useDispatch();
@@ -182,6 +183,39 @@ const AccountScreen = () => {
         location?.longitude,
         userLogin?.OfficerID,
       );
+
+      const getLink = async () => {
+        try {
+          const params = {
+            Json: userLogin?.Password,
+            func: "",
+          };
+          const password = await mainAction.DecryptString(params, dispatch);
+
+          const pr = {
+            UserName: userLogin?.Phone,
+            Password: password,
+            GroupUserId: 10060,
+          };
+          if (password) {
+            const paramss = {
+              Json: JSON.stringify(pr),
+              func: 'AVG_spOfficer_Login',
+            };
+            const result = await mainAction.API_spCallServer(paramss, dispatch);
+            if (result?.Status === 'OK') {
+              await setData(StorageNames.USER_PROFILE, result.Result[0]);
+              mainAction.userLogin(result.Result[0], dispatch);
+              setLoadingReset(false);
+            } else {
+              setLoadingReset(false);
+            }
+            setLoadingReset(false);
+          }
+        } catch (error) {
+        }
+      };
+      await getLink();
       setLoadingReset(false);
     } catch (error) {
       setLoadingReset(false);
@@ -190,6 +224,11 @@ const AccountScreen = () => {
   };
   return (
     <LayoutGradientBlue>
+      {
+        userLogin?.OfficerID === 7347 ? (
+          <BackButton />
+        ) : null
+      }
       <ScrollView>
         <Text style={MainStyles.screenTitle}>Tài khoản</Text>
         <View style={MainStyles.contentContainer}>
@@ -352,7 +391,7 @@ const AccountScreen = () => {
               <Text style={MainStyles.labelTitle}>Đang làm việc </Text>
             )}
           </View>
-          <View style={MainStyles.flexRowSpaceBetween}>
+          {/* <View style={MainStyles.flexRowSpaceBetween}>
             <Text style={MainStyles.labelTitle}>Lịch làm việc </Text>
             <Button
               textColor={colors.MAIN_BLUE_CLIENT}
@@ -363,7 +402,7 @@ const AccountScreen = () => {
               icon={() => <Day color={colors.MAIN_BLUE_CLIENT} size={20} />}>
               Đặt lịch làm việc
             </Button>
-          </View>
+          </View> */}
           <View style={MainStyles.flexRowSpaceBetween}>
             <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>
               Điểm ưu đãi
@@ -431,7 +470,7 @@ const AccountScreen = () => {
                 MainStyles.labelTitle,
                 { marginRight: 10, color: colors.MAIN_BLUE_CLIENT },
               ]}>
-              {10} task đã hoàn thành
+              {10} dịch vụ đã hoàn thành
             </Text>
           </View>
           <Box height={10} />

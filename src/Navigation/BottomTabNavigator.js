@@ -99,7 +99,7 @@ export const BottomTabNavigator = () => {
         <Animated.View style={styles.btnCircleUp}>
           <TouchableOpacity
             style={styles.button}
-            // onPress={() => navigate(ScreenNames.HOME)}
+            onPress={() => navigate(ScreenNames.ADMIN_SCREEN)}
           >
             <Image source={logo_bee_blue} style={styles.circleIcon} />
           </TouchableOpacity>

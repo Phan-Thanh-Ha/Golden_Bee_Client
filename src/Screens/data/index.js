@@ -152,10 +152,6 @@ export const myLatiLogi = {
   latitude: 10.768199,
   longitude: 106.684779,
 };
-const latitudeAClose = 10.762622;
-const longitudeAClose = 106.660172;
-const latitudeBClose = 10.768199;
-const longitudeBClose = 106.684779;
 
 export const dataJobDone = [
   {
@@ -314,5 +310,570 @@ export const dataNotifi = [
     Phone: "0943214791",
     ServiceName: "Giúp việc theo giờ",
     Address: "100 Lý Chính Thắng, phải 8, Quận 3, Hồ Chí Minh, Việt Nam",
+  },
+];
+
+export const menuData = [
+  {
+    ServiceId: 7,
+    ServiceCode: "DV-05062405025764",
+    ServiceName: "Giúp việc theo giờ",
+    ServiceTime: 2,
+    ServicePrice: 100000,
+    Detail: [
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo dụng cụ",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 2,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Nấu ăn",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 3,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Ủi + Phơi quần áo",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 4,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo hoá chất tẩy rửa, nước lau kính",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 5,
+      },
+    ],
+    ServiceOption: [],
+  },
+  {
+    ServiceId: 8,
+    ServiceCode: "DV-06062403132645",
+    ServiceName: "Dọn dẹp buồng phòng",
+    ServiceTime: 2,
+    ServicePrice: 100000,
+    Detail: [
+      {
+        ServiceId: 8,
+        ServiceDetailName: "Mang theo dụng cụ",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 6,
+      },
+      {
+        ServiceId: 8,
+        ServiceDetailName: "Mang theo máy hút bụi",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 7,
+      },
+      {
+        ServiceId: 8,
+        ServiceDetailName: "Mang theo máy trà sàn",
+        ServicePriceDetail: 90000,
+        ServiceDetailId: 8,
+      },
+      {
+        ServiceId: 8,
+        ServiceDetailName: "Mang theo hoá chất tẩy rửa, nước lau kính",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 9,
+      },
+    ],
+    ServiceOption: [],
+  },
+  {
+    ServiceId: 9,
+    ServiceCode: "DV-11062403162006",
+    ServiceName: "Dọn dẹp văn phòng",
+    ServiceTime: 2,
+    ServicePrice: 100000,
+    Detail: [
+      {
+        ServiceId: 9,
+        ServiceDetailName: "Mang theo dụng cụ",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 11,
+      },
+      {
+        ServiceId: 9,
+        ServiceDetailName: "Mang theo máy hút bụi",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 12,
+      },
+      {
+        ServiceId: 9,
+        ServiceDetailName: "Mang theo chất tẩy rửa",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 13,
+      },
+    ],
+    ServiceOption: [],
+  },
+  {
+    ServiceId: 10,
+    ServiceCode: "DV-11062403163572",
+    ServiceName: "Vệ sinh máy giặc",
+    ServiceTime: 2,
+    ServicePrice: 100000,
+    Detail: [
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo dụng cụ",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 2,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Nấu ăn",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 3,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Ủi + Phơi quần áo",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 4,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo hoá chất tẩy rửa, nước lau kính",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 5,
+      },
+    ],
+    ServiceOption: [
+      {
+        ServiceId: 10,
+        OptionName: "7 KG",
+        OptionePrice: 10000,
+        Id: 1,
+      },
+      {
+        ServiceId: 10,
+        OptionName: "9 Kg",
+        OptionePrice: 20000,
+        Id: 2,
+      },
+      {
+        ServiceId: 10,
+        OptionName: "9Kg >",
+        OptionePrice: 30000,
+        Id: 3,
+      },
+    ],
+  },
+  {
+    ServiceId: 11,
+    ServiceCode: "DV-11062403165042",
+    ServiceName: "Vệ sinh máy lạnh",
+    ServiceTime: 3,
+    ServicePrice: 100000,
+    Detail: [
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo dụng cụ",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 2,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Nấu ăn",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 3,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Ủi + Phơi quần áo",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 4,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo hoá chất tẩy rửa, nước lau kính",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 5,
+      },
+    ],
+    ServiceOption: [
+      {
+        ServiceId: 11,
+        OptionName: "1 HP",
+        OptionePrice: 100000,
+        Id: 4,
+      },
+      {
+        ServiceId: 11,
+        OptionName: "2 HP",
+        OptionePrice: 200000,
+        Id: 5,
+      },
+      {
+        ServiceId: 11,
+        OptionName: "2 HP >",
+        OptionePrice: 300000,
+        Id: 6,
+      },
+    ],
+  },
+  {
+    ServiceId: 12,
+    ServiceCode: "DV-11062403174078",
+    ServiceName: "Sửa điện",
+    ServiceTime: 4,
+    ServicePrice: 100000,
+    Detail: [
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo dụng cụ",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 2,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Nấu ăn",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 3,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Ủi + Phơi quần áo",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 4,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo hoá chất tẩy rửa, nước lau kính",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 5,
+      },
+    ],
+    ServiceOption: [
+      {
+        ServiceId: 12,
+        OptionName: "Thay bóng đèn",
+        OptionePrice: 150000,
+        Id: 7,
+      },
+      {
+        ServiceId: 12,
+        OptionName: "Thay sabi",
+        OptionePrice: 300000,
+        Id: 8,
+      },
+      {
+        ServiceId: 12,
+        OptionName: "Thay ổ điện",
+        OptionePrice: 100000,
+        Id: 9,
+      },
+      {
+        ServiceId: 12,
+        OptionName: "Thay thế dụng cụ máy",
+        OptionePrice: 50000,
+        Id: 10,
+      },
+      {
+        ServiceId: 12,
+        OptionName: "Đấu nối tủ điện",
+        OptionePrice: 200000,
+        Id: 11,
+      },
+      {
+        ServiceId: 12,
+        OptionName: "Các công việc khác",
+        OptionePrice: 500000,
+        Id: 12,
+      },
+    ],
+  },
+  {
+    ServiceId: 13,
+    ServiceCode: "DV-11062403175030",
+    ServiceName: "Sửa máy lạnh",
+    ServiceTime: 3,
+    ServicePrice: 100000,
+    Detail: [
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo dụng cụ",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 2,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Nấu ăn",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 3,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Ủi + Phơi quần áo",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 4,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo hoá chất tẩy rửa, nước lau kính",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 5,
+      },
+    ],
+    ServiceOption: [
+      {
+        ServiceId: 13,
+        OptionName: "Thay lắp ống đồng",
+        OptionePrice: 1000000,
+        Id: 13,
+      },
+      {
+        ServiceId: 13,
+        OptionName: "Lắp đặt máy",
+        OptionePrice: 300000,
+        Id: 14,
+      },
+      {
+        ServiceId: 13,
+        OptionName: "Thay thế dụng cụ máy",
+        OptionePrice: 200000,
+        Id: 15,
+      },
+      {
+        ServiceId: 13,
+        OptionName: "Sửa điện + Ống nước",
+        OptionePrice: 250000,
+        Id: 16,
+      },
+    ],
+  },
+  {
+    ServiceId: 14,
+    ServiceCode: "DV-11062403180719",
+    ServiceName: "Sửa ống nước",
+    ServiceTime: 2,
+    ServicePrice: 100000,
+    Detail: [
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo dụng cụ",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 2,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Nấu ăn",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 3,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Ủi + Phơi quần áo",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 4,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo hoá chất tẩy rửa, nước lau kính",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 5,
+      },
+    ],
+    ServiceOption: [
+      {
+        ServiceId: 14,
+        OptionName: "Thay van nước",
+        OptionePrice: 400000,
+        Id: 17,
+      },
+      {
+        ServiceId: 14,
+        OptionName: "Sửa van nước",
+        OptionePrice: 100000,
+        Id: 18,
+      },
+      {
+        ServiceId: 14,
+        OptionName: "Thay - Sửa ống nước",
+        OptionePrice: 500000,
+        Id: 19,
+      },
+      {
+        ServiceId: 14,
+        OptionName: "Thay vòi nước",
+        OptionePrice: 400000,
+        Id: 20,
+      },
+      {
+        ServiceId: 14,
+        OptionName: "Thay đồng hồ điện",
+        OptionePrice: 300000,
+        Id: 21,
+      },
+    ],
+  },
+  {
+    ServiceId: 15,
+    ServiceCode: "DV-11062403182499",
+    ServiceName: "Sửa camera",
+    ServiceTime: 3,
+    ServicePrice: 100000,
+    Detail: [
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo dụng cụ",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 2,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Nấu ăn",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 3,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Ủi + Phơi quần áo",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 4,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo hoá chất tẩy rửa, nước lau kính",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 5,
+      },
+    ],
+    ServiceOption: [
+      {
+        ServiceId: 15,
+        OptionName: "Thay ổ cứng",
+        OptionePrice: 100000,
+        Id: 22,
+      },
+      {
+        ServiceId: 15,
+        OptionName: "Thay cam mới",
+        OptionePrice: 300000,
+        Id: 23,
+      },
+      {
+        ServiceId: 15,
+        OptionName: "Đi lại dây camera",
+        OptionePrice: 1000000,
+        Id: 24,
+      },
+      {
+        ServiceId: 15,
+        OptionName: "Cài lại phần mềm",
+        OptionePrice: 500000,
+        Id: 25,
+      },
+    ],
+  },
+  {
+    ServiceId: 16,
+    ServiceCode: "DV-11062403183245",
+    ServiceName: "Sửa nội thất",
+    ServiceTime: 2,
+    ServicePrice: 100000,
+    Detail: [
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo dụng cụ",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 2,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Nấu ăn",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 3,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Ủi + Phơi quần áo",
+        ServicePriceDetail: 60000,
+        ServiceDetailId: 4,
+      },
+      {
+        ServiceId: 7,
+        ServiceDetailName: "Mang theo hoá chất tẩy rửa, nước lau kính",
+        ServicePriceDetail: 30000,
+        ServiceDetailId: 5,
+      },
+    ],
+    ServiceOption: [
+      {
+        ServiceId: 16,
+        OptionName: "Sửa chửa lắp đặt",
+        OptionePrice: 200000,
+        Id: 26,
+      },
+      {
+        ServiceId: 16,
+        OptionName: "Sửa tủ áo",
+        OptionePrice: 50000,
+        Id: 27,
+      },
+      {
+        ServiceId: 16,
+        OptionName: "Sửa giường",
+        OptionePrice: 500000,
+        Id: 28,
+      },
+    ],
+  },
+];
+
+//  dữ liệu trả lên firebase
+const dataJobNew = [
+  {
+    BookingCode: "OVG-16072405101244",
+    ClientId: 582,
+    CreateAt: "2024-07-16 17:10:12",
+    DataService: {
+      Address:
+        "39B Truong Son Street, Phường 4, Tân Bình, Ho Chi Minh City, Vietnam",
+      BookingCode: "OVG-16072405101244",
+      BookingId: 964,
+      CustomerId: 582,
+      CustomerName: " PhanHa",
+      GroupUserId: 10060,
+      IsPremium: 0,
+      NoteWorking: "" /* bỏ đi */,
+      NoteBooking: "Ghi chú" /* Thiếu - ghi chú */,
+      Payment: 0,
+      PriceAfterDiscount: 250000 /* Giá dịch vụ sau khi đã áp mã giảm giá */,
+      RoomTotal: 0,
+      ServiceCode: "DV-11062403174078",
+      ServiceId: 12,
+      ServiceName: "Sửa điện",
+      StaffTotal: 1 /* bỏ đi */,
+      TimeWorking: 4,
+      TotalStaff: 1,
+      TotalRoom: 1 /* Thiếu - số phòng dịch vụ */,
+      SelectOption: {} /* Thiếu - dịch vụ chi tiết */,
+      OtherService: [] /* Thiếu - dịch vụ thêm đã chọn*/,
+      Voucher: [
+        {
+          VoucherId: 0,
+          VoucherCode: "Voucher0",
+          TypeDiscount: 0,
+          Discount: 3000,
+        },
+      ] /* Thiếu - Voucher đã chọn*/,
+    },
+    LatitudeCustomer: 10.8093,
+    LatitudeStaff: 10.8094,
+    LongitudeCustomer: 106.664,
+    LongitudeStaff: 106.665,
+    OrderId: "-O1v0LhZ8ipVzm2upaYZ",
+    StaffId: 7410,
+    StaffName: "dev test 00",
+    StaffPhone: "0906702589",
+    StaffAvatar: "" /* avatar nhân viên */,
+    StatusOrder: 1,
+    CustomerName: "PhanHa" /* Thiếu tên khách hàng */,
+    CustomerPhone: "0906702589" /* Thiếu số địen thoại khách hàng*/,
   },
 ];

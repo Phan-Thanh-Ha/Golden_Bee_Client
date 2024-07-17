@@ -21,9 +21,7 @@ export const FormatTime = (timestamp, type) => {
   } else if (type === 2) {
     return `${hoursStr}:${minutesStr}`;
   } else {
-    throw new Error(
-      'Invalid type parameter. Use 1 for "ngày/tháng/năm giờ:phút" format and 2 for "giờ:phút" format.',
-    );
+    throw new Error("sai định dạng");
   }
 };
 
@@ -31,28 +29,16 @@ export const FormatTime = (timestamp, type) => {
 // const timestamp = 1718821492732;
 // const type1 = 1;
 // const type2 = 2;
+import { format } from "date-fns";
+
 export const parseTimeSql = (time, type) => {
   const date = new Date(time);
 
-  const day = date.getDate();
-  const month = date.getMonth() + 1; // Tháng bắt đầu từ 0, nên cần +1
-  const year = date.getFullYear();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-
-  // Định dạng các thành phần ngày và giờ thành chuỗi
-  const dayStr = day < 10 ? `0${day}` : day;
-  const monthStr = month < 10 ? `0${month}` : month;
-  const hoursStr = hours < 10 ? `0${hours}` : hours;
-  const minutesStr = minutes < 10 ? `0${minutes}` : minutes;
-
   if (type === 1) {
-    return `${dayStr}/${monthStr}/${year} ${hoursStr}:${minutesStr}`;
+    return format(date, "HH:mm - dd/MM/yyyy");
   } else if (type === 2) {
-    return `${hoursStr}:${minutesStr}`;
+    return format(date, "HH:mm");
   } else {
-    throw new Error(
-      'Invalid type parameter. Use 1 for "ngày/tháng/năm giờ:phút" format and 2 for "giờ:phút" format.',
-    );
+    throw new Error("sai định dạng");
   }
 };

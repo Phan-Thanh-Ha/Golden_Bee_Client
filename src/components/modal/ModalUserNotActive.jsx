@@ -22,7 +22,7 @@ const ModalUserNotActive = ({
       onConfirm={handleConfirm}
       title="Thông báo"
       backdropCloseable={false}
-      isCancelable={false}
+      isCancelable={true}
     >
       <View>
         <View style={[MainStyles.cardJob]}>

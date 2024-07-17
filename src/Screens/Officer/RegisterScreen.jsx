@@ -24,7 +24,6 @@ const RegisterScreen = ({ navigation }) => {
           extraScrollHeight={200}
           enableOnAndroid={true}
         >
-          <BackButton color={colors.WHITE} />
           <Text style={MainStyles.titleForgotPasswordForm}>
             Đăng ký
           </Text>
