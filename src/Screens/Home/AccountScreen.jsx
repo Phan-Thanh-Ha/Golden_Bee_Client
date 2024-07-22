@@ -128,10 +128,12 @@ const AccountScreen = () => {
         ...userLogin,
         TotalBookingAll: result[0]?.TotalBookingAll,
         TotalMoneyAll: result[0]?.TotalMoneyAll,
-
       };
-      setData(StorageNames.USER_PROFILE, userChange);
-      mainAction.userLogin(userChange, dispatch);
+      if (result[0]?.TotalBookingAll || result[0]?.TotalMoneyAll) {
+        setData(StorageNames.USER_PROFILE, userChange);
+        mainAction.userLogin(userChange, dispatch);
+      }
+
     } catch (error) { }
   };
   const user = {
@@ -201,12 +203,11 @@ const AccountScreen = () => {
         },
         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
       );
-      CPN_spOfficer_Update_LocationTime(
+      await CPN_spOfficer_Update_LocationTime(
         location?.latitude,
         location?.longitude,
         userLogin?.OfficerID,
       );
-
       const getLink = async () => {
         try {
           const params = {
@@ -239,12 +240,15 @@ const AccountScreen = () => {
         }
       };
       await getLink();
+      await OVG_spOfficer_Wallet_Money();
+      await OVG_spOfficer_Booking_Report();
       setLoadingReset(false);
     } catch (error) {
       setLoadingReset(false);
     }
     setLoadingReset(false);
   };
+  console.log("userLogin", userLogin);
   return (
     <LayoutGradientBlue>
       {
@@ -325,17 +329,20 @@ const AccountScreen = () => {
           </View>
           <View
             style={[
-              MainStyles.flexRowCenter,
               {
                 backgroundColor: colors.MAIN_BLUE_CLIENT,
                 borderRadius: 10,
                 padding: 5,
               },
             ]}>
-            <Text style={{ color: colors.WHITE, fontSize: 17, marginRight: 5 }}>
-              Cộng tác viên cao cấp
-            </Text>
-            <Rating rating={5} fontSize={[17, 17]} />
+            <View style={MainStyles.flexRowCenter}>
+              <Text style={{ color: colors.WHITE, fontSize: 17, marginRight: 5 }}>
+                {userLogin?.CustomerRank}
+              </Text>
+            </View>
+            <View style={MainStyles.flexRowCenter}>
+              <Rating rating={5} fontSize={[17, 17]} />
+            </View>
           </View>
           <View style={MainStyles.flexRowCenter}>
             <View
@@ -382,12 +389,6 @@ const AccountScreen = () => {
                 marginBottom: 10,
               }}
             />
-          </View>
-          <View style={MainStyles.flexRowSpaceBetween}>
-            <Text style={MainStyles.labelTitle}>Hành trình</Text>
-            <Text style={[MainStyles.labelTitle, { color: colors.RED }]}>
-              Cấp {user.level}
-            </Text>
           </View>
           <Box height={SCREEN_HEIGHT * 0.01} />
           <View style={MainStyles.flexRowSpaceBetween}>

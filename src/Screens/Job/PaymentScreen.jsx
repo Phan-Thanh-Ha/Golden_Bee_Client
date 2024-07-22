@@ -30,7 +30,7 @@ import { RoundUpNumber } from '../../utils/RoundUpNumber';
 import NumericInput from '../../components/NumericInput ';
 
 const PaymentScreen = ({ route }) => {
-  const [isModalVisible, setIsModalVisible] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const navi = useNavigation();
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.main.userLogin);
@@ -86,12 +86,14 @@ const PaymentScreen = ({ route }) => {
         IsPayment: 2,
         GroupUserId: 10060
       };
+      console.log("pr----------------", pr);
       const params = {
         Json: JSON.stringify(pr),
         func: "OVG_spOfficer_Booking_Save",
       };
 
       const result = await mainAction.API_spCallServer(params, dispatch);
+      console.log("result----------------", result);
       if (result?.Status === "OK") {
         //call update firebase
         const complete = completeOrder(data?.OrderId);
@@ -182,13 +184,6 @@ const PaymentScreen = ({ route }) => {
                   />
                   <Text style={MainStyles.textCardJob}> trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ</Text>
                 </View>
-                <View style={MainStyles.flexRowFlexEnd}>
-                  <Image
-                    source={ic_chronometer}
-                    style={{ width: 22, height: 22 }}
-                  />
-                  <Text style={MainStyles.textCardJob}>làm ngay</Text>
-                </View>
               </View>
             </View>
             {
@@ -227,9 +222,9 @@ const PaymentScreen = ({ route }) => {
                     </View>
                     {
                       data?.DataService?.OtherService?.length > 0 ? (
-                        data?.DataService?.OtherService.map(item => (
-                          <View key={item.ServiceDetailId.toString()}>
-                            <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>🔸{item.ServiceDetailName}</Text>
+                        data?.DataService?.OtherService?.map(item => (
+                          <View key={item?.ServiceDetailId?.toString()}>
+                            <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>🔸{item?.ServiceDetailName}</Text>
                           </View>
                         ))
                       ) : null
@@ -254,6 +249,26 @@ const PaymentScreen = ({ route }) => {
                     </View>
                   </View>
                 </>
+              ) : null
+            }
+            {
+              data?.DataService?.Voucher?.length > 0 ? (
+                <View style={MainStyles.rowMargin}>
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Text style={MainStyles.textCardJob}>
+                      🎁   Đã áp mã voucher :
+                    </Text>
+                  </View>
+                  {data?.DataService?.Voucher?.length > 0
+                    ? data?.DataService?.Voucher.map(item => (
+                      <View key={item?.VoucherId.toString()}>
+                        <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
+                          🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
+                        </Text>
+                      </View>
+                    ))
+                    : null}
+                </View>
               ) : null
             }
             <View style={MainStyles.flexRowCenter}>

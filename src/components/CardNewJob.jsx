@@ -14,10 +14,13 @@ import {
   ic_clearning,
   ic_clearning_basic,
   ic_glass,
+  ic_human,
   ic_living_room,
   ic_location,
   ic_note,
   ic_person,
+  ic_phone_call,
+  ic_schedule,
 } from '../assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { mainAction } from '../Redux/Action';
@@ -31,7 +34,6 @@ const CardNewJob = ({ data, modalRef }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const acceptedOrder = useSelector(state => state.main.acceptedOrder);
   const location = useSelector(state => state.main.locationTime);
-  console.log("data", data);
   const payment = () => {
     if (data?.DataService?.Payment) {
       navigation.navigate(ScreenNames.PAYMENT, { data });
@@ -55,9 +57,7 @@ const CardNewJob = ({ data, modalRef }) => {
         Json: JSON.stringify(pr),
         func: 'OVG_spOfficer_Booking_Save',
       };
-      // console.log("pr", params);
       const result = await mainAction.API_spCallServer(params, dispatch);
-      // console.log("result", result);
       if (result?.Status === 'OK') {
         //call update firebase
         updateStatusOrder(data?.OrderId, 3);
@@ -103,7 +103,8 @@ const CardNewJob = ({ data, modalRef }) => {
   );
   return (
     <View>
-      <Pressable onPress={openModal}>
+      <Pressable>
+        {/* <Pressable onPress={openModal}> */}
         <View style={MainStyles.cardJob}>
           <View style={MainStyles.flexRowCenter}>
             <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
@@ -144,10 +145,10 @@ const CardNewJob = ({ data, modalRef }) => {
                 </View>
               ) : null}
               {
-                data?.DataService?.SelectOption ? (
+                data?.DataService?.SelectOption?.length ? (
                   <View style={MainStyles.flexRowFlexStart}>
                     <Text style={MainStyles.textCardJob}>
-                      ⚙️  {data?.DataService?.SelectOption?.OptionName}
+                      ⚙️  {data?.DataService?.SelectOption[0]?.OptionName}
                     </Text>
                   </View>
                 ) : null
@@ -205,7 +206,7 @@ const CardNewJob = ({ data, modalRef }) => {
               <FlatList
                 data={data?.DataService?.OtherService}
                 renderItem={renderItem}
-                keyExtractor={item => item.ServiceDetailId.toString()}
+                keyExtractor={item => item?.ServiceDetailId?.toString()}
               />
             ) : null}
           </View>
@@ -235,18 +236,49 @@ const CardNewJob = ({ data, modalRef }) => {
                     🎁   Đã áp mã voucher :
                   </Text>
                 </View>
-                {data?.DataService?.Voucher?.length > 0 ? (
-                  <FlatList
-                    data={data?.DataService?.Voucher}
-                    renderItem={renderVoucher}
-                    keyExtractor={item => item?.VoucherId.toString()}
-                  />
-                ) : null}
+                {data?.DataService?.Voucher?.length > 0
+                  ? data?.DataService?.Voucher.map(item => (
+                    <View key={item?.VoucherId.toString()}>
+                      <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
+                        🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
+                      </Text>
+                    </View>
+                  ))
+                  : null}
               </View>
             ) : null
           }
 
-
+          <View style={MainStyles.rowMargin}>
+            <View style={MainStyles.flexRowFlexStart}>
+              <Image
+                source={ic_schedule}
+                style={{ width: 22, height: 22 }}
+              />
+              <Text style={MainStyles.textCardJob}>
+                Thời gian tạo :{data?.CreateAt}
+              </Text>
+            </View>
+          </View>
+          <View style={MainStyles.rowMargin}>
+            <View style={MainStyles.flexRowFlexStart}>
+              <Image source={ic_human} style={{ width: 22, height: 22 }} />
+              <Text style={MainStyles.textCardJob}>
+                Tên khách hàng :{data?.DataService?.CustomerName}
+              </Text>
+            </View>
+          </View>
+          <View style={MainStyles.rowMargin}>
+            <View style={MainStyles.flexRowFlexStart}>
+              <Image
+                source={ic_phone_call}
+                style={{ width: 22, height: 22 }}
+              />
+              <Text style={MainStyles.textCardJob}>
+                Số điện thoại :{data?.StaffPhone}
+              </Text>
+            </View>
+          </View>
           <View style={MainStyles.cardContentJob}>
             <Text
               style={{

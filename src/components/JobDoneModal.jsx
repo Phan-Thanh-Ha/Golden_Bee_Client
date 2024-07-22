@@ -234,7 +234,7 @@ const JobDoneModal = forwardRef((_, ref) => {
                       style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Số điện thoại : {data?.Phone}
+                      Số điện thoại : {data?.StaffPhone}
                     </Text>
                   </View>
                 </View>

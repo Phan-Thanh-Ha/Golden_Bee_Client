@@ -79,7 +79,7 @@ const MyOrders = () => {
   }, [myOrders]);
 
   // console.log('-----------------------------------------------------');
-  console.log('myOrders', myOrders);
+  // console.log('myOrders', myOrders);
   // console.log('initValueFirebase', initValueFirebase); // Log giá trị initValueFirebase
   // console.log('-----------------------------------------------------');
 

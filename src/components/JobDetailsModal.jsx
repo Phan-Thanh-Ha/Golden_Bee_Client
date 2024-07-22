@@ -37,8 +37,6 @@ import {
 } from '../assets';
 import LayoutBottom from './layouts/LayoutBottom';
 import Box from './Box';
-import { useDispatch } from 'react-redux';
-import { FormatTime } from '../utils/FormatTime';
 import { RoundUpNumber } from '../utils/RoundUpNumber';
 
 const JobDetailsModal = forwardRef((_, ref) => {
@@ -54,15 +52,6 @@ const JobDetailsModal = forwardRef((_, ref) => {
       bottomSheetRef.current?.expand();
     },
   }));
-
-  console.log(data);
-  const renderVoucher = ({ item }) => (
-    <View>
-      <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
-        🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
-      </Text>
-    </View>
-  );
 
   return (
     <BottomSheet
@@ -123,10 +112,10 @@ const JobDetailsModal = forwardRef((_, ref) => {
                       </View>
                     ) : null}
                     {
-                      data?.DataService?.SelectOption ? (
+                      data?.DataService?.SelectOption?.length ? (
                         <View style={MainStyles.flexRowFlexStart}>
                           <Text style={MainStyles.textCardJob}>
-                            ⚙️  {data?.DataService?.SelectOption?.OptionName}
+                            ⚙️  {data?.DataService?.SelectOption[0]?.OptionName}
                           </Text>
                         </View>
                       ) : null
@@ -251,7 +240,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
                       style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Thời gian tạo :{FormatTime(data?.CreateAt, 1)}
+                      Thời gian tạo :{data?.CreateAt}
                     </Text>
                   </View>
                 </View>
@@ -276,7 +265,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
                       style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Số điện thoại :{data?.DataService?.CustomerPhone}
+                      Số điện thoại :{data?.StaffPhone}
                     </Text>
                   </View>
                 </View>
@@ -288,6 +277,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
             </View>
           )}
         </View>
+        <Box height={SCREEN_HEIGHT * 0.15} />
       </ScrollView>
       <LayoutBottom>
         <View style={MainStyles.cardContentJob}>

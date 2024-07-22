@@ -130,8 +130,9 @@ export default CardJobDone = ({ data, modalRef }) => {
               <Image source={ic_note} style={{ width: 22, height: 22 }} />
               <Text style={MainStyles.textCardJob}>
                 {data?.Note
-                  ? 'Ghi chú: ' + data?.DataService?.NoteBooking.trim()
-                  : 'Không có ghi chú'}
+                  ? 'Ghi chú: ' + data?.Note
+                  : 'Không có ghi chú'
+                }
               </Text>
             </View>
           </View>
@@ -146,7 +147,7 @@ export default CardJobDone = ({ data, modalRef }) => {
           <View style={MainStyles.rowMargin}>
             <View style={MainStyles.flexRowFlexStart}>
               <Text style={MainStyles.textCardJob}>Được đánh giá : </Text>
-              <Rating rating={4} />
+              <Rating rating={5} />
             </View>
           </View>
         </View>

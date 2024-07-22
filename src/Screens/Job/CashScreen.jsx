@@ -1,13 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View, Image, ScrollView, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import {
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import {colors} from '../../styles/Colors';
-import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../styles/MainStyle';
+import { colors } from '../../styles/Colors';
+import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
 import Box from '../../components/Box';
 import Header from '../../components/Header';
-import {FormatMoney} from '../../utils/FormatMoney';
+import { FormatMoney } from '../../utils/FormatMoney';
 import CustomLabel from '../../components/forms/CustomLabel';
 import {
   cirtificate,
@@ -24,51 +30,44 @@ import {
 import Button from '../../components/buttons/Button';
 import StatusBarCustom from '../../components/StatusBarCustom';
 import LayoutBottom from '../../components/layouts/LayoutBottom';
-import {responsivescreen} from '../../utils/responsive-screen';
+import { responsivescreen } from '../../utils/responsive-screen';
 import ArrowRight from '../../components/svg/ArrowRight';
-import {setData} from '../../utils';
-import {completeOrder} from '../../firebaseService/HandleOrder';
-import {ScreenNames} from '../../Constants';
-import {useDispatch, useSelector} from 'react-redux';
-import {mainAction} from '../../Redux/Action';
+import { setData } from '../../utils';
+import { completeOrder } from '../../firebaseService/HandleOrder';
+import { ScreenNames } from '../../Constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { mainAction } from '../../Redux/Action';
 import StorageNames from '../../Constants/StorageNames';
 import Up from '../../components/svg/Up';
 import Down from '../../components/svg/Down';
 import BtnGetImageModal from '../../components/BtnGetImageModal';
 import AlertConfirm from '../../components/modal/AlertConfirm';
-import {RoundUpNumber} from '../../utils/RoundUpNumber';
+import { RoundUpNumber } from '../../utils/RoundUpNumber';
 import NumericInput from '../../components/NumericInput ';
 
-const CashScreen = ({route}) => {
+const CashScreen = ({ route }) => {
   const navi = useNavigation();
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.main.userLogin);
   const [isLoading, setIsLoading] = React.useState(false);
   const location = useSelector(state => state.main.locationTime);
-  const {data} = route.params;
+  const { data } = route.params;
   const [more, setMore] = useState(false);
   const [imageBefore, setImageBefore] = useState([]);
   const [imageAfter, setImageAfter] = useState([]);
   const [alertTitle, setAlertTitle] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [number, setNumber] = useState(0);
-  const [totalMoneyAll, setTotalMoneyAll] = useState(
-    data?.DataService?.PriceAfterDiscount,
-  );
+  const [totalMoneyAll, setTotalMoneyAll] = useState(data?.DataService?.PriceAfterDiscount);
 
   useEffect(() => {
     if (number) {
-      setTotalMoneyAll(
-        RoundUpNumber(
-          parseFloat(data?.DataService?.PriceAfterDiscount) +
-            parseFloat(number),
-          0,
-        ),
-      );
+      setTotalMoneyAll(RoundUpNumber(parseFloat(data?.DataService?.PriceAfterDiscount) + parseFloat(number), 0))
+
     } else {
-      setTotalMoneyAll(data?.DataService?.PriceAfterDiscount);
+      setTotalMoneyAll(data?.DataService?.PriceAfterDiscount)
     }
-  }, [number]);
+  }, [number])
   // console.log('data', data);
 
   const validation = () => {
@@ -106,7 +105,6 @@ const CashScreen = ({route}) => {
         Json: JSON.stringify(pr),
         func: 'OVG_spOfficer_Booking_Save',
       };
-      console.log('pr--------------', pr);
       const result = await mainAction.API_spCallServer(params, dispatch);
       console.log('result', result);
       if (result?.Status === 'OK') {
@@ -124,21 +122,19 @@ const CashScreen = ({route}) => {
             DataService: {
               ...data?.DataService,
               PriceAfterDiscount: totalMoneyAll,
-            },
-          };
+            }
+          }
           navi.reset({
             index: 0,
-            routes: [
-              {name: ScreenNames.CONGRATULATION, params: {data: dataConfirm}},
-            ],
-          });
+            routes: [{ name: ScreenNames.CONGRATULATION, params: { data: dataConfirm } }],
+          })
           // navi.navigate(ScreenNames.CONGRATULATION, {data: data});
         }
         return;
       }
       setIsLoading(false);
       return;
-    } catch (error) {}
+    } catch (error) { }
   };
   const handlePayment = () => {
     const valid = validation();
@@ -157,7 +153,7 @@ const CashScreen = ({route}) => {
         <View style={MainStyles.containerTabPayment}>
           <View style={MainStyles.layoutTabPayment}>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
+              <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
                 Dịch vụ {data?.DataService?.ServiceName.toLowerCase()}
               </Text>
             </View>
@@ -178,7 +174,7 @@ const CashScreen = ({route}) => {
             <View style={MainStyles.rowMargin}>
               <View style={MainStyles.flexRowSpaceBetween}>
                 <View style={MainStyles.flexRowFlexStart}>
-                  <Image source={ic_person} style={{width: 22, height: 22}} />
+                  <Image source={ic_person} style={{ width: 22, height: 22 }} />
                   <Text style={MainStyles.textCardJob}>
                     {data?.DataService?.TotalStaff} nhân viên
                   </Text>
@@ -187,7 +183,7 @@ const CashScreen = ({route}) => {
                   <View style={MainStyles.flexRowFlexStart}>
                     <Image
                       source={ic_living_room}
-                      style={{width: 22, height: 22}}
+                      style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
                       {data?.DataService?.TotalRoom} phòng
@@ -199,18 +195,11 @@ const CashScreen = ({route}) => {
             <View style={MainStyles.rowMargin}>
               <View style={MainStyles.flexRowSpaceBetween}>
                 <View style={MainStyles.flexRowFlexEnd}>
-                  <Image source={ic_glass} style={{width: 22, height: 22}} />
+                  <Image source={ic_glass} style={{ width: 22, height: 22 }} />
                   <Text style={MainStyles.textCardJob}>
                     {' '}
                     trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
                   </Text>
-                </View>
-                <View style={MainStyles.flexRowFlexEnd}>
-                  <Image
-                    source={ic_chronometer}
-                    style={{width: 22, height: 22}}
-                  />
-                  <Text style={MainStyles.textCardJob}>làm ngay</Text>
                 </View>
               </View>
             </View>
@@ -221,7 +210,7 @@ const CashScreen = ({route}) => {
                     <View style={MainStyles.flexRowFlexStart}>
                       <Image
                         source={cirtificate}
-                        style={{width: 22, height: 22}}
+                        style={{ width: 22, height: 22 }}
                       />
                       <Text style={MainStyles.textCardJob}>
                         Dịch vụ Premium
@@ -233,7 +222,7 @@ const CashScreen = ({route}) => {
                     <View style={MainStyles.flexRowFlexStart}>
                       <Image
                         source={ic_clearning_basic}
-                        style={{width: 22, height: 22}}
+                        style={{ width: 22, height: 22 }}
                       />
                       <Text style={MainStyles.textCardJob}>
                         Dịch vụ thông thường
@@ -245,7 +234,7 @@ const CashScreen = ({route}) => {
                   <View style={MainStyles.flexRowFlexStart}>
                     <Image
                       source={ic_clearning}
-                      style={{width: 22, height: 22}}
+                      style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
                       Dịch vụ thêm :{' '}
@@ -256,20 +245,40 @@ const CashScreen = ({route}) => {
                   </View>
                   {data?.DataService?.OtherService?.length > 0
                     ? data?.DataService?.OtherService.map(item => (
-                        <View key={item.ServiceDetailId.toString()}>
-                          <Text
-                            style={[MainStyles.textCardJob, {paddingLeft: 10}]}>
-                            🔸{item.ServiceDetailName}
-                          </Text>
-                        </View>
-                      ))
+                      <View key={item?.ServiceDetailId?.toString()}>
+                        <Text
+                          style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
+                          🔸{item?.ServiceDetailName}
+                        </Text>
+                      </View>
+                    ))
                     : null}
                 </View>
+                {
+                  data?.DataService?.Voucher?.length > 0 ? (
+                    <View style={MainStyles.rowMargin}>
+                      <View style={MainStyles.flexRowFlexStart}>
+                        <Text style={MainStyles.textCardJob}>
+                          🎁   Đã áp mã voucher :
+                        </Text>
+                      </View>
+                      {data?.DataService?.Voucher?.length > 0
+                        ? data?.DataService?.Voucher?.map(item => (
+                          <View key={item?.VoucherId?.toString()}>
+                            <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
+                              🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
+                            </Text>
+                          </View>
+                        ))
+                        : null}
+                    </View>
+                  ) : null
+                }
                 <View style={MainStyles.rowMargin}>
                   <View style={MainStyles.flexRowFlexStart}>
                     <Image
                       source={ic_location}
-                      style={{width: 22, height: 22}}
+                      style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
                       Địa chỉ: {data?.DataService?.Address}
@@ -278,7 +287,7 @@ const CashScreen = ({route}) => {
                 </View>
                 <View style={MainStyles.rowMargin}>
                   <View style={MainStyles.flexRowFlexStart}>
-                    <Image source={ic_note} style={{width: 22, height: 22}} />
+                    <Image source={ic_note} style={{ width: 22, height: 22 }} />
                     <Text style={MainStyles.textCardJob}>
                       {data?.DataService?.NoteBooking
                         ? 'Ghi chú: ' + data?.DataService?.NoteBooking.trim()
@@ -336,27 +345,26 @@ const CashScreen = ({route}) => {
             </View>
             <Box height={responsivescreen.height(2)} />
             <View>
-              <Text style={MainStyles.textCardJob}>Chi phí phát sinh</Text>
+              <Text style={MainStyles.textCardJob}>
+                Chi phí phát sinh
+              </Text>
               <View style={MainStyles.flexRowCenter}>
-                <Image source={coin_icon} style={{width: 22, height: 22}} />
+                <Image source={coin_icon} style={{ width: 22, height: 22 }} />
                 <NumericInput value={number} onChange={setNumber} />
-                <Text
-                  style={{
-                    color: colors.MAIN_COLOR_CLIENT,
-                    fontSize: 18,
-                    fontWeight: '700',
-                  }}>
-                  VND
-                </Text>
+                <Text style={{
+                  color: colors.MAIN_COLOR_CLIENT,
+                  fontSize: 18,
+                  fontWeight: '700',
+                }}>VND</Text>
               </View>
             </View>
             <View>
-              <Text style={{textAlign: 'center'}}>🔶</Text>
+              <Text style={{ textAlign: 'center' }}>🔶</Text>
             </View>
             <View
               style={[
                 MainStyles.cardContentJob,
-                {backgroundColor: colors.WHITE},
+                { backgroundColor: colors.WHITE },
               ]}>
               <View style={MainStyles.flexRowCenter}>
                 <View>
@@ -371,7 +379,7 @@ const CashScreen = ({route}) => {
                     Tổng tiền
                   </Text>
                   <View style={MainStyles.flexRowCenter}>
-                    <Image source={coin_icon} style={{width: 22, height: 22}} />
+                    <Image source={coin_icon} style={{ width: 22, height: 22 }} />
                     <Text
                       style={{
                         color: colors.MAIN_COLOR_CLIENT,

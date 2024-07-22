@@ -1,5 +1,5 @@
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { colors } from "../../styles/Colors";
 import Box from "../../components/Box";
 import MainStyles, {
@@ -13,6 +13,10 @@ import RankProgress from "../../components/RankProgress";
 import { FormatMoney } from "../../utils/FormatMoney";
 import LogoBeeBox from "../../components/LogoBeeBox";
 import { cirtificate, gift } from "../../assets";
+import LayoutGradientBlue from "../../components/layouts/LayoutGradientBlue";
+import StorageNames from "../../Constants/StorageNames";
+import { useFocusEffect } from "@react-navigation/native";
+import { setData } from "../../utils";
 
 const BenefitsScreen = () => {
   const userLogin = useSelector((state) => state.main.userLogin);
@@ -21,13 +25,13 @@ const BenefitsScreen = () => {
 
   useEffect(() => {
     OVG_spCustomer_Total_Point();
-  }, [userLogin?.OfficerStatus]);
+  }, []);
 
 
   const OVG_spCustomer_Total_Point = async () => {
     try {
       const pr = {
-        CustomerId: userLogin?.Id,
+        OfficerId: userLogin?.OfficerID,
         GroupUserId: 10060,
       }
       const params = {
@@ -39,21 +43,37 @@ const BenefitsScreen = () => {
       if (result?.length) {
         if (benefitValue) {
           setBenefitValue(result[0]);
+          await setData(StorageNames.USER_PROFILE, {
+            ...userLogin,
+            CustomerRank: result[0]?.CustomerRank,
+          });
+          mainAction.userLogin({
+            ...userLogin,
+            CustomerRank: result[0]?.CustomerRank,
+          }, dispatch);
         } else {
           setBenefitValue(result[0]);
+          await setData(StorageNames.USER_PROFILE, {
+            ...userLogin,
+            CustomerRank: result[0]?.CustomerRank,
+          });
+          mainAction.userLogin({
+            ...userLogin,
+            CustomerRank: result[0]?.CustomerRank,
+          }, dispatch);
         }
       }
     } catch (error) { }
   }
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={[colors.PRIMARY_LIGHT, colors.WHITE]}
-        style={{ position: "absolute", width: "100%", height: "100%" }}
-      />
-      <Box height={SCREEN_HEIGHT * 0.01} />
-      <LogoBeeBox color={colors.MAIN_COLOR_CLIENT} sizeImage={SCREEN_WIDTH * 0.15} sizeText={18} />
+    <LayoutGradientBlue>
+      {
+        userLogin?.OfficerID === 7347 ? (
+          <BackButton />
+        ) : null
+      }
       <ScrollView>
+        <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
         <View style={{ padding: 10 }}>
           <View
             style={{
@@ -63,18 +83,16 @@ const BenefitsScreen = () => {
               marginVertical: 10,
             }}
           >
-            <View style={MainStyles.flexRowSpaceBetween}>
-              <View style={[{ width: SCREEN_WIDTH * 0.49 }]}>
-                <View style={MainStyles.flexRowFlexStart}>
-                  <Text style={[styles.text1]}>Điểm tích lũy : </Text>
-                  <Text style={[styles.text2]}>{FormatMoney(benefitValue?.TotalPoint) || 0} Điểm</Text>
-                </View>
+            <View style={MainStyles.flexRowFlexStart}>
+              <View style={MainStyles.flexRowFlexStart}>
+                <Text style={[styles.text1]}>Điểm tích lũy : </Text>
+                <Text style={[styles.text2]}>{FormatMoney(benefitValue?.TotalPoint) || 0} Điểm</Text>
               </View>
-              <View style={[{ width: SCREEN_WIDTH * 0.49 }]}>
-                <View style={MainStyles.flexRowFlexStart}>
-                  <Text style={[styles.text1]}>Hạng : </Text>
-                  <Text style={[styles.text2]}>{benefitValue?.CustomerRank}</Text>
-                </View>
+            </View>
+            <View style={MainStyles.flexRowFlexStart}>
+              <View style={MainStyles.flexRowFlexStart}>
+                <Text style={[styles.text1]}>Hạng : </Text>
+                <Text style={[styles.text2]}>{benefitValue?.CustomerRank}</Text>
               </View>
             </View>
           </View>
@@ -168,7 +186,7 @@ const BenefitsScreen = () => {
         </View>
         <Box height={SCREEN_HEIGHT * 0.7} />
       </ScrollView>
-    </View>
+    </LayoutGradientBlue>
   );
 };
 
