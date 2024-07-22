@@ -1,13 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Tab, TabView } from '@ui-kitten/components';
 import CardNewJob from './CardNewJob';
-import CardJobDone from './CardJobDone';
 import CardDefault from './CardDefault';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { checkCaseStatus } from '../utils/CheckCaseStaus';
-import { mainAction } from '../Redux/Action';
-import { useFocusEffect } from '@react-navigation/native';
 import { SCREEN_HEIGHT } from '../styles/MainStyle';
 import TabJobDone from './TabJobDone';
 

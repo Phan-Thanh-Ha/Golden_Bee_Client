@@ -1,11 +1,6 @@
-import React, { useEffect } from "react";
-import { Platform, View } from "react-native";
-import {
-  check,
-  PERMISSIONS,
-  RESULTS,
-  requestMultiple,
-} from "react-native-permissions";
+import React, {useEffect} from 'react';
+import {Platform, View} from 'react-native';
+import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 
 const RequestPermissionV2 = () => {
   const requestAndroidPermissions = async () => {
@@ -29,7 +24,7 @@ const RequestPermissionV2 = () => {
     permissions.push(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
 
     const statuses = await requestMultiple(permissions);
-    console.log("Permission statuses:", statuses);
+    console.log('Permission statuses:', statuses);
   };
 
   const requestIOSPermissions = async () => {
@@ -43,13 +38,13 @@ const RequestPermissionV2 = () => {
     ];
 
     const statuses = await requestMultiple(permissions);
-    console.log("Permission statuses:", statuses);
+    console.log('Permission statuses:', statuses);
   };
 
   useEffect(() => {
-    if (Platform.OS === "android") {
+    if (Platform.OS === 'android') {
       requestAndroidPermissions();
-    } else if (Platform.OS === "ios") {
+    } else if (Platform.OS === 'ios') {
       requestIOSPermissions();
     }
   }, []);

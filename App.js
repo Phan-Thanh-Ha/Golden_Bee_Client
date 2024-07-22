@@ -10,10 +10,11 @@ import Toast from 'react-native-toast-message';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import SplashScreen from 'react-native-splash-screen';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
-import {RequestPermission} from './src/Permission/RequestPermission';
+// import { RequestPermission } from "./src/Permission/RequestPermission";
 import {SetupNotification} from './src/Firebase/SetupNotification';
+import HealthCheck from './src/utils/HealthCheck';
+import RequestPermissionV2 from './src/Permission/RequestPermissionV2';
 LogBox.ignoreAllLogs();
-
 const App = () => {
   if (__DEV__) {
     SplashScreen.hide();
@@ -34,8 +35,9 @@ const App = () => {
         <MenuProvider>
           <BottomSheetModalProvider>
             <RootNavigator />
-            <RequestPermission />
+            <RequestPermissionV2 />
             <SetupNotification />
+            <HealthCheck />
           </BottomSheetModalProvider>
           <Toast />
         </MenuProvider>

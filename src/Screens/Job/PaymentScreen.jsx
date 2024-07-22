@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
@@ -27,6 +27,7 @@ import { StyleSheet } from 'react-native';
 import { Spinner } from '@ui-kitten/components';
 import AlertConfirm from '../../components/modal/AlertConfirm';
 import { RoundUpNumber } from '../../utils/RoundUpNumber';
+import NumericInput from '../../components/NumericInput ';
 
 const PaymentScreen = ({ route }) => {
   const [isModalVisible, setIsModalVisible] = useState(true);
@@ -41,6 +42,18 @@ const PaymentScreen = ({ route }) => {
   const [imageAfter, setImageAfter] = useState([]);
   const [alertTitle, setAlertTitle] = useState('');
   const [isModalAlertVisible, setIsModalAlertVisible] = useState(false);
+  const [number, setNumber] = useState(0);
+
+  const [totalMoneyAll, setTotalMoneyAll] = useState(data?.DataService?.PriceAfterDiscount);
+
+  useEffect(() => {
+    if (number) {
+      setTotalMoneyAll(RoundUpNumber(parseFloat(data?.DataService?.PriceAfterDiscount) + parseFloat(number), 0))
+
+    } else {
+      setTotalMoneyAll(data?.DataService?.PriceAfterDiscount)
+    }
+  }, [number])
 
   const validation = () => {
     if (!imageBefore[0]) {
@@ -60,16 +73,17 @@ const PaymentScreen = ({ route }) => {
     try {
       const pr = {
         OfficerId: userLogin?.OfficerID,
-        BookingId: parseInt(data?.OrderId),
+        BookingId: parseInt(data?.DataService?.BookingId),
         LatOfficer: location?.latitude,
         LngOfficer: location?.longitude,
         OfficerName: userLogin?.OfficerName,
         IsConfirm: 3,
-        TotalMoneyBooking: data?.DataService?.PriceAfterDiscount,
-        OfficerMoney: data?.DataService?.PriceAfterDiscount * 0.7,
-        AdminMoney: data?.DataService?.PriceAfterDiscount * 0.3,
+        TotalMoneyBooking: totalMoneyAll,
+        OfficerMoney: totalMoneyAll * 0.7,
+        AdminMoney: totalMoneyAll * 0.3,
         ImageBookingServiceBefore: imageBefore[0],
         ImageBookingServiceAfter: imageAfter[0],
+        IsPayment: 2,
         GroupUserId: 10060
       };
       const params = {
@@ -88,10 +102,17 @@ const PaymentScreen = ({ route }) => {
           }
           mainAction.userLogin(userChange, dispatch);
           await setData(StorageNames.USER_PROFILE, userChange);
+          const dataConfirm = {
+            ...data,
+            DataService: {
+              ...data?.DataService,
+              PriceAfterDiscount: totalMoneyAll,
+            }
+          }
           // navi.navigate(ScreenNames.CONGRATULATION, { data: data });
           navi.reset({
             index: 0,
-            routes: [{ name: ScreenNames.CONGRATULATION, params: { data: data } }],
+            routes: [{ name: ScreenNames.CONGRATULATION, params: { data: dataConfirm } }],
           })
         }
         return;
@@ -277,63 +298,59 @@ const PaymentScreen = ({ route }) => {
                 />
               </View>
             </View>
-            <View style={[MainStyles.cardContentJob, { backgroundColor: colors.WHITE }]}>
+            <Box height={responsivescreen.height(2)} />
+            <View>
+              <Text style={MainStyles.textCardJob}>
+                Chi phí phát sinh
+              </Text>
+              <View style={MainStyles.flexRowCenter}>
+                <Image source={coin_icon} style={{ width: 22, height: 22 }} />
+                <NumericInput value={number} onChange={setNumber} />
+                <Text style={{
+                  color: colors.MAIN_COLOR_CLIENT,
+                  fontSize: 18,
+                  fontWeight: '700',
+                }}>VND</Text>
+              </View>
+            </View>
+            <View>
+              <Text style={{ textAlign: 'center' }}>🔶</Text>
+            </View>
+            <View
+              style={[
+                MainStyles.cardContentJob,
+                { backgroundColor: colors.WHITE },
+              ]}>
               <View style={MainStyles.flexRowCenter}>
                 <View>
-                  <Text style={
-                    {
+                  <Text
+                    style={{
                       color: colors.MAIN_BLUE_CLIENT,
                       marginLeft: 10,
                       fontSize: 18,
                       fontWeight: '700',
                       textAlign: 'center',
-                    }
-                  }>Tổng tiền</Text>
+                    }}>
+                    Tổng tiền
+                  </Text>
                   <View style={MainStyles.flexRowCenter}>
-                    <Image
-                      source={coin_icon}
-                      style={{ width: 22, height: 22 }}
-                    />
-                    <Text style={
-                      {
+                    <Image source={coin_icon} style={{ width: 22, height: 22 }} />
+                    <Text
+                      style={{
                         color: colors.MAIN_COLOR_CLIENT,
                         marginLeft: 10,
                         fontSize: 18,
                         fontWeight: '700',
-                      }
-                    }>{FormatMoney(data?.DataService?.PriceAfterDiscount)} vnđ</Text>
+                      }}>
+                      {FormatMoney(totalMoneyAll)} VND
+                    </Text>
                   </View>
                 </View>
-                {/* <View>
-                  <Text style={
-                    {
-                      color: colors.MAIN_BLUE_CLIENT,
-                      marginLeft: 10,
-                      fontSize: 18,
-                      fontWeight: '700',
-                      textAlign: 'center',
-                    }
-                  }>Thực nhận</Text>
-                  <View style={MainStyles.flexRowCenter}>
-                    <Image
-                      source={coin_icon}
-                      style={{ width: 22, height: 22 }}
-                    />
-                    <Text style={
-                      {
-                        color: colors.MAIN_COLOR_CLIENT,
-                        marginLeft: 10,
-                        fontSize: 18,
-                        fontWeight: '700',
-                      }
-                    }>{FormatMoney(data?.DataService?.TotalPrice * 0.7)} vnđ</Text>
-                  </View>
-                </View> */}
               </View>
             </View>
           </View>
         </View>
-        <Box height={SCREEN_HEIGHT * 0.07} />
+        <Box height={SCREEN_HEIGHT * 0.1} />
       </ScrollView>
       <LayoutBottom>
         <View style={styles.buttonContainer}>

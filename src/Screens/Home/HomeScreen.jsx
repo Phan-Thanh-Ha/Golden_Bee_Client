@@ -1,22 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import { colors } from '../../styles/Colors';
-import { TabCustom } from '../../components/TabCustom';
+import {colors} from '../../styles/Colors';
+import {TabCustom} from '../../components/TabCustom';
 import JobDetailsModal from '../../components/JobDetailsModal';
-import { responsivescreen } from '../../utils/responsive-screen';
-import {
-  updateLocation,
-} from '../../firebaseService/HandleOrder';
-import { useDispatch, useSelector } from 'react-redux';
-import { mainAction } from '../../Redux/Action';
+import {responsivescreen} from '../../utils/responsive-screen';
+import {updateLocation} from '../../firebaseService/HandleOrder';
+import {useDispatch, useSelector} from 'react-redux';
+import {mainAction} from '../../Redux/Action';
 import JobDoneModal from '../../components/JobDoneModal';
 import MyOrders from '../../components/firebaseListen/MyOrders';
 import Geolocation from '@react-native-community/geolocation';
 import ListenOrderTotal from '../../components/firebaseListen/ListenTotalOrder';
-import { Linking } from 'react-native';
+import {Linking} from 'react-native';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
 import BackButton from '../../components/BackButton';
+import {GROUP_USER_ID} from '../../utils';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -47,12 +46,56 @@ const HomeScreen = () => {
     }
   }, [myOrdersAccepted]);
 
+  useEffect(() => {
+    if (userLogin) {
+      updateLocation();
+    }
+  }, []);
   const handleConfirmOrderTotal = () => {
     Linking.openURL(`tel:${'0922277782'}`);
     setModalOrderTotalVisible(false);
   };
 
-  // Hàm lắng nghe thay đổi việc Cập nhật vị tri njaan viên di chuyển
+  const updateLocation = async () => {
+    try {
+      Geolocation.getCurrentPosition(
+        position => {
+          if (position?.coords) {
+            OVG_spOfficer_Update_LocationTime(position, userLogin?.OfficerID);
+          }
+        },
+        error => {},
+        {enableHighAccuracy: false, timeout: 20000},
+      );
+    } catch (e) {}
+  };
+
+  const OVG_spOfficer_Update_LocationTime = async (position, officerId) => {
+    try {
+      const pr = {
+        UserId: officerId,
+        Lat: position?.coords?.latitude,
+        Lng: position?.coords?.longitude,
+        GroupUserId: GROUP_USER_ID,
+      };
+      const params = {
+        Json: JSON.stringify(pr),
+        func: 'OVG_spOfficer_Update_LocationTime',
+      };
+      const result = await mainAction.API_spCallServer(params, dispatch);
+      if (result[0]?.Result == 'OK') {
+        const par = {
+          latitude: pr.Lat,
+          longitude: pr.Lng,
+        };
+        mainAction.locationUpdate(par, dispatch);
+      }
+    } catch {
+      //
+    }
+  };
+
+  // Hàm lắng nghe thay đổi việc Cập nhật vị tri nhân viên di chuyển
   useEffect(() => {
     if (acceptedOrder?.StatusOrder === 2) {
       try {
@@ -65,20 +108,27 @@ const HomeScreen = () => {
                   longitude: position.coords.longitude,
                 };
                 // console.log('updateCurrentLocation', params);
-                updateLocation(acceptedOrder?.OrderId, position.coords.latitude, position.coords.longitude);
+                updateLocation(
+                  acceptedOrder?.OrderId,
+                  position.coords.latitude,
+                  position.coords.longitude,
+                );
                 mainAction.locationUpdate(params, dispatch);
               }
             },
             error => {
               console.log('Error getting location:', error);
             },
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+            {enableHighAccuracy: false, timeout: 20000},
           );
         };
 
         if (acceptedOrder?.StatusOrder === 2) {
           updateCurrentLocation();
-          locationIntervalRef.current = setInterval(updateCurrentLocation, 10000);
+          locationIntervalRef.current = setInterval(
+            updateCurrentLocation,
+            10000,
+          );
         } else {
           if (locationIntervalRef.current) {
             clearInterval(locationIntervalRef.current);
@@ -100,11 +150,7 @@ const HomeScreen = () => {
   return (
     <LayoutGradientBlue>
       {userLogin ? <MyOrders /> : null}
-      {
-        userLogin?.OfficerID === 7347 ? (
-          <BackButton />
-        ) : null
-      }
+      {userLogin?.OfficerID === 7347 ? <BackButton /> : null}
       <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
       <TabCustom
         modalRef={modalRef}
@@ -121,10 +167,10 @@ const HomeScreen = () => {
       />
       <ModalUserNotActive
         title={
-          userLogin?.State === 5 ?
-            'Tài khoản của bạn đã bị khóa, vui lòng liên hệ quản trị viên Ong Vàng để được hỗ trợ xử lý !'
-            :
-            'Tài khoản của bạn chưa được kích hoạt, vui lòng liên hệ quản trị viên Ong Vàng để được hỗ trợ kích hoạt !'}
+          userLogin?.State === 5
+            ? 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ quản trị viên Ong Vàng để được hỗ trợ xử lý !'
+            : 'Tài khoản của bạn chưa được kích hoạt, vui lòng liên hệ quản trị viên Ong Vàng để được hỗ trợ kích hoạt !'
+        }
         isModalVisible={isUpdate}
         setModalVisible={setIsUpdate}
         onConfirm={onConfirm}

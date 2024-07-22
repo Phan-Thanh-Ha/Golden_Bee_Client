@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Text, View, Image, ScrollView, Linking } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../Constants';
 import Button from '../../components/buttons/Button';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
-import { cirtificate, coin_icon } from '../../assets';
+import { coin_icon } from '../../assets';
 import { colors } from '../../styles/Colors';
 import Rating from '../../components/Rating';
 import Box from '../../components/Box';
 import { FormatMoney } from '../../utils/FormatMoney';
-import Day from '../../components/svg/Day';
 import StorageNames from '../../Constants/StorageNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { mainAction } from '../../Redux/Action';
@@ -31,6 +30,7 @@ const AccountScreen = () => {
   const location = useSelector(state => state.main.locationTime);
   const [loadingReset, setLoadingReset] = useState(false);
   const [errorGetLocation, setErrorGetLocation] = useState(false);
+  const [dataReport, setDataReport] = useState({});
 
   const handleChangeToggle = async () => {
     const status = !userLogin?.StateOnline;
@@ -82,6 +82,7 @@ const AccountScreen = () => {
   useFocusEffect(
     React.useCallback(() => {
       OVG_spOfficer_Wallet_Money();
+      OVG_spOfficer_Booking_Report();
     }, [acceptedOrder]),
   );
   const [totalPoint, setTotalPoint] = React.useState(userLogin?.Surplus);
@@ -90,7 +91,7 @@ const AccountScreen = () => {
     const userLogin = await getData(StorageNames.USER_PROFILE);
     try {
       const pr = {
-        OfficerId: userLogin.OfficerID,
+        OfficerId: userLogin?.OfficerID,
         GroupUserId: GROUP_USER_ID,
       };
       const params = {
@@ -109,6 +110,28 @@ const AccountScreen = () => {
         setData(StorageNames.USER_PROFILE, userChange);
         mainAction.userLogin(userChange, dispatch);
       }
+    } catch (error) { }
+  };
+  const OVG_spOfficer_Booking_Report = async () => {
+    try {
+      const pr = {
+        OfficerId: userLogin?.OfficerID,
+        GroupUserId: GROUP_USER_ID,
+      };
+      const params = {
+        Json: JSON.stringify(pr),
+        func: 'OVG_spOfficer_Booking_Report',
+      };
+      const result = await mainAction.API_spCallServer(params, dispatch);
+      setTotalPoint(result[0]?.TotalPoint);
+      const userChange = {
+        ...userLogin,
+        TotalBookingAll: result[0]?.TotalBookingAll,
+        TotalMoneyAll: result[0]?.TotalMoneyAll,
+
+      };
+      setData(StorageNames.USER_PROFILE, userChange);
+      mainAction.userLogin(userChange, dispatch);
     } catch (error) { }
   };
   const user = {
@@ -145,7 +168,7 @@ const AccountScreen = () => {
     setLoadingReset(true);
     try {
       const pr = {
-        OfficerId: userLogin.OfficerID,
+        OfficerId: userLogin?.OfficerID,
         GroupUserId: GROUP_USER_ID,
       };
       const params = {
@@ -345,13 +368,10 @@ const AccountScreen = () => {
                   fontSize: 20,
                   fontWeight: '700',
                 }}>
-                {FormatMoney(totalPoint)} đ
+                {FormatMoney(userLogin?.Surplus || 0) || 0} đ
               </Text>
             </View>
           </View>
-          {/* <Button fontSize={15} paddingHorizontal={10} paddingVertical={7}>
-            Nạp thêm tiền
-          </Button> */}
           <View style={MainStyles.flexRowCenter}>
             <View
               style={{
@@ -391,36 +411,6 @@ const AccountScreen = () => {
               <Text style={MainStyles.labelTitle}>Đang làm việc </Text>
             )}
           </View>
-          {/* <View style={MainStyles.flexRowSpaceBetween}>
-            <Text style={MainStyles.labelTitle}>Lịch làm việc </Text>
-            <Button
-              textColor={colors.MAIN_BLUE_CLIENT}
-              bgColor={'transparent'}
-              fontSize={12}
-              textMargin={0}
-              btnMargin={0}
-              icon={() => <Day color={colors.MAIN_BLUE_CLIENT} size={20} />}>
-              Đặt lịch làm việc
-            </Button>
-          </View> */}
-          <View style={MainStyles.flexRowSpaceBetween}>
-            <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>
-              Điểm ưu đãi
-            </Text>
-            <View style={MainStyles.flexRowFlexStart}>
-              <Image
-                source={cirtificate}
-                style={{
-                  width: 20,
-                  height: 20,
-                  marginRight: 5,
-                }}
-              />
-              <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>
-                {FormatMoney(user.point)} point
-              </Text>
-            </View>
-          </View>
           <View style={MainStyles.flexRowCenter}>
             <View
               style={{
@@ -450,7 +440,7 @@ const AccountScreen = () => {
                 MainStyles.labelTitle,
                 { marginRight: 10, color: colors.MAIN_COLOR_CLIENT },
               ]}>
-              {FormatMoney(2000000)} đ
+              {FormatMoney(userLogin?.TotalMoneyAll || 0) || 0} đ
             </Text>
           </View>
           <View style={MainStyles.flexRowFlexStart}>
@@ -465,13 +455,25 @@ const AccountScreen = () => {
               ]}>
               Công việc tuần này :
             </Text>
-            <Text
-              style={[
-                MainStyles.labelTitle,
-                { marginRight: 10, color: colors.MAIN_BLUE_CLIENT },
-              ]}>
-              {10} dịch vụ đã hoàn thành
-            </Text>
+            {
+              userLogin?.TotalBookingAll === 0 || !userLogin?.TotalBookingAll ? (
+                <Text
+                  style={[
+                    MainStyles.labelTitle,
+                    { marginRight: 10, color: colors.MAIN_BLUE_CLIENT },
+                  ]}>
+                  chưa có dịch vụ đã hoàn thành
+                </Text>
+              ) : (
+                <Text
+                  style={[
+                    MainStyles.labelTitle,
+                    { marginRight: 10, color: colors.MAIN_BLUE_CLIENT },
+                  ]}>
+                  {userLogin?.TotalBookingAll} dịch vụ đã hoàn thành
+                </Text>
+              )
+            }
           </View>
           <Box height={10} />
           <Text style={[MainStyles.labelTitle]}>Hỗ trợ</Text>

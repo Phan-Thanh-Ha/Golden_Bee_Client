@@ -43,3 +43,9 @@ export const ic_air_conditioner = require("../assets/logo/9.png");
 export const ic_repair_electricity = require("../assets/logo/6.png");
 export const ic_repair_the_air_conditioning = require("../assets/logo/5.png");
 export const ic_repair_the_camera = require("../assets/logo/10.png");
+
+export const ic_bronze = require("./rank_icons/bronze.png");
+export const ic_silver = require("./rank_icons/silver.png");
+export const ic_gold = require("./rank_icons/gold.png");
+export const ic_platinum = require("./rank_icons/platinum.png");
+export const ic_diamond = require("./rank_icons/diamond.png");

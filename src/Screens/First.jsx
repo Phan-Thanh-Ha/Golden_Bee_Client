@@ -15,42 +15,42 @@ import { check, request, PERMISSIONS } from 'react-native-permissions';
 const First = () => {
   const navi = useNavigation();
   const dispatch = useDispatch();
-  const getCurrentLocation = async () => {
-    try {
-      // Kiểm tra quyền truy cập vị trí
-      const permissionStatus = await check(
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      );
+  // const getCurrentLocation = async () => {
+  //   try {
+  //     // Kiểm tra quyền truy cập vị trí
+  //     const permissionStatus = await check(
+  //       PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+  //     );
 
-      if (permissionStatus !== 'granted') {
-        // Nếu quyền chưa được cấp, yêu cầu cấp quyền
-        const newPermissionStatus = await request(
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        );
-        if (newPermissionStatus !== 'granted') {
-          return;
-        }
-      }
+  //     if (permissionStatus !== 'granted') {
+  //       // Nếu quyền chưa được cấp, yêu cầu cấp quyền
+  //       const newPermissionStatus = await request(
+  //         PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+  //       );
+  //       if (newPermissionStatus !== 'granted') {
+  //         return;
+  //       }
+  //     }
 
-      Geolocation.getCurrentPosition(
-        position => {
-          if (position.coords) {
-            const params = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            };
-            mainAction.locationUpdate(params, dispatch);
-          }
-        },
-        error => {
-        },
-        { enableHighAccuracy: false, timeout: 20000 },
-      );
-    } catch (error) {
-    }
-  };
+  //     Geolocation.getCurrentPosition(
+  //       position => {
+  //         if (position.coords) {
+  //           const params = {
+  //             latitude: position.coords.latitude,
+  //             longitude: position.coords.longitude,
+  //           };
+  //           mainAction.locationUpdate(params, dispatch);
+  //         }
+  //       },
+  //       error => {
+  //       },
+  //       { enableHighAccuracy: false, timeout: 20000 },
+  //     );
+  //   } catch (error) {
+  //   }
+  // };
   useEffect(() => {
-    getCurrentLocation();
+    // getCurrentLocation();
     getRouter();
   }, []);
 

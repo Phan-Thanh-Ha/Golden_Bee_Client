@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { FlatList, Image, Pressable, View } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { colors } from '../styles/Colors';
@@ -31,6 +31,7 @@ const CardNewJob = ({ data, modalRef }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const acceptedOrder = useSelector(state => state.main.acceptedOrder);
   const location = useSelector(state => state.main.locationTime);
+  console.log("data", data);
   const payment = () => {
     if (data?.DataService?.Payment) {
       navigation.navigate(ScreenNames.PAYMENT, { data });
@@ -43,7 +44,7 @@ const CardNewJob = ({ data, modalRef }) => {
     try {
       const pr = {
         OfficerId: userLogin?.OfficerID,
-        BookingId: parseInt(data?.OrderId),
+        BookingId: parseInt(data?.DataService?.BookingId),
         LatOfficer: location?.latitude,
         LngOfficer: location?.longitude,
         OfficerName: userLogin?.OfficerName,
@@ -54,7 +55,9 @@ const CardNewJob = ({ data, modalRef }) => {
         Json: JSON.stringify(pr),
         func: 'OVG_spOfficer_Booking_Save',
       };
+      // console.log("pr", params);
       const result = await mainAction.API_spCallServer(params, dispatch);
+      // console.log("result", result);
       if (result?.Status === 'OK') {
         //call update firebase
         updateStatusOrder(data?.OrderId, 3);

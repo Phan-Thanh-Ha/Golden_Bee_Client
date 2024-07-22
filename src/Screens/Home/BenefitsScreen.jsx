@@ -1,161 +1,192 @@
-import React from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
-import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
-import LogoBeeBox from '../../components/LogoBeeBox';
-import { colors } from '../../styles/Colors';
-import MainStyles from '../../styles/MainStyle';
-import Box from '../../components/Box';
-import { cirtificate, coin_icon, gift } from '../../assets';
-import { FormatMoney } from '../../utils/FormatMoney';
-import StepsBar from '../../components/StepsBar';
-import { useSelector } from 'react-redux';
-import BackButton from '../../components/BackButton';
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { colors } from "../../styles/Colors";
+import Box from "../../components/Box";
+import MainStyles, {
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+} from "../../styles/MainStyle";
+import LinearGradient from "react-native-linear-gradient";
+import { useDispatch, useSelector } from "react-redux";
+import { mainAction } from "../../Redux/Action";
+import RankProgress from "../../components/RankProgress";
+import { FormatMoney } from "../../utils/FormatMoney";
+import LogoBeeBox from "../../components/LogoBeeBox";
+import { cirtificate, gift } from "../../assets";
 
-
-export default BenefitsScreen = () => {
+const BenefitsScreen = () => {
   const userLogin = useSelector((state) => state.main.userLogin);
-  return (
-    <LayoutGradientBlue>
-      {
-        userLogin?.OfficerID === 7347 ? (
-          <BackButton />
-        ) : null
+  const dispatch = useDispatch();
+  const [benefitValue, setBenefitValue] = useState({});
+
+  useEffect(() => {
+    OVG_spCustomer_Total_Point();
+  }, [userLogin?.OfficerStatus]);
+
+
+  const OVG_spCustomer_Total_Point = async () => {
+    try {
+      const pr = {
+        CustomerId: userLogin?.Id,
+        GroupUserId: 10060,
       }
-      <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
-      <View style={MainStyles.containerTabContent}>
-        <View style={{
-          backgroundColor: colors.WHITE,
-          borderRadius: 8,
-          padding: 10
-        }}>
+      const params = {
+        Json: JSON.stringify(pr),
+        func: "OVG_spOfficer_Rating_Star",
+      };
+      const result = await mainAction.API_spCallServer(params, dispatch);
+      console.log(result);
+      if (result?.length) {
+        if (benefitValue) {
+          setBenefitValue(result[0]);
+        } else {
+          setBenefitValue(result[0]);
+        }
+      }
+    } catch (error) { }
+  }
+  return (
+    <View style={styles.container}>
+      <LinearGradient
+        colors={[colors.PRIMARY_LIGHT, colors.WHITE]}
+        style={{ position: "absolute", width: "100%", height: "100%" }}
+      />
+      <Box height={SCREEN_HEIGHT * 0.01} />
+      <LogoBeeBox color={colors.MAIN_COLOR_CLIENT} sizeImage={SCREEN_WIDTH * 0.15} sizeText={18} />
+      <ScrollView>
+        <View style={{ padding: 10 }}>
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center'
+              backgroundColor: colors.WHITE,
+              borderRadius: 8,
+              padding: 10,
+              marginVertical: 10,
             }}
           >
-            <Text style={{
-              fontSize: 15,
-              fontWeight: '700',
-              color: colors.MAIN_BLUE_CLIENT
-            }}>Thưởng tháng</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Text style={{
-                fontSize: 15,
-                fontWeight: '700',
-                color: colors.MAIN_BLUE_CLIENT
-              }}>Mức tiếp theo </Text>
-              <Image
-                source={coin_icon}
-                style={{ width: 20, height: 20 }}
-              />
-              <Text style={
-                {
-                  color: colors.MAIN_COLOR_CLIENT,
-                  marginLeft: 10,
-                  fontSize: 17,
-                  fontWeight: '700',
-                }
-              }>{FormatMoney(400000)} đ</Text>
+            <View style={MainStyles.flexRowSpaceBetween}>
+              <View style={[{ width: SCREEN_WIDTH * 0.49 }]}>
+                <View style={MainStyles.flexRowFlexStart}>
+                  <Text style={[styles.text1]}>Điểm tích lũy : </Text>
+                  <Text style={[styles.text2]}>{FormatMoney(benefitValue?.TotalPoint) || 0} Điểm</Text>
+                </View>
+              </View>
+              <View style={[{ width: SCREEN_WIDTH * 0.49 }]}>
+                <View style={MainStyles.flexRowFlexStart}>
+                  <Text style={[styles.text1]}>Hạng : </Text>
+                  <Text style={[styles.text2]}>{benefitValue?.CustomerRank}</Text>
+                </View>
+              </View>
             </View>
           </View>
-          <Box height={10} />
-          <StepsBar rating={1} fontSize={[24, 24]} />
-          <Text
-            style={{
-              fontSize: 12,
-              textAlign: 'center',
-              color: colors.MAIN_BLUE_CLIENT
-            }}
-          >Cần thêm {59} giờ trong tuần này để đạt mức được thưởng tiếp theo trong tháng này</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
+          <RankProgress points={benefitValue?.TotalPoint || 1} />
           <View
             style={{
-              flex: 1,
-              justifyContent: 'center',
-              padding: 10,
-              backgroundColor: colors.WHITE,
-              marginTop: 10,
-              marginRight: 10,
-              borderRadius: 10,
-              alignItems: 'center'
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            <Text
+            <View
               style={{
-                fontSize: 15,
-                fontWeight: '700',
-                color: colors.MAIN_BLUE_CLIENT,
-                marginBottom: 15
-              }}
-            >Quà tặng</Text>
-            <Image
-              source={gift}
-              style={{
-                width: 50,
-                height: 50
-              }}
-            />
-            <Text
-              style={{
-                color: colors.MAIN_BLUE_CLIENT,
+                flex: 1,
+                justifyContent: "center",
+                padding: 10,
+                backgroundColor: colors.WHITE,
                 marginTop: 10,
-                textAlign: 'center'
+                marginRight: 10,
+                borderRadius: 10,
+                alignItems: "center",
               }}
-            >Nhận vô vàn quà tặng khi tích điểm và đổi quà cùng Ong Vàng !</Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              padding: 10,
-              backgroundColor: colors.WHITE,
-              marginTop: 10,
-              marginLeft: 10,
-              borderRadius: 10,
-              alignItems: 'center'
-            }}
-          >
-            <Text
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "700",
+                  color: colors.MAIN_BLUE_CLIENT,
+                  marginBottom: 15,
+                }}
+              >
+                Quà tặng
+              </Text>
+              <Image
+                source={gift}
+                style={{
+                  width: 50,
+                  height: 50,
+                }}
+              />
+              <Text
+                style={{
+                  color: colors.MAIN_BLUE_CLIENT,
+                  marginTop: 10,
+                  textAlign: "center",
+                }}
+              >
+                Nhận vô vàn quà tặng khi tích điểm và đổi quà cùng Ong Vàng !
+              </Text>
+            </View>
+            <View
               style={{
-                fontSize: 15,
-                fontWeight: '700',
-                color: colors.MAIN_BLUE_CLIENT,
-                marginBottom: 15
-              }}
-            >Premium</Text>
-            <Image
-              source={cirtificate}
-              style={{
-                width: 50,
-                height: 50
-              }}
-            />
-            <Text
-              style={{
-                color: colors.MAIN_BLUE_CLIENT,
+                flex: 1,
+                justifyContent: "center",
+                padding: 10,
+                backgroundColor: colors.WHITE,
                 marginTop: 10,
-                textAlign: 'center'
+                marginLeft: 10,
+                borderRadius: 10,
+                alignItems: "center",
               }}
-            >Hãy cùng phấn đấu để trở thành cộng tác viên cao cấp !</Text>
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "700",
+                  color: colors.MAIN_BLUE_CLIENT,
+                  marginBottom: 15,
+                }}
+              >
+                Premium
+              </Text>
+              <Image
+                source={cirtificate}
+                style={{
+                  width: 50,
+                  height: 50,
+                }}
+              />
+              <Text
+                style={{
+                  color: colors.MAIN_BLUE_CLIENT,
+                  marginTop: 10,
+                  textAlign: "center",
+                }}
+              >
+                Hãy cùng phấn đấu để trở thành cộng tác viên cao cấp !
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
-      <Box height={100} />
-    </LayoutGradientBlue>
+        <Box height={SCREEN_HEIGHT * 0.7} />
+      </ScrollView>
+    </View>
   );
-}
+};
+
+export default BenefitsScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.WHITE,
+  },
+  text1: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: colors.MAIN_BLUE_CLIENT,
+  },
+  text2: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: colors.MAIN_COLOR_CLIENT,
+  }
+});

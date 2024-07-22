@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Platform, Dimensions } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { themeColors } from "../styles/Colors";
 
@@ -43,19 +43,20 @@ const FilterComponent = ({ applyFilter }) => {
       >
         <Text style={currentFilter === 'month' && styles.activeFilterText}>Trong tháng</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={showDatePicker}
         style={[styles.filterButton, currentFilter === 'date' && styles.activeFilterButton]}
       >
         <Text style={currentFilter === 'date' && styles.activeFilterText}>Chọn ngày</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       {isDatePickerVisible && (
         <DateTimePicker
           testID="dateTimePicker"
           value={selectedDate}
           mode="date"
-          display="default"
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           locale={'vi'}
+          style={styles.dateTimePicker}
           onChange={onDateChange}
         />
       )}
@@ -68,12 +69,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     padding: 5,
-    // backgroundColor: themeColors.background,
     borderRadius: 5,
   },
   filterButton: {
-    marginRight: 10,
-    padding: 10,
+    marginRight: 5,
+    padding: 5,
     backgroundColor: themeColors.lightBackground,
     borderRadius: 5,
   },
@@ -82,6 +82,11 @@ const styles = StyleSheet.create({
   },
   activeFilterText: {
     color: '#fff',
+  },
+  dateTimePicker: {
+    width: Dimensions.get('window').width * 0.8,
+    height: Dimensions.get('window').height * 0.3,
+    alignSelf: 'center',
   }
 });
 

@@ -303,6 +303,7 @@ const MainStyles = StyleSheet.create({
   layoutTabPayment: {
     backgroundColor: colors.WHITE,
     borderRadius: 8,
+    padding: 10,
   },
   modalContent: {
     padding: 20,
@@ -402,7 +403,7 @@ const MainStyles = StyleSheet.create({
   screenTitle: {
     fontSize: 25,
     fontWeight: "bold",
-    color: themeColors.primaryText,
+    color: themeColors.lightBackground,
     textAlign: "center",
     marginBottom: 10,
   },
