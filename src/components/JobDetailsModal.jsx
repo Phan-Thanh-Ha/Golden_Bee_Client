@@ -97,7 +97,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
                         style={{ width: 22, height: 22 }}
                       />
                       <Text style={MainStyles.textCardJob}>
-                        {data?.DataService?.TotalStaff} nhân viên
+                        {data?.DataService?.TotalStaff} Nhân viên
                       </Text>
                     </View>
                     {data?.DataService?.TotalRoom ? (
@@ -107,7 +107,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
                           style={{ width: 22, height: 22 }}
                         />
                         <Text style={MainStyles.textCardJob}>
-                          {data?.DataService?.TotalRoom} phòng
+                          {data?.DataService?.TotalRoom} Phòng
                         </Text>
                       </View>
                     ) : null}
@@ -131,7 +131,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
                       />
                       <Text style={MainStyles.textCardJob}>
                         {' '}
-                        trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
+                        Trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
                       </Text>
                     </View>
                     <View style={MainStyles.flexRowFlexEnd}>
@@ -139,7 +139,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
                         source={ic_chronometer}
                         style={{ width: 22, height: 22 }}
                       />
-                      <Text style={MainStyles.textCardJob}>làm ngay</Text>
+                      <Text style={MainStyles.textCardJob}>Làm ngay</Text>
                     </View>
                   </View>
                 </View>
@@ -225,7 +225,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
                         ? data?.DataService?.Voucher.map(item => (
                           <View key={item?.VoucherId.toString()}>
                             <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
-                              🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
+                              🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " VNĐ"}
                             </Text>
                           </View>
                         ))
@@ -300,7 +300,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
                 fontSize: 18,
                 fontWeight: '700',
               }}>
-              {FormatMoney(data?.DataService?.PriceAfterDiscount)} vnđ
+              {FormatMoney(data?.DataService?.PriceAfterDiscount)} VNĐ
             </Text>
           </View>
         </View>

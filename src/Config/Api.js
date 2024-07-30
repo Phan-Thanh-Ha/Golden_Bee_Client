@@ -29,7 +29,6 @@ export { API_IMAGE };
 fetchUserLogin();
 export const IMAGES_DOMAIN = "https://api-crmcak.vps.vn/upload";
 
-// export const APIImage = "https://cakshow-img.vps.vn/";
 export const APIImage = "https://api-crmcak.vps.vn/upload";
 export const APIKey = "netcoApikey2025";
 export const APIKey_Customer = "netCoApi2022";

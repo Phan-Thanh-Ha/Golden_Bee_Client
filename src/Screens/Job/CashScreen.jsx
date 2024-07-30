@@ -176,7 +176,7 @@ const CashScreen = ({ route }) => {
                 <View style={MainStyles.flexRowFlexStart}>
                   <Image source={ic_person} style={{ width: 22, height: 22 }} />
                   <Text style={MainStyles.textCardJob}>
-                    {data?.DataService?.TotalStaff} nhân viên
+                    {data?.DataService?.TotalStaff} Nhân viên
                   </Text>
                 </View>
                 {data?.DataService?.TotalRoom ? (
@@ -186,7 +186,7 @@ const CashScreen = ({ route }) => {
                       style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
-                      {data?.DataService?.TotalRoom} phòng
+                      {data?.DataService?.TotalRoom} Phòng
                     </Text>
                   </View>
                 ) : null}
@@ -198,7 +198,7 @@ const CashScreen = ({ route }) => {
                   <Image source={ic_glass} style={{ width: 22, height: 22 }} />
                   <Text style={MainStyles.textCardJob}>
                     {' '}
-                    trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
+                    Trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
                   </Text>
                 </View>
               </View>
@@ -266,7 +266,7 @@ const CashScreen = ({ route }) => {
                         ? data?.DataService?.Voucher?.map(item => (
                           <View key={item?.VoucherId?.toString()}>
                             <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
-                              🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
+                              🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " VNĐ"}
                             </Text>
                           </View>
                         ))
@@ -344,7 +344,7 @@ const CashScreen = ({ route }) => {
               </View>
             </View>
             <Box height={responsivescreen.height(2)} />
-            <View>
+            {/* <View>
               <Text style={MainStyles.textCardJob}>
                 Chi phí phát sinh
               </Text>
@@ -360,7 +360,7 @@ const CashScreen = ({ route }) => {
             </View>
             <View>
               <Text style={{ textAlign: 'center' }}>🔶</Text>
-            </View>
+            </View> */}
             <View
               style={[
                 MainStyles.cardContentJob,
@@ -387,7 +387,7 @@ const CashScreen = ({ route }) => {
                         fontSize: 18,
                         fontWeight: '700',
                       }}>
-                      {FormatMoney(totalMoneyAll)} VND
+                      {FormatMoney(totalMoneyAll)} VNĐ
                     </Text>
                   </View>
                 </View>

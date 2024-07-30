@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect } from 'react';
-import { Image, SafeAreaView, View, StyleSheet, Alert } from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {Image, SafeAreaView, View, StyleSheet, Alert} from 'react-native';
 import LogoBee from '../components/LogoBee';
-import { colors } from '../styles/Colors';
-import { image_banner_1 } from '../assets';
-import { ScreenNames } from '../Constants';
-import { getData } from '../utils';
+import {colors} from '../styles/Colors';
+import {image_banner_1} from '../assets';
+import {ScreenNames} from '../Constants';
+import {getData} from '../utils';
 import StorageNames from '../Constants/StorageNames';
-import { useNavigation } from '@react-navigation/native';
-import { mainAction } from '../Redux/Action';
-import { useDispatch } from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {mainAction} from '../Redux/Action';
+import {useDispatch} from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
-import { check, request, PERMISSIONS } from 'react-native-permissions';
+import {check, request, PERMISSIONS} from 'react-native-permissions';
 
 const First = () => {
   const navi = useNavigation();
@@ -65,48 +65,56 @@ const First = () => {
       ) {
         navi.reset({
           index: 0,
-          routes: [{ name: ScreenNames.UPDATE_PROFILE }],
-        })
+          routes: [{name: ScreenNames.UPDATE_PROFILE}],
+        });
       } else {
         navi.reset({
           index: 0,
-          routes: [{ name: ScreenNames.MAIN_NAVIGATOR }],
-        })
+          routes: [{name: ScreenNames.MAIN_NAVIGATOR}],
+        });
       }
     } catch (error) {
       console.error('Error in checkUploadCCCD:', error);
       navi.reset({
         index: 0,
-        routes: [{ name: ScreenNames.HOME_MAIN_SCREEN }],
-      })
+        routes: [{name: ScreenNames.HOME_MAIN_SCREEN}],
+      });
     }
   };
 
   const getRouter = async () => {
-    try {
-      const userLogin = await getData(StorageNames.USER_PROFILE);
-      if (userLogin?.OfficerID === 7347) {
-        mainAction.userLogin(userLogin, dispatch);
+    const isOld = await getData(StorageNames.IS_OLD);
+    if (isOld) {
+      try {
+        const userLogin = await getData(StorageNames.USER_PROFILE);
+        if (userLogin?.OfficerID === 7347) {
+          mainAction.userLogin(userLogin, dispatch);
+          navi.reset({
+            index: 0,
+            routes: [{name: ScreenNames.ESTIMATE_PRICE}],
+          });
+          return;
+        }
+        if (!userLogin) {
+          navi.reset({
+            index: 0,
+            routes: [{name: ScreenNames.HOME_MAIN_SCREEN}],
+          });
+        } else {
+          mainAction.userLogin(userLogin, dispatch);
+          checkUploadCCCD(userLogin);
+        }
+      } catch (error) {
         navi.reset({
           index: 0,
-          routes: [{ name: ScreenNames.ESTIMATE_PRICE }],
-        })
-        return;
+          routes: [{name: ScreenNames.HOME_MAIN_SCREEN}],
+        });
       }
-      if (!userLogin) {
-        navi.reset({
-          index: 0,
-          routes: [{ name: ScreenNames.HOME_MAIN_SCREEN }],
-        })
-      } else {
-        mainAction.userLogin(userLogin, dispatch);
-        checkUploadCCCD(userLogin);
-      }
-    } catch (error) {
+    } else {
       navi.reset({
         index: 0,
-        routes: [{ name: ScreenNames.HOME_MAIN_SCREEN }],
-      })
+        routes: [{name: ScreenNames.ABOUT}],
+      });
     }
   };
 

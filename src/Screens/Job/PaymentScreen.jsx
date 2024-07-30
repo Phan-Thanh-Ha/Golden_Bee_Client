@@ -30,7 +30,7 @@ import { RoundUpNumber } from '../../utils/RoundUpNumber';
 import NumericInput from '../../components/NumericInput ';
 
 const PaymentScreen = ({ route }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(true);
   const navi = useNavigation();
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.main.userLogin);
@@ -86,14 +86,12 @@ const PaymentScreen = ({ route }) => {
         IsPayment: 2,
         GroupUserId: 10060
       };
-      console.log("pr----------------", pr);
       const params = {
         Json: JSON.stringify(pr),
         func: "OVG_spOfficer_Booking_Save",
       };
 
       const result = await mainAction.API_spCallServer(params, dispatch);
-      console.log("result----------------", result);
       if (result?.Status === "OK") {
         //call update firebase
         const complete = completeOrder(data?.OrderId);
@@ -111,7 +109,6 @@ const PaymentScreen = ({ route }) => {
               PriceAfterDiscount: totalMoneyAll,
             }
           }
-          // navi.navigate(ScreenNames.CONGRATULATION, { data: data });
           navi.reset({
             index: 0,
             routes: [{ name: ScreenNames.CONGRATULATION, params: { data: dataConfirm } }],
@@ -161,7 +158,7 @@ const PaymentScreen = ({ route }) => {
                     source={ic_person}
                     style={{ width: 22, height: 22 }}
                   />
-                  <Text style={MainStyles.textCardJob}>{data?.DataService?.TotalStaff} nhân viên</Text>
+                  <Text style={MainStyles.textCardJob}>{data?.DataService?.TotalStaff} Nhân viên</Text>
                 </View>
                 {data?.DataService?.TotalRoom ? (
                   <View style={MainStyles.flexRowFlexStart}>
@@ -169,7 +166,7 @@ const PaymentScreen = ({ route }) => {
                       source={ic_living_room}
                       style={{ width: 22, height: 22 }}
                     />
-                    <Text style={MainStyles.textCardJob}>{data?.DataService?.TotalRoom} phòng</Text>
+                    <Text style={MainStyles.textCardJob}>{data?.DataService?.TotalRoom} Phòng</Text>
                   </View>
                 ) : null
                 }
@@ -182,7 +179,7 @@ const PaymentScreen = ({ route }) => {
                     source={ic_glass}
                     style={{ width: 22, height: 22 }}
                   />
-                  <Text style={MainStyles.textCardJob}> trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ</Text>
+                  <Text style={MainStyles.textCardJob}> Trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ</Text>
                 </View>
               </View>
             </View>
@@ -263,7 +260,7 @@ const PaymentScreen = ({ route }) => {
                     ? data?.DataService?.Voucher.map(item => (
                       <View key={item?.VoucherId.toString()}>
                         <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
-                          🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
+                          🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " VNĐ"}
                         </Text>
                       </View>
                     ))
@@ -314,7 +311,7 @@ const PaymentScreen = ({ route }) => {
               </View>
             </View>
             <Box height={responsivescreen.height(2)} />
-            <View>
+            {/* <View>
               <Text style={MainStyles.textCardJob}>
                 Chi phí phát sinh
               </Text>
@@ -330,7 +327,7 @@ const PaymentScreen = ({ route }) => {
             </View>
             <View>
               <Text style={{ textAlign: 'center' }}>🔶</Text>
-            </View>
+            </View> */}
             <View
               style={[
                 MainStyles.cardContentJob,
@@ -357,7 +354,7 @@ const PaymentScreen = ({ route }) => {
                         fontSize: 18,
                         fontWeight: '700',
                       }}>
-                      {FormatMoney(totalMoneyAll)} VND
+                      {FormatMoney(totalMoneyAll)} VNĐ
                     </Text>
                   </View>
                 </View>
@@ -386,7 +383,8 @@ const PaymentScreen = ({ route }) => {
         isModalVisible={isModalVisible}
         setModalVisible={setIsModalVisible}
         onConfirm={() => setIsModalVisible(false)}
-        title="Chức năng thanh toán chuyển khoản hiện tại chưa khả dụng, vui lòng sử dụng chức năng thanh toán tiền mặt thay thế !"
+        title={`${data?.DataService?.ServiceName}  ${data?.BookingCode}`}
+        amount={totalMoneyAll}
       />
       <AlertConfirm
         title={alertTitle}

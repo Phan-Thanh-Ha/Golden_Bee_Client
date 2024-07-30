@@ -11,6 +11,7 @@ const ModalBlockFunction = ({
   setModalVisible,
   onConfirm,
   title,
+  amount = 0,
 }) => {
   const [imageUrl, setImageUrl] = useState('');
 
@@ -33,15 +34,13 @@ const ModalBlockFunction = ({
   }, [data]);
 
   const QRCodeACB = async data => {
-    let COD = data?.COD;
-    let Code = data?.Code;
     try {
       let requestData = JSON.stringify({
         accountNo: '22772868',
         accountName: 'CTY CP DAU TU THUONG MAI ONG VANG',
         acqId: '970416',
-        addInfo: 'OVG_1234564988',
-        amount: 100000,
+        addInfo: title,
+        amount: amount,
         template: 'print',
       });
 

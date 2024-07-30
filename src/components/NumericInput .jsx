@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     minWidth: SCREEN_WIDTH * 0.4,
   },
   input: {
+    textAlign: 'center',
     height: 40,
     borderColor: colors.MAIN_BLUE_CLIENT,
     borderWidth: 1,

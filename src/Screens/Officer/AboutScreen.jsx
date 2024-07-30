@@ -8,6 +8,8 @@ import { ScreenNames } from "../../Constants";
 import { image_banner_2, image_banner_3, image_banner_4 } from "../../assets";
 import Button from "../../components/buttons/Button";
 import ArrowRight from "../../components/svg/ArrowRight";
+import { setData } from '../../utils';
+import StorageNames from '../../Constants/StorageNames';
 
 const dataSlider = [
   {
@@ -34,13 +36,14 @@ const AboutScreen = ({ navigation }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const swiperRef = useRef(null);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentIndex < dataSlider.length - 1) {
       const nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
       swiperRef.current.scrollToIndex({ index: nextIndex, animated: true });
     }
     if (currentIndex === 2) {
+      await setData(StorageNames.IS_OLD, true);
       navigation.reset({
         routes: [{ name: ScreenNames.AUTH_HOME }],
       })

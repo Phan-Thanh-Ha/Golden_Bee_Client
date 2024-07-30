@@ -7,7 +7,7 @@ export const checkCaseStatus = (statusOnline, surplus, numOrder, state) => {
   if (surplus < 200000) {
     return {
       status:
-        "Bạn cần có nhiều hơn 200.000 vnđ trong tài khoản để bắt đầu nhận việc",
+        "Bạn cần có nhiều hơn 200.000 VNĐ trong tài khoản để bắt đầu nhận việc",
     };
   }
   if (numOrder > 1) {

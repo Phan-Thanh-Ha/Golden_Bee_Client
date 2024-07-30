@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, Image, ScrollView, Linking } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../Constants';
 import Button from '../../components/buttons/Button';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
@@ -13,7 +13,7 @@ import { FormatMoney } from '../../utils/FormatMoney';
 import StorageNames from '../../Constants/StorageNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { mainAction } from '../../Redux/Action';
-import { GROUP_USER_ID, getData, removeData, setData } from '../../utils';
+import { GROUP_USER_ID, removeData, setData } from '../../utils';
 import BtnToggle from '../../components/BtnToggle';
 import ModalConfirm from '../../components/modal/ModalConfirm';
 import { APIImage } from '../../Config/Api';
@@ -27,10 +27,8 @@ const AccountScreen = () => {
   const [loading, setLoading] = React.useState(false);
   const acceptedOrder = useSelector(state => state.main.acceptedOrder);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const location = useSelector(state => state.main.locationTime);
   const [loadingReset, setLoadingReset] = useState(false);
   const [errorGetLocation, setErrorGetLocation] = useState(false);
-  const [dataReport, setDataReport] = useState({});
 
   const handleChangeToggle = async () => {
     const status = !userLogin?.StateOnline;
@@ -68,7 +66,7 @@ const AccountScreen = () => {
     try {
       await removeData(StorageNames.USER_PROFILE);
       mainAction.userLogin(null, dispatch);
-      navi.navigate(ScreenNames.ABOUT);
+      navi.navigate(ScreenNames.AUTH_HOME);
     } catch (error) { }
   };
   const handleClearAccount = async () => {
@@ -78,188 +76,134 @@ const AccountScreen = () => {
       navi.navigate(ScreenNames.AUTH_HOME);
     } catch (error) { }
   };
+  useEffect(() => {
+    OVG_spOfficer_Infor();
+  }, [acceptedOrder?.OrderId]);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      OVG_spOfficer_Wallet_Money();
-      OVG_spOfficer_Booking_Report();
-    }, [acceptedOrder]),
-  );
-  const [totalPoint, setTotalPoint] = React.useState(userLogin?.Surplus);
+  // const GetUser = async () => {
+  //   try {
+  //     const params = {
+  //       Json: userLogin?.Password,
+  //       func: "",
+  //     };
+  //     const password = await mainAction.DecryptString(params, dispatch);
 
-  const OVG_spOfficer_Wallet_Money = async () => {
-    const userLogin = await getData(StorageNames.USER_PROFILE);
-    try {
-      const pr = {
-        OfficerId: userLogin?.OfficerID,
-        GroupUserId: GROUP_USER_ID,
-      };
-      const params = {
-        Json: JSON.stringify(pr),
-        func: 'OVG_spOfficer_Wallet_Money',
-      };
-      // console.log('OVG_spOfficer_Wallet_Money', params);
-      const result = await mainAction.API_spCallServer(params, dispatch);
-      // console.log('OVG_spOfficer_Wallet_Money', result);
-      if (result && result[0]?.TotalPoint !== userLogin?.Surplus) {
-        setTotalPoint(result[0]?.TotalPoint);
-        const userChange = {
-          ...userLogin,
-          Surplus: result[0]?.TotalPoint,
-        };
-        setData(StorageNames.USER_PROFILE, userChange);
-        mainAction.userLogin(userChange, dispatch);
-      }
-    } catch (error) { }
-  };
-  const OVG_spOfficer_Booking_Report = async () => {
-    try {
-      const pr = {
-        OfficerId: userLogin?.OfficerID,
-        GroupUserId: GROUP_USER_ID,
-      };
-      const params = {
-        Json: JSON.stringify(pr),
-        func: 'OVG_spOfficer_Booking_Report',
-      };
-      const result = await mainAction.API_spCallServer(params, dispatch);
-      setTotalPoint(result[0]?.TotalPoint);
-      const userChange = {
-        ...userLogin,
-        TotalBookingAll: result[0]?.TotalBookingAll,
-        TotalMoneyAll: result[0]?.TotalMoneyAll,
-      };
-      if (result[0]?.TotalBookingAll || result[0]?.TotalMoneyAll) {
-        setData(StorageNames.USER_PROFILE, userChange);
-        mainAction.userLogin(userChange, dispatch);
-      }
-
-    } catch (error) { }
-  };
-  const user = {
-    name: 'Nguyễn Văn Anh',
-    sdt: '0123456789',
-    cmnd: '0123456789',
-    staffId: '0123456789',
-    level: 1,
-    point: 2000,
-  };
-  const CPN_spOfficer_Update_LocationTime = async (lat, lng, officerId) => {
-    try {
-      // user ưu tiên không check fake
-      const pr = {
-        UserId: officerId,
-        Lat: lat,
-        Lng: lng,
-      };
-      const params = {
-        Json: JSON.stringify(pr),
-        func: 'CPN_spOfficer_Update_LocationTime',
-        API_key: 'netcoAPIkey2020',
-      };
-      const result = await mainAction.API_spCallServer(params, dispatch);
-      if (result) {
-        if (result[0].Result == "OK") {
-          // console.log("CPN_spOfficer_Update_LocationTime ------------", result);
-        }
-      }
-    } catch (e) {
-    }
-  };
+  //     const pr = {
+  //       UserName: userLogin?.Phone,
+  //       Password: password,
+  //       GroupUserId: 10060,
+  //     };
+  //     if (password) {
+  //       const paramss = {
+  //         Json: JSON.stringify(pr),
+  //         func: 'AVG_spOfficer_Login',
+  //       };
+  //       const result = await mainAction.API_spCallServer(paramss, dispatch);
+  //       if (result?.Status === 'OK') {
+  //         await setData(StorageNames.USER_PROFILE, result.Result[0]);
+  //         mainAction.userLogin(result.Result[0], dispatch);
+  //         setLoadingReset(false);
+  //       } else {
+  //         setLoadingReset(false);
+  //       }
+  //       setLoadingReset(false);
+  //     }
+  //   } catch (error) {
+  //   }
+  // };
   const RefreshApp = async () => {
     setLoadingReset(true);
     try {
-      const pr = {
-        OfficerId: userLogin?.OfficerID,
-        GroupUserId: GROUP_USER_ID,
-      };
-      const params = {
-        Json: JSON.stringify(pr),
-        func: 'OVG_spStatus_Officer',
-      };
-      const result = await mainAction.API_spCallServer(params, dispatch);
-      if (result?.length > 0) {
-        const userChange = {
-          ...userLogin,
-          OfficerStatus: result[0]?.OfficerStatus,
-          StateOnline: result[0]?.StateOnline,
-        };
-        await setData(StorageNames.USER_PROFILE, userChange);
-        mainAction.userLogin(userChange, dispatch);
-      }
-      Geolocation.getCurrentPosition(
-        position => {
-          if (position.coords) {
-            const params = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            };
-            mainAction.locationUpdate(params, dispatch);
-          }
-        },
-        error => {
-          setErrorGetLocation(true);
-          // console.log('Error getting location:', error);
-        },
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-      );
-      await CPN_spOfficer_Update_LocationTime(
-        location?.latitude,
-        location?.longitude,
-        userLogin?.OfficerID,
-      );
-      const getLink = async () => {
-        try {
-          const params = {
-            Json: userLogin?.Password,
-            func: "",
-          };
-          const password = await mainAction.DecryptString(params, dispatch);
-
-          const pr = {
-            UserName: userLogin?.Phone,
-            Password: password,
-            GroupUserId: 10060,
-          };
-          if (password) {
-            const paramss = {
-              Json: JSON.stringify(pr),
-              func: 'AVG_spOfficer_Login',
-            };
-            const result = await mainAction.API_spCallServer(paramss, dispatch);
-            if (result?.Status === 'OK') {
-              await setData(StorageNames.USER_PROFILE, result.Result[0]);
-              mainAction.userLogin(result.Result[0], dispatch);
-              setLoadingReset(false);
-            } else {
-              setLoadingReset(false);
-            }
-            setLoadingReset(false);
-          }
-        } catch (error) {
-        }
-      };
-      await getLink();
-      await OVG_spOfficer_Wallet_Money();
-      await OVG_spOfficer_Booking_Report();
+      await OVG_spOfficer_Infor();
+      await CPN_spOfficer_Update_LocationTime();
       setLoadingReset(false);
     } catch (error) {
       setLoadingReset(false);
     }
     setLoadingReset(false);
   };
-  console.log("userLogin", userLogin);
+
+  const CPN_spOfficer_Update_LocationTime = async () => {
+    try {
+      Geolocation.getCurrentPosition(
+        position => {
+          if (position?.coords) {
+            const params = {
+              latitude: position?.coords?.latitude,
+              longitude: position?.coords?.longitude,
+            };
+            mainAction.locationUpdate(params, dispatch);
+            const pr = {
+              UserId: userLogin?.OfficerID,
+              Lat: position?.coords?.latitude,
+              Lng: position?.coords?.longitude,
+            };
+            const paramss = {
+              Json: JSON.stringify(pr),
+              func: 'CPN_spOfficer_Update_LocationTime',
+              API_key: 'netcoAPIkey2020',
+            };
+            mainAction.API_spCallServer(paramss, dispatch);
+          }
+        },
+        error => {
+          setErrorGetLocation(true);
+        },
+        { enableHighAccuracy: false, timeout: 20000 },
+      );
+    } catch (e) {
+    }
+  };
+
+  const OVG_spOfficer_Infor = async () => {
+    try {
+      const pr = {
+        OfficerId: userLogin?.OfficerID,
+        GroupUserId: GROUP_USER_ID,
+      };
+      const params = {
+        Json: JSON.stringify(pr),
+        func: 'OVG_spOfficer_Infor',
+      }
+      const result = await mainAction.API_spCallServer(params, dispatch);
+      const userChange = {
+        CreateTime: userLogin?.CreateTime,
+        FilesBC: userLogin?.FilesBC,
+        FilesCCCD: userLogin?.FilesCCCD,
+        FilesCCCD_BackSide: userLogin?.FilesCCCD_BackSide,
+        FilesCV: userLogin?.FilesCV,
+        FilesImage: userLogin?.FilesImage,
+        OfficerID: userLogin?.OfficerID,
+        OfficerName: userLogin?.OfficerName,
+        OfficerStatus: result?.StateOnline?.length > 0 ? result?.StateOnline[0]?.OfficerStatus : userLogin?.OfficerStatus,
+        Password: userLogin?.Password,
+        Phone: userLogin?.Phone,
+        State: result?.StateOnline?.length > 0 ? result?.StateOnline[0]?.State : userLogin?.State,
+        StateOnline: result?.StateOnline?.length > 0 ? result?.StateOnline[0]?.StateOnline : userLogin?.StateOnline,
+        Surplus: result?.TotalPoint?.length > 0 ? result?.TotalPoint[0]?.TotalPoint : userLogin?.Surplus,
+        TotalBookingAll: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.TotalBookingAll : userLogin?.TotalBookingAll,
+        TotalMoneyAll: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.TotalMoneyAll : userLogin?.TotalMoneyAll,
+        TotalPoint: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.TotalPointAll : userLogin?.TotalPoint,
+        CustomerRank: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.CustomerRank : userLogin?.CustomerRank,
+      }
+      await setData(StorageNames.USER_PROFILE, userChange);
+      mainAction.userLogin(userChange, dispatch);
+    } catch (error) { }
+  };
+
   return (
     <LayoutGradientBlue>
       {
-        userLogin?.OfficerID === 7347 ? (
+        userLogin?.OfficerID === 7347 && (
           <BackButton />
-        ) : null
+        )
       }
       <ScrollView>
         <Text style={MainStyles.screenTitle}>Tài khoản</Text>
         <View style={MainStyles.contentContainer}>
+          <Box height={SCREEN_HEIGHT * 0.01} />
           <Text style={MainStyles.labelTitle}>Thông tin</Text>
+          <Box height={SCREEN_HEIGHT * 0.01} />
           <View style={MainStyles.flexRowFlexStart}>
             <Image
               source={{
@@ -337,24 +281,14 @@ const AccountScreen = () => {
             ]}>
             <View style={MainStyles.flexRowCenter}>
               <Text style={{ color: colors.WHITE, fontSize: 17, marginRight: 5 }}>
-                {userLogin?.CustomerRank}
+                {userLogin?.CustomerRank || "Cộng tác viên thử việc"}
               </Text>
             </View>
             <View style={MainStyles.flexRowCenter}>
               <Rating rating={5} fontSize={[17, 17]} />
             </View>
           </View>
-          <View style={MainStyles.flexRowCenter}>
-            <View
-              style={{
-                width: SCREEN_WIDTH,
-                height: 1,
-                backgroundColor: colors.MAIN_BLUE_CLIENT,
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-            />
-          </View>
+          <Box height={SCREEN_HEIGHT * 0.01} />
           <Text style={MainStyles.labelTitle}>Tài chính</Text>
           <View>
             <Text
@@ -375,21 +309,11 @@ const AccountScreen = () => {
                   fontSize: 20,
                   fontWeight: '700',
                 }}>
-                {FormatMoney(userLogin?.Surplus || 0) || 0} đ
+                {FormatMoney(userLogin?.Surplus || 0) || 0} VNĐ
               </Text>
             </View>
           </View>
-          <View style={MainStyles.flexRowCenter}>
-            <View
-              style={{
-                width: SCREEN_WIDTH,
-                height: 1,
-                backgroundColor: colors.MAIN_BLUE_CLIENT,
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-            />
-          </View>
+
           <Box height={SCREEN_HEIGHT * 0.01} />
           <View style={MainStyles.flexRowSpaceBetween}>
             <Text style={MainStyles.labelTitle}>Trạng thái nhận đơn </Text>
@@ -404,25 +328,16 @@ const AccountScreen = () => {
               />
             </View>
           </View>
+          <Box height={SCREEN_HEIGHT * 0.01} />
           <View style={MainStyles.flexRowSpaceBetween}>
-            <Text style={MainStyles.labelTitle}>Trạnh thái làm việc </Text>
+            <Text style={MainStyles.labelTitle}>Trạng thái làm việc </Text>
             {userLogin?.OfficerStatus === 0 ? (
               <Text style={MainStyles.labelTitle}>Chưa nhận đơn </Text>
             ) : (
               <Text style={MainStyles.labelTitle}>Đang làm việc </Text>
             )}
           </View>
-          <View style={MainStyles.flexRowCenter}>
-            <View
-              style={{
-                width: SCREEN_WIDTH,
-                height: 1,
-                backgroundColor: colors.MAIN_BLUE_CLIENT,
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-            />
-          </View>
+          <Box height={SCREEN_HEIGHT * 0.01} />
           <Text style={[MainStyles.labelTitle]}>Báo cáo tuần</Text>
           <View style={MainStyles.flexRowFlexStart}>
             <Text
@@ -441,7 +356,7 @@ const AccountScreen = () => {
                 MainStyles.labelTitle,
                 { marginRight: 10, color: colors.MAIN_COLOR_CLIENT },
               ]}>
-              {FormatMoney(userLogin?.TotalMoneyAll || 0) || 0} đ
+              {FormatMoney(userLogin?.TotalMoneyAll || 0) || 0} VNĐ
             </Text>
           </View>
           <View style={MainStyles.flexRowFlexStart}>
@@ -463,7 +378,7 @@ const AccountScreen = () => {
                     MainStyles.labelTitle,
                     { marginRight: 10, color: colors.MAIN_BLUE_CLIENT },
                   ]}>
-                  chưa có dịch vụ đã hoàn thành
+                  Chưa có dịch vụ hoàn thành
                 </Text>
               ) : (
                 <Text
@@ -471,12 +386,12 @@ const AccountScreen = () => {
                     MainStyles.labelTitle,
                     { marginRight: 10, color: colors.MAIN_BLUE_CLIENT },
                   ]}>
-                  {userLogin?.TotalBookingAll} dịch vụ đã hoàn thành
+                  {userLogin?.TotalBookingAll} Dịch vụ đã hoàn thành
                 </Text>
               )
             }
           </View>
-          <Box height={10} />
+          <Box height={SCREEN_HEIGHT * 0.01} />
           <Text style={[MainStyles.labelTitle]}>Hỗ trợ</Text>
           <View style={MainStyles.flexRowFlexStart}>
             <Text
@@ -532,6 +447,7 @@ const AccountScreen = () => {
           <Box height={SCREEN_HEIGHT * 0.02} />
         </View>
         <View style={MainStyles.contentContainer}>
+          <Box height={SCREEN_HEIGHT * 0.01} />
           <Text style={MainStyles.labelTitle}>Liên hệ tổng đài</Text>
           <View style={MainStyles.flexRowSpaceBetween}>
             <Text
@@ -555,8 +471,10 @@ const AccountScreen = () => {
             }}>
             Gọi tổng đài
           </Button>
+          <Box height={SCREEN_HEIGHT * 0.01} />
         </View>
         <View style={MainStyles.contentContainer}>
+          <Box height={SCREEN_HEIGHT * 0.01} />
           <Text style={MainStyles.labelTitle}>Làm mới ứng dụng</Text>
           <View style={MainStyles.flexRowSpaceBetween}>
             <Text
@@ -580,6 +498,7 @@ const AccountScreen = () => {
             disable={loadingReset}>
             Làm mới ứng dụng
           </Button>
+          <Box height={SCREEN_HEIGHT * 0.01} />
         </View>
         <View style={{ marginHorizontal: 10 }}>
           <Button
@@ -590,15 +509,19 @@ const AccountScreen = () => {
             Đăng xuất
           </Button>
         </View>
-        <View style={{ margin: 10 }}>
-          <Button
-            onPress={() => setIsModalVisible(true)}
-            textColor={colors.WHITE}
-            bgColor={'#F44336'}
-            paddingVertical={5}>
-            Xóa tài khoản
-          </Button>
-        </View>
+        {
+          userLogin?.Phone === "0943214791" && (
+            <View style={{ margin: 10 }}>
+              <Button
+                onPress={() => setIsModalVisible(true)}
+                textColor={colors.WHITE}
+                bgColor={'#F44336'}
+                paddingVertical={5}>
+                Xóa tài khoản
+              </Button>
+            </View>
+          )
+        }
         <Box height={SCREEN_HEIGHT * 0.2} />
       </ScrollView>
       <ModalConfirm
@@ -615,7 +538,7 @@ const AccountScreen = () => {
         }
         isModalVisible={errorGetLocation}
         setModalVisible={setErrorGetLocation}
-        onConfirm={RefreshApp}
+        onConfirm={() => setErrorGetLocation(false)}
       />
     </LayoutGradientBlue>
   );

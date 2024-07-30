@@ -1,25 +1,20 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
-import { colors } from "../../styles/Colors";
-import Box from "../../components/Box";
-import MainStyles, {
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-} from "../../styles/MainStyle";
-import LinearGradient from "react-native-linear-gradient";
-import { useDispatch, useSelector } from "react-redux";
-import { mainAction } from "../../Redux/Action";
-import RankProgress from "../../components/RankProgress";
-import { FormatMoney } from "../../utils/FormatMoney";
-import LogoBeeBox from "../../components/LogoBeeBox";
-import { cirtificate, gift } from "../../assets";
-import LayoutGradientBlue from "../../components/layouts/LayoutGradientBlue";
-import StorageNames from "../../Constants/StorageNames";
-import { useFocusEffect } from "@react-navigation/native";
-import { setData } from "../../utils";
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {colors} from '../../styles/Colors';
+import Box from '../../components/Box';
+import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../styles/MainStyle';
+import {useDispatch, useSelector} from 'react-redux';
+import {mainAction} from '../../Redux/Action';
+import RankProgress from '../../components/RankProgress';
+import {FormatMoney} from '../../utils/FormatMoney';
+import LogoBeeBox from '../../components/LogoBeeBox';
+import {cirtificate, gift} from '../../assets';
+import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
+import StorageNames from '../../Constants/StorageNames';
+import {setData} from '../../utils';
 
 const BenefitsScreen = () => {
-  const userLogin = useSelector((state) => state.main.userLogin);
+  const userLogin = useSelector(state => state.main.userLogin);
   const dispatch = useDispatch();
   const [benefitValue, setBenefitValue] = useState({});
 
@@ -27,19 +22,17 @@ const BenefitsScreen = () => {
     OVG_spCustomer_Total_Point();
   }, []);
 
-
   const OVG_spCustomer_Total_Point = async () => {
     try {
       const pr = {
         OfficerId: userLogin?.OfficerID,
         GroupUserId: 10060,
-      }
+      };
       const params = {
         Json: JSON.stringify(pr),
-        func: "OVG_spOfficer_Rating_Star",
+        func: 'OVG_spOfficer_Rating_Star',
       };
       const result = await mainAction.API_spCallServer(params, dispatch);
-      console.log(result);
       if (result?.length) {
         if (benefitValue) {
           setBenefitValue(result[0]);
@@ -47,46 +40,48 @@ const BenefitsScreen = () => {
             ...userLogin,
             CustomerRank: result[0]?.CustomerRank,
           });
-          mainAction.userLogin({
-            ...userLogin,
-            CustomerRank: result[0]?.CustomerRank,
-          }, dispatch);
+          mainAction.userLogin(
+            {
+              ...userLogin,
+              CustomerRank: result[0]?.CustomerRank,
+            },
+            dispatch,
+          );
         } else {
           setBenefitValue(result[0]);
           await setData(StorageNames.USER_PROFILE, {
             ...userLogin,
             CustomerRank: result[0]?.CustomerRank,
           });
-          mainAction.userLogin({
-            ...userLogin,
-            CustomerRank: result[0]?.CustomerRank,
-          }, dispatch);
+          mainAction.userLogin(
+            {
+              ...userLogin,
+              CustomerRank: result[0]?.CustomerRank,
+            },
+            dispatch,
+          );
         }
       }
-    } catch (error) { }
-  }
+    } catch (error) {}
+  };
   return (
     <LayoutGradientBlue>
-      {
-        userLogin?.OfficerID === 7347 ? (
-          <BackButton />
-        ) : null
-      }
       <ScrollView>
         <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
-        <View style={{ padding: 10 }}>
+        <View style={{padding: 10}}>
           <View
             style={{
               backgroundColor: colors.WHITE,
               borderRadius: 8,
               padding: 10,
               marginVertical: 10,
-            }}
-          >
+            }}>
             <View style={MainStyles.flexRowFlexStart}>
               <View style={MainStyles.flexRowFlexStart}>
                 <Text style={[styles.text1]}>Điểm tích lũy : </Text>
-                <Text style={[styles.text2]}>{FormatMoney(benefitValue?.TotalPoint) || 0} Điểm</Text>
+                <Text style={[styles.text2]}>
+                  {FormatMoney(userLogin?.TotalPoint) || 0} Điểm
+                </Text>
               </View>
             </View>
             <View style={MainStyles.flexRowFlexStart}>
@@ -96,34 +91,31 @@ const BenefitsScreen = () => {
               </View>
             </View>
           </View>
-          <RankProgress points={benefitValue?.TotalPoint || 1} />
+          <RankProgress points={userLogin?.TotalPoint || 1} />
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
             <View
               style={{
                 flex: 1,
-                justifyContent: "center",
+                justifyContent: 'center',
                 padding: 10,
                 backgroundColor: colors.WHITE,
                 marginTop: 10,
                 marginRight: 10,
                 borderRadius: 10,
-                alignItems: "center",
-              }}
-            >
+                alignItems: 'center',
+              }}>
               <Text
                 style={{
                   fontSize: 15,
-                  fontWeight: "700",
+                  fontWeight: '700',
                   color: colors.MAIN_BLUE_CLIENT,
                   marginBottom: 15,
-                }}
-              >
+                }}>
                 Quà tặng
               </Text>
               <Image
@@ -137,32 +129,29 @@ const BenefitsScreen = () => {
                 style={{
                   color: colors.MAIN_BLUE_CLIENT,
                   marginTop: 10,
-                  textAlign: "center",
-                }}
-              >
+                  textAlign: 'center',
+                }}>
                 Nhận vô vàn quà tặng khi tích điểm và đổi quà cùng Ong Vàng !
               </Text>
             </View>
             <View
               style={{
                 flex: 1,
-                justifyContent: "center",
+                justifyContent: 'center',
                 padding: 10,
                 backgroundColor: colors.WHITE,
                 marginTop: 10,
                 marginLeft: 10,
                 borderRadius: 10,
-                alignItems: "center",
-              }}
-            >
+                alignItems: 'center',
+              }}>
               <Text
                 style={{
                   fontSize: 15,
-                  fontWeight: "700",
+                  fontWeight: '700',
                   color: colors.MAIN_BLUE_CLIENT,
                   marginBottom: 15,
-                }}
-              >
+                }}>
                 Premium
               </Text>
               <Image
@@ -176,9 +165,8 @@ const BenefitsScreen = () => {
                 style={{
                   color: colors.MAIN_BLUE_CLIENT,
                   marginTop: 10,
-                  textAlign: "center",
-                }}
-              >
+                  textAlign: 'center',
+                }}>
                 Hãy cùng phấn đấu để trở thành cộng tác viên cao cấp !
               </Text>
             </View>
@@ -199,12 +187,12 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.MAIN_BLUE_CLIENT,
   },
   text2: {
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.MAIN_COLOR_CLIENT,
-  }
+  },
 });

@@ -1,15 +1,22 @@
-import React, { useCallback, useState } from "react";
-import { FlatList, StyleSheet, View, ActivityIndicator } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import CardJobDone from "./CardJobDone";
-import { SCREEN_HEIGHT } from "../styles/MainStyle";
-import CardDefault from "./CardDefault";
-import { useFocusEffect } from "@react-navigation/native";
-import { mainAction } from "../Redux/Action";
-import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO, isWithinInterval } from "date-fns";
-import FilterComponent from "./FilterComponent";
+import React, {useCallback, useState} from 'react';
+import {FlatList, StyleSheet, View, ActivityIndicator} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import CardJobDone from './CardJobDone';
+import {SCREEN_HEIGHT} from '../styles/MainStyle';
+import CardDefault from './CardDefault';
+import {useFocusEffect} from '@react-navigation/native';
+import {mainAction} from '../Redux/Action';
+import {
+  startOfWeek,
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+  parseISO,
+  isWithinInterval,
+} from 'date-fns';
+import FilterComponent from './FilterComponent';
 
-const TabJobDone = ({ modalJobDoneRef }) => {
+const TabJobDone = ({modalJobDoneRef}) => {
   const userLogin = useSelector(state => state.main.userLogin);
   const dispatch = useDispatch();
   const [dataJobDone, setDataJobDone] = useState([]);
@@ -29,14 +36,13 @@ const TabJobDone = ({ modalJobDoneRef }) => {
       };
 
       const result = await mainAction.API_spCallServer(params, dispatch);
-
       if (result.length > 0) {
         setOriginalData(result);
         const filteredResult = filterData(result, 'week', new Date());
         setDataJobDone(filteredResult);
       }
     } catch (error) {
-      console.error("lỗi lấy dữu liệu:", error);
+      console.error('lỗi lấy dữu liệu:', error);
     } finally {
       setLoading(false);
     }
@@ -46,18 +52,24 @@ const TabJobDone = ({ modalJobDoneRef }) => {
     const now = new Date();
     switch (filterType) {
       case 'week':
-        const startOfThisWeek = startOfWeek(now, { weekStartsOn: 1 });
-        const endOfThisWeek = endOfWeek(now, { weekStartsOn: 1 });
+        const startOfThisWeek = startOfWeek(now, {weekStartsOn: 1});
+        const endOfThisWeek = endOfWeek(now, {weekStartsOn: 1});
         return data.filter(item => {
           const bookingTime = parseISO(item.BookingTime);
-          return isWithinInterval(bookingTime, { start: startOfThisWeek, end: endOfThisWeek });
+          return isWithinInterval(bookingTime, {
+            start: startOfThisWeek,
+            end: endOfThisWeek,
+          });
         });
       case 'month':
         const startOfThisMonth = startOfMonth(now);
         const endOfThisMonth = endOfMonth(now);
         return data.filter(item => {
           const bookingTime = parseISO(item.BookingTime);
-          return isWithinInterval(bookingTime, { start: startOfThisMonth, end: endOfThisMonth });
+          return isWithinInterval(bookingTime, {
+            start: startOfThisMonth,
+            end: endOfThisMonth,
+          });
         });
       case 'date':
         return data.filter(item => {
@@ -79,32 +91,26 @@ const TabJobDone = ({ modalJobDoneRef }) => {
   useFocusEffect(
     useCallback(() => {
       OVG_spOfficer_Booking_List_By_Officer();
-    }, [])
+    }, []),
   );
 
   const renderFooter = () => <View style={styles.footer} />;
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <FilterComponent applyFilter={applyFilter} />
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
+      ) : dataJobDone?.length > 0 ? (
+        <FlatList
+          data={dataJobDone}
+          renderItem={({item, index}) => (
+            <CardJobDone key={index} data={item} modalRef={modalJobDoneRef} />
+          )}
+          ListFooterComponent={renderFooter}
+        />
       ) : (
-        dataJobDone?.length > 0 ? (
-          <FlatList
-            data={dataJobDone.slice(0, 10)}
-            renderItem={({ item, index }) => (
-              <CardJobDone
-                key={index}
-                data={item}
-                modalRef={modalJobDoneRef}
-              />
-            )}
-            ListFooterComponent={renderFooter}
-          />
-        ) : (
-          <CardDefault title="Chưa có việc làm hoàn thành" />
-        )
+        <CardDefault title="Chưa có việc làm hoàn thành" />
       )}
     </View>
   );

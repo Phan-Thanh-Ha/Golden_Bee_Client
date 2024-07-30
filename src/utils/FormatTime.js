@@ -21,7 +21,7 @@ export const FormatTime = (timestamp, type) => {
   } else if (type === 2) {
     return `${hoursStr}:${minutesStr}`;
   } else {
-    throw new Error("sai định dạng");
+    throw new Error('sai định dạng');
   }
 };
 
@@ -29,16 +29,15 @@ export const FormatTime = (timestamp, type) => {
 // const timestamp = 1718821492732;
 // const type1 = 1;
 // const type2 = 2;
-import { format } from "date-fns";
+import {format} from 'date-fns';
 
 export const parseTimeSql = (time, type) => {
   const date = new Date(time);
-
   if (type === 1) {
-    return format(date, "HH:mm - dd/MM/yyyy");
+    return format(date, 'dd/MM/yyyy HH:mm');
   } else if (type === 2) {
-    return format(date, "HH:mm");
+    return format(date, 'HH:mm');
   } else {
-    throw new Error("sai định dạng");
+    throw new Error('sai định dạng');
   }
 };

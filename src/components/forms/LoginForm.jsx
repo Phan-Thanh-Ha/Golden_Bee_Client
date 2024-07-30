@@ -15,21 +15,13 @@ import {useDispatch} from 'react-redux';
 import {setData} from '../../utils/LocalStorage';
 import StorageNames from '../../Constants/StorageNames';
 import {useNavigation} from '@react-navigation/native';
-import ModalUserNotActive from '../modal/ModalUserNotActive';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navi = useNavigation();
   const [loginMessage, setLoginMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [title, setTitle] = useState(
-    'Tài khoản của bạn đã bị khóa, vui lòng liên hệ quản trị viên Ong Vàng để được hỗ trợ xử lý !',
-  );
-  const onConfirm = () => {
-    Linking.openURL(`tel:${'0922277782'}`);
-    setIsUpdate(false);
-  };
+
   const defaultUser = {
     CreateTime: '2024-06-28T11:10:55.407',
     FilesBC: '/OVG_Booking/2024/072024/04/_2024-07-04-09-27-30_1.jpg',
@@ -64,14 +56,14 @@ const LoginForm = () => {
 
   const handleSubmit = async values => {
     setLoading(true);
-    if (values.phoneNumber === '0943214791') {
-      await setData(StorageNames.USER_PROFILE, defaultUser);
-      mainAction.userLogin(defaultUser, dispatch);
-      navi.reset({
-        routes: [{name: ScreenNames.ESTIMATE_PRICE}],
-      });
-      return;
-    }
+    // if (values.phoneNumber !== '0943214791') {
+    //   await setData(StorageNames.USER_PROFILE, defaultUser);
+    //   mainAction.userLogin(defaultUser, dispatch);
+    //   navi.reset({
+    //     routes: [{name: ScreenNames.ESTIMATE_PRICE}],
+    //   });
+    //   return;
+    // }
     try {
       const pr = {
         UserName: values.phoneNumber,
@@ -127,7 +119,7 @@ const LoginForm = () => {
         await mainAction.API_spCallServer(params, dispatch);
       }
       setLoading(false);
-    } catch (error) {
+    } catch {
       setLoading(false);
     }
     setLoading(false);

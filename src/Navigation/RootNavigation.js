@@ -25,10 +25,10 @@ import PaymentScreen from '../Screens/Job/PaymentScreen';
 import BookingTimeScreen from '../Screens/Home/BookingTimeScreen';
 import Check from '../Screens/firebaseCheck/Check';
 import CongratulationsScreen from '../Screens/Job/CongratulationsScreen';
-import HomeMainScreen from "../Screens/HomeMainScreen";
-import AdminWebView from "../Screens/AdminWebView";
-import EstimatePriceScreen from "../Screens/EstimatePriceScreen";
-import ServiceEstimateScreen from "../components/ServiceEstimateScreen";
+import HomeMainScreen from '../Screens/HomeMainScreen';
+import AdminWebView from '../Screens/AdminWebView';
+import EstimatePriceScreen from '../Screens/EstimatePriceScreen';
+import ServiceEstimateScreen from '../components/ServiceEstimateScreen';
 const MainStack = createStackNavigator();
 
 const MainStackNavigator = () => {

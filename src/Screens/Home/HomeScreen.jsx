@@ -5,7 +5,6 @@ import {colors} from '../../styles/Colors';
 import {TabCustom} from '../../components/TabCustom';
 import JobDetailsModal from '../../components/JobDetailsModal';
 import {responsivescreen} from '../../utils/responsive-screen';
-import {updateLocation} from '../../firebaseService/HandleOrder';
 import {useDispatch, useSelector} from 'react-redux';
 import {mainAction} from '../../Redux/Action';
 import JobDoneModal from '../../components/JobDoneModal';
@@ -14,7 +13,6 @@ import Geolocation from '@react-native-community/geolocation';
 import ListenOrderTotal from '../../components/firebaseListen/ListenTotalOrder';
 import {Linking} from 'react-native';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
-import BackButton from '../../components/BackButton';
 import {GROUP_USER_ID} from '../../utils';
 
 const HomeScreen = () => {
@@ -83,6 +81,7 @@ const HomeScreen = () => {
         func: 'OVG_spOfficer_Update_LocationTime',
       };
       const result = await mainAction.API_spCallServer(params, dispatch);
+      // console.log('OVG_spOfficer_Update_LocationTime', result);
       if (result[0]?.Result == 'OK') {
         const par = {
           latitude: pr.Lat,
@@ -90,9 +89,7 @@ const HomeScreen = () => {
         };
         mainAction.locationUpdate(par, dispatch);
       }
-    } catch {
-      //
-    }
+    } catch (e) {}
   };
 
   // Hàm lắng nghe thay đổi việc Cập nhật vị tri nhân viên di chuyển
@@ -150,7 +147,6 @@ const HomeScreen = () => {
   return (
     <LayoutGradientBlue>
       {userLogin ? <MyOrders /> : null}
-      {userLogin?.OfficerID === 7347 ? <BackButton /> : null}
       <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
       <TabCustom
         modalRef={modalRef}

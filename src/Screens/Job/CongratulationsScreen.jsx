@@ -89,7 +89,7 @@ const CongratulationsScreen = ({ navigation, route }) => {
                   fontSize: 18,
                   fontWeight: '700',
                 }}>
-                {FormatMoney(data?.DataService?.PriceAfterDiscount)} vnđ
+                {FormatMoney(data?.DataService?.PriceAfterDiscount)} VNĐ
               </Text>
             </View>
             <View>
@@ -112,7 +112,7 @@ const CongratulationsScreen = ({ navigation, route }) => {
                     fontSize: 18,
                     fontWeight: '700',
                   }}>
-                  {FormatMoney(data?.DataService?.PriceAfterDiscount * 0.7)} vnđ
+                  {FormatMoney(data?.DataService?.PriceAfterDiscount * 0.7)} VNĐ
                 </Text>
               </View>
             </View>

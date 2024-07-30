@@ -14,7 +14,6 @@ const MyOrders = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.main.userLogin);
   const myOrdersAccepted = useSelector(state => state.main.myOrdersAccepted);
-  const initValueFirebase = useSelector(state => state.main.initValueFirebase); // Lấy giá trị initValueFirebase từ Redux
   const [myOrders, setMyOrders] = useState(myOrdersAccepted);
 
   /* change */
