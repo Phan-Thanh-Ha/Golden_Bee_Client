@@ -1,19 +1,20 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import {colors} from '../../styles/Colors';
-import {TabCustom} from '../../components/TabCustom';
+import { colors } from '../../styles/Colors';
+import { TabCustom } from '../../components/TabCustom';
 import JobDetailsModal from '../../components/JobDetailsModal';
-import {responsivescreen} from '../../utils/responsive-screen';
-import {useDispatch, useSelector} from 'react-redux';
-import {mainAction} from '../../Redux/Action';
+import { responsivescreen } from '../../utils/responsive-screen';
+import { updateLocation } from '../../firebaseService/HandleOrder';
+import { useDispatch, useSelector } from 'react-redux';
+import { mainAction } from '../../Redux/Action';
 import JobDoneModal from '../../components/JobDoneModal';
 import MyOrders from '../../components/firebaseListen/MyOrders';
 import Geolocation from '@react-native-community/geolocation';
 import ListenOrderTotal from '../../components/firebaseListen/ListenTotalOrder';
-import {Linking} from 'react-native';
+import { Linking } from 'react-native';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
-import {GROUP_USER_ID} from '../../utils';
+import { GROUP_USER_ID } from '../../utils';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -62,10 +63,10 @@ const HomeScreen = () => {
             OVG_spOfficer_Update_LocationTime(position, userLogin?.OfficerID);
           }
         },
-        error => {},
-        {enableHighAccuracy: false, timeout: 20000},
+        error => { },
+        { enableHighAccuracy: false, timeout: 20000 },
       );
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const OVG_spOfficer_Update_LocationTime = async (position, officerId) => {
@@ -89,7 +90,7 @@ const HomeScreen = () => {
         };
         mainAction.locationUpdate(par, dispatch);
       }
-    } catch (e) {}
+    } catch (e) { }
   };
 
   // Hàm lắng nghe thay đổi việc Cập nhật vị tri nhân viên di chuyển
@@ -116,7 +117,7 @@ const HomeScreen = () => {
             error => {
               console.log('Error getting location:', error);
             },
-            {enableHighAccuracy: false, timeout: 20000},
+            { enableHighAccuracy: false, timeout: 20000 },
           );
         };
 
@@ -147,7 +148,7 @@ const HomeScreen = () => {
   return (
     <LayoutGradientBlue>
       {userLogin ? <MyOrders /> : null}
-      <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
+      <LogoBeeBox color={colors.MAIN_BLUE_CLIENT} sizeImage={70} sizeText={20} />
       <TabCustom
         modalRef={modalRef}
         modalJobDoneRef={modalJobDoneRef}

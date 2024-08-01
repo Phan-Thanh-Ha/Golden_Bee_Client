@@ -1,48 +1,46 @@
-import React, { useEffect } from "react";
+import React from 'react';
 import {
-  View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Alert,
   Animated,
   Image,
-} from "react-native";
-import { CurvedBottomBar } from "react-native-curved-bottom-bar";
-import { Icon } from "@ui-kitten/components";
-import { ScreenNames } from "../Constants";
-import HomeScreen from "../Screens/Home/HomeScreen";
-import EmailScreen from "../Screens/Home/EmailScreen";
-import BenefitsScreen from "../Screens/Home/BenefitsScreen";
-import AccountScreen from "../Screens/Home/AccountScreen";
-import { logo_bee_blue } from "../assets";
-import { colors } from "../styles/Colors";
+} from 'react-native';
+import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
+import {Icon} from '@ui-kitten/components';
+import {ScreenNames} from '../Constants';
+import HomeScreen from '../Screens/Home/HomeScreen';
+import EmailScreen from '../Screens/Home/EmailScreen';
+import BenefitsScreen from '../Screens/Home/BenefitsScreen';
+import AccountScreen from '../Screens/Home/AccountScreen';
+import {logo_bee_blue} from '../assets';
+import {colors} from '../styles/Colors';
 
 export const BottomTabNavigator = () => {
   const _renderIcon = (routeName, selectedTab) => {
-    let iconName = "";
-    let displayName = "";
+    let iconName = '';
+    let displayName = '';
 
     switch (routeName) {
       case ScreenNames.HOME:
-        iconName = "home-outline";
-        displayName = "Trang chủ";
+        iconName = 'home-outline';
+        displayName = 'Trang chủ';
         break;
       case ScreenNames.EMAIL:
-        iconName = "email-outline";
-        displayName = "Thông báo";
+        iconName = 'email-outline';
+        displayName = 'Thông báo';
         break;
       case ScreenNames.BENEFITS:
-        iconName = "gift-outline";
-        displayName = "Phúc lợi";
+        iconName = 'gift-outline';
+        displayName = 'Phúc lợi';
         break;
       case ScreenNames.ACCOUNT:
-        iconName = "person-outline";
-        displayName = "Tài khoản";
+        iconName = 'person-outline';
+        displayName = 'Tài khoản';
         break;
       default:
-        iconName = "home-outline";
-        displayName = "Trang chủ";
+        iconName = 'home-outline';
+        displayName = 'Trang chủ';
     }
 
     return (
@@ -54,7 +52,7 @@ export const BottomTabNavigator = () => {
               ? colors.TEXT_COLOR_BLUE_TAB
               : colors.TEXT_COLOR_GRAY_TAB
           }
-          style={{ width: 25, height: 25 }}
+          style={{width: 25, height: 25}}
         />
         <Text
           style={{
@@ -63,23 +61,21 @@ export const BottomTabNavigator = () => {
                 ? colors.TEXT_COLOR_BLUE_TAB
                 : colors.TEXT_COLOR_GRAY_TAB,
             fontSize: 10,
-          }}
-        >
+          }}>
           {displayName}
         </Text>
       </>
     );
   };
 
-  const renderTabBar = ({ routeName, selectedTab, navigate }) => {
+  const renderTabBar = ({routeName, selectedTab, navigate}) => {
     return (
       <TouchableOpacity
         onPress={() => navigate(routeName)}
         style={[
           styles.tabbarItem,
           routeName === selectedTab && styles.tabbarItemSelected,
-        ]}
-      >
+        ]}>
         {_renderIcon(routeName, selectedTab)}
       </TouchableOpacity>
     );
@@ -95,12 +91,11 @@ export const BottomTabNavigator = () => {
       bgColor="white"
       initialRouteName={ScreenNames.HOME}
       borderTopLeftRight
-      renderCircle={({ selectedTab, navigate }) => (
+      renderCircle={({selectedTab, navigate}) => (
         <Animated.View style={styles.btnCircleUp}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigate(ScreenNames.ADMIN_SCREEN)}
-          >
+            onPress={() => navigate(ScreenNames.ADMIN_SCREEN)}>
             <Image source={logo_bee_blue} style={styles.circleIcon} />
           </TouchableOpacity>
         </Animated.View>
@@ -108,8 +103,7 @@ export const BottomTabNavigator = () => {
       tabBar={renderTabBar}
       screenOptions={{
         headerShown: false,
-      }}
-    >
+      }}>
       <CurvedBottomBar.Screen
         name={ScreenNames.HOME}
         position="LEFT"
@@ -140,7 +134,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   shawdow: {
-    shadowColor: "#DDDDDD",
+    shadowColor: '#DDDDDD',
     shadowOffset: {
       width: 0,
       height: 0,
@@ -150,15 +144,15 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   bottomBar: {},
   btnCircleUp: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: colors.WHITE,
     bottom: 30,
     shadowColor: colors.BLACK,
@@ -172,8 +166,8 @@ const styles = StyleSheet.create({
   },
   tabbarItem: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 5,
     borderTopEndRadius: 10,
     borderTopStartRadius: 10,
@@ -186,6 +180,6 @@ const styles = StyleSheet.create({
   circleIcon: {
     width: 60,
     height: 60,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
 });

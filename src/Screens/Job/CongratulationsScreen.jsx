@@ -43,7 +43,7 @@ const CongratulationsScreen = ({ navigation, route }) => {
 
       <View
         style={{
-          backgroundColor: colors.primary[700],
+          backgroundColor: colors.primary[600],
           margin: 10,
           borderRadius: 10,
           paddingVertical: 20,
@@ -150,7 +150,7 @@ const CongratulationsScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   congratsText: {
-    color: colors.WHITE,
+    color: colors.MAIN_BLUE_CLIENT,
     fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 20,
@@ -162,11 +162,11 @@ const styles = StyleSheet.create({
   countdownText: {
     fontSize: 18,
     textAlign: 'center',
-    color: colors.WHITE,
+    color: colors.MAIN_BLUE_CLIENT,
     paddingBottom: 20,
   },
   subTitle: {
-    color: colors.WHITE,
+    color: colors.MAIN_BLUE_CLIENT,
     paddingHorizontal: 30,
     textAlign: 'center',
     fontSize: 17,

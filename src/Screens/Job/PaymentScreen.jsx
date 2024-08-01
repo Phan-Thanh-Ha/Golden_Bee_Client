@@ -24,7 +24,7 @@ import Down from '../../components/svg/Down';
 import BtnGetImageModal from '../../components/BtnGetImageModal';
 import ModalBlockFunction from '../../components/modal/ModalBlockFunction';
 import { StyleSheet } from 'react-native';
-import { Spinner } from '@ui-kitten/components';
+import { Icon, Spinner } from '@ui-kitten/components';
 import AlertConfirm from '../../components/modal/AlertConfirm';
 import { RoundUpNumber } from '../../utils/RoundUpNumber';
 import NumericInput from '../../components/NumericInput ';
@@ -136,150 +136,176 @@ const PaymentScreen = ({ route }) => {
     <LayoutGradientBlue>
       <StatusBarCustom />
       <Header />
-      <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
+      <LogoBeeBox color={colors.MAIN_BLUE_CLIENT} sizeImage={70} sizeText={20} />
       <ScrollView>
         <View style={MainStyles.containerTabPayment}>
           <View style={MainStyles.layoutTabPayment}>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>Dịch vụ {data?.DataService?.ServiceName.toLowerCase()}</Text>
+              <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
+                Dịch vụ {data?.DataService?.ServiceName.toLowerCase()}
+              </Text>
             </View>
-            {
-              data?.BookingCode ? (
-                <Text style={{ textAlign: 'center', fontSize: 12, color: colors.primary[700], fontWeight: 'bold' }}>{data?.BookingCode}</Text>
-              ) : null
-            }
+            {data?.BookingCode && (
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 12,
+                  color: colors.primary[700],
+                  fontWeight: 'bold',
+                }}>
+                {data?.BookingCode}
+              </Text>
+            )}
             <View style={MainStyles.flexRowCenter}>
               <View style={MainStyles.line} />
             </View>
             <View style={MainStyles.rowMargin}>
-              <View style={MainStyles.flexRowSpaceBetween}>
-                <View style={MainStyles.flexRowFlexStart}>
-                  <Image
-                    source={ic_person}
-                    style={{ width: 22, height: 22 }}
-                  />
-                  <Text style={MainStyles.textCardJob}>{data?.DataService?.TotalStaff} Nhân viên</Text>
-                </View>
-                {data?.DataService?.TotalRoom ? (
-                  <View style={MainStyles.flexRowFlexStart}>
-                    <Image
-                      source={ic_living_room}
-                      style={{ width: 22, height: 22 }}
-                    />
-                    <Text style={MainStyles.textCardJob}>{data?.DataService?.TotalRoom} Phòng</Text>
-                  </View>
-                ) : null
-                }
+              <View style={MainStyles.flexRowFlexStart}>
+                <Icon
+                  style={MainStyles.CardIcon}
+                  fill="#3366FF"
+                  name="person-outline"
+                />
+                <Text style={MainStyles.textCardJob}>
+                  Khách hàng : {data?.DataService?.CustomerName}
+                </Text>
               </View>
             </View>
+            {
+              data?.DataService?.CustomerPhone && (
+                <View style={MainStyles.rowMargin}>
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="phone-outline"
+                    />
+                    <Text style={MainStyles.textCardJob}>
+                      Số điện thoại :{data?.DataService?.CustomerPhone}
+                    </Text>
+                  </View>
+                </View>
+              )
+            }
+            {
+              data?.DataService?.TotalStaff && (
+                <View style={MainStyles.rowMargin}>
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="people-outline"
+                    />
+                    <Text style={MainStyles.textCardJob}>
+                      Số lượng nhân viên : {data?.DataService?.TotalStaff} Nhân viên
+                    </Text>
+                  </View>
+                </View>
+              )
+            }
             <View style={MainStyles.rowMargin}>
               <View style={MainStyles.flexRowSpaceBetween}>
                 <View style={MainStyles.flexRowFlexEnd}>
-                  <Image
-                    source={ic_glass}
-                    style={{ width: 22, height: 22 }}
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#3366FF"
+                    name="clock-outline"
                   />
-                  <Text style={MainStyles.textCardJob}> Trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ</Text>
+                  <Text style={MainStyles.textCardJob}>
+                    {' '}
+                    Làm việc trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
+                  </Text>
                 </View>
               </View>
             </View>
-            {
-              more ? (
-                <>
-                  {
-                    data?.DataService?.IsPremium ? (
-                      <View style={MainStyles.rowMargin}>
-                        <View style={MainStyles.flexRowFlexStart}>
-                          <Image
-                            source={cirtificate}
-                            style={{ width: 22, height: 22 }}
-                          />
-                          <Text style={MainStyles.textCardJob}>Dịch vụ Premium</Text>
-                        </View>
-                      </View>
-                    ) : (
-                      <View style={MainStyles.rowMargin}>
-                        <View style={MainStyles.flexRowFlexStart}>
-                          <Image
-                            source={ic_clearning_basic}
-                            style={{ width: 22, height: 22 }}
-                          />
-                          <Text style={MainStyles.textCardJob}>Dịch vụ thông thường</Text>
-                        </View>
-                      </View>
-                    )
-                  }
-                  <View style={MainStyles.rowMargin}>
-                    <View style={MainStyles.flexRowFlexStart}>
-                      <Image
-                        source={ic_clearning}
-                        style={{ width: 22, height: 22 }}
-                      />
-                      <Text style={MainStyles.textCardJob}>Dịch vụ thêm : {data?.DataService?.OtherService?.length > 0 ? "" : "Không kèm dịch vụ thêm"}</Text>
-                    </View>
-                    {
-                      data?.DataService?.OtherService?.length > 0 ? (
-                        data?.DataService?.OtherService?.map(item => (
-                          <View key={item?.ServiceDetailId?.toString()}>
-                            <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>🔸{item?.ServiceDetailName}</Text>
-                          </View>
-                        ))
-                      ) : null
-                    }
-                  </View>
-                  <View style={MainStyles.rowMargin}>
-                    <View style={MainStyles.flexRowFlexStart}>
-                      <Image
-                        source={ic_location}
-                        style={{ width: 22, height: 22 }}
-                      />
-                      <Text style={MainStyles.textCardJob}>Địa chỉ: {data?.DataService?.Address}</Text>
-                    </View>
-                  </View>
-                  <View style={MainStyles.rowMargin}>
-                    <View style={MainStyles.flexRowFlexStart}>
-                      <Image
-                        source={ic_note}
-                        style={{ width: 22, height: 22 }}
-                      />
-                      <Text style={MainStyles.textCardJob}>{data?.DataService?.NoteBooking ? "Ghi chú: " + data?.DataService?.NoteBooking.trim() : "Không có ghi chú"}</Text>
-                    </View>
-                  </View>
-                </>
-              ) : null
-            }
-            {
-              data?.DataService?.Voucher?.length > 0 ? (
+            {more ? (
+              <>
                 <View style={MainStyles.rowMargin}>
                   <View style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="plus-square-outline"
+                    />
                     <Text style={MainStyles.textCardJob}>
-                      🎁   Đã áp mã voucher :
+                      Dịch vụ thêm :{' '}
+                      {data?.DataService?.OtherService?.length > 0
+                        ? ''
+                        : 'Không kèm dịch vụ thêm'}
                     </Text>
                   </View>
-                  {data?.DataService?.Voucher?.length > 0
-                    ? data?.DataService?.Voucher.map(item => (
-                      <View key={item?.VoucherId.toString()}>
-                        <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
-                          🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " VNĐ"}
+                  {data?.DataService?.OtherService?.length > 0 ? (
+                    <FlatList
+                      data={data?.DataService?.OtherService}
+                      renderItem={renderItem}
+                      keyExtractor={item => item?.ServiceDetailId?.toString()}
+                    />
+                  ) : null}
+                </View>
+                {
+                  data?.DataService?.Voucher?.length > 0 && (
+                    <View style={MainStyles.rowMargin}>
+                      <View style={MainStyles.flexRowFlexStart}>
+                        <Icon
+                          style={MainStyles.CardIcon}
+                          fill="#3366FF"
+                          name="pricetags-outline"
+                        />
+                        <Text style={MainStyles.textCardJob}>
+                          Đã sử dụng voucher :
                         </Text>
                       </View>
-                    ))
-                    : null}
+                      {data?.DataService?.Voucher?.length > 0
+                        ? data?.DataService?.Voucher.map(item => (
+                          <View key={item?.VoucherId.toString()}>
+                            <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
+                              🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
+                            </Text>
+                          </View>
+                        ))
+                        : null}
+                    </View>
+                  )
+                }
+                <View style={MainStyles.rowMargin}>
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="message-square-outline"
+                    />
+                    <Text style={MainStyles.textCardJob}>
+                      {data?.DataService?.NoteBooking
+                        ? 'Ghi chú: ' + data?.DataService?.NoteBooking.trim()
+                        : 'Không có ghi chú'}
+                    </Text>
+                  </View>
                 </View>
-              ) : null
-            }
+                <View style={MainStyles.rowMargin}>
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="pin-outline"
+                    />
+                    <Text style={MainStyles.textCardJob}>
+                      Địa chỉ : {data?.DataService?.Address}
+                    </Text>
+                  </View>
+                </View>
+              </>
+            ) : null}
+
             <View style={MainStyles.flexRowCenter}>
-              {
-                more ? (
-                  <TouchableOpacity onPress={() => setMore(false)} >
-                    <Up color={colors.MAIN_BLUE_CLIENT} fill='none' />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity onPress={() => setMore(true)} >
-                    <Down color={colors.MAIN_BLUE_CLIENT} fill='none' />
-                  </TouchableOpacity>
-                )
-              }
+              {more ? (
+                <TouchableOpacity onPress={() => setMore(false)}>
+                  <Up color={colors.MAIN_BLUE_CLIENT} fill="none" />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => setMore(true)}>
+                  <Down color={colors.MAIN_BLUE_CLIENT} fill="none" />
+                </TouchableOpacity>
+              )}
             </View>
 
             <Box height={responsivescreen.height(2)} />

@@ -80,37 +80,6 @@ const AccountScreen = () => {
     OVG_spOfficer_Infor();
   }, [acceptedOrder?.OrderId]);
 
-  // const GetUser = async () => {
-  //   try {
-  //     const params = {
-  //       Json: userLogin?.Password,
-  //       func: "",
-  //     };
-  //     const password = await mainAction.DecryptString(params, dispatch);
-
-  //     const pr = {
-  //       UserName: userLogin?.Phone,
-  //       Password: password,
-  //       GroupUserId: 10060,
-  //     };
-  //     if (password) {
-  //       const paramss = {
-  //         Json: JSON.stringify(pr),
-  //         func: 'AVG_spOfficer_Login',
-  //       };
-  //       const result = await mainAction.API_spCallServer(paramss, dispatch);
-  //       if (result?.Status === 'OK') {
-  //         await setData(StorageNames.USER_PROFILE, result.Result[0]);
-  //         mainAction.userLogin(result.Result[0], dispatch);
-  //         setLoadingReset(false);
-  //       } else {
-  //         setLoadingReset(false);
-  //       }
-  //       setLoadingReset(false);
-  //     }
-  //   } catch (error) {
-  //   }
-  // };
   const RefreshApp = async () => {
     setLoadingReset(true);
     try {
@@ -241,19 +210,6 @@ const AccountScreen = () => {
                 </Text>
                 <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
                   {userLogin?.Phone}
-                </Text>
-              </View>
-              <View style={MainStyles.flexRowFlexStart}>
-                <Text
-                  style={{
-                    color: colors.MAIN_BLUE_CLIENT,
-                    fontSize: 15,
-                    width: 120,
-                  }}>
-                  CMND/CCCD :
-                </Text>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
-                  {userLogin?.OfficerID}
                 </Text>
               </View>
               <View style={MainStyles.flexRowFlexStart}>

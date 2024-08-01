@@ -1,11 +1,11 @@
 import { StatusBar } from "react-native"
-import { colors } from "../styles/Colors"
+import { colors, themeColors } from "../styles/Colors"
 
 export default StatusBarCustom = () => {
   return (
     <StatusBar
       barStyle="light-content"
-      backgroundColor={colors.MAIN_BLUE_CLIENT}
+      backgroundColor={themeColors.background}
       translucent={false}
     />
   )

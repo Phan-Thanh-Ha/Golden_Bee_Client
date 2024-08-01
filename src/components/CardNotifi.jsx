@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, Image, Pressable, View } from 'react-native';
-import { Text } from '@ui-kitten/components';
+import { Icon, Text } from '@ui-kitten/components';
 import { colors } from '../styles/Colors';
 import MainStyles from '../styles/MainStyle';
 import {
@@ -28,7 +28,7 @@ const CardNotifi = ({ data }) => {
             Dịch vụ {data?.ServiceName.toLowerCase()}
           </Text>
         </View>
-        {data?.BookingServiceCode ? (
+        {data?.BookingServiceCode && (
           <Text
             style={{
               textAlign: 'center',
@@ -38,28 +38,41 @@ const CardNotifi = ({ data }) => {
             }}>
             {data?.BookingServiceCode}
           </Text>
-        ) : null}
+        )}
         <View style={MainStyles.rowMargin}>
           <View style={MainStyles.flexRowFlexStart}>
-            <Image source={ic_note} style={{ width: 22, height: 22 }} />
+            <Icon
+              style={MainStyles.CardIcon}
+              fill="#3366FF"
+              name="calendar-outline"
+            />
             <Text style={MainStyles.textCardJob}>
-              {data?.Note
-                ? 'Ghi chú: ' + data?.DataService?.NoteBooking?.trim()
-                : 'Không có ghi chú'}
+              Ngày hoàn thành : {parseTimeSql(data?.BookingTime, 3)}
             </Text>
           </View>
         </View>
         <View style={MainStyles.rowMargin}>
           <View style={MainStyles.flexRowFlexStart}>
+            <Icon
+              style={MainStyles.CardIcon}
+              fill="#3366FF"
+              name="star-outline"
+            />
             <Text style={MainStyles.textCardJob}>Được đánh giá : </Text>
-            <Rating rating={4} />
+            <Rating rating={data?.StartNumber || 5} />
           </View>
         </View>
         <View style={MainStyles.rowMargin}>
           <View style={MainStyles.flexRowFlexStart}>
-            <Image source={ic_schedule} style={{ width: 22, height: 22 }} />
+            <Icon
+              style={MainStyles.CardIcon}
+              fill="#3366FF"
+              name="message-square-outline"
+            />
             <Text style={MainStyles.textCardJob}>
-              Ngày hoàn thành : {parseTimeSql(data?.BookingTime, 1)}
+              {data?.Note
+                ? 'Feedback: ' + data?.Note.trim()
+                : 'Khách hàng không để lại Feedback'}
             </Text>
           </View>
         </View>

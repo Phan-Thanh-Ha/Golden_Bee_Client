@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import ArrowLeft from "./svg/ArrowLeft";
 import { colors } from "../styles/Colors";
 
-const Header = ({ title, showBackButton = true, color = colors.WHITE }) => {
+const Header = ({ title, showBackButton = true, color = colors.MAIN_BLUE_CLIENT }) => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {

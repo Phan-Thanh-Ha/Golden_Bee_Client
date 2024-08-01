@@ -9,7 +9,10 @@ export const themeColors = {
   secondaryText: "#757575", // Màu chữ phụ
   borderColor: "#B2DFDB", // Màu viền
   header: "#2ecc71", // Màu thanh header
+  confirm: "#4CAF50",
+  cancel: "#f44336",
 };
+
 export const colors = {
   SUCCESS: "#227c45",
   CANCEL: "#8092FF",

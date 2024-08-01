@@ -20,6 +20,11 @@ const MainStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  CardIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 8,
+  },
   hiddenDatePicker: {
     position: "absolute",
     width: 0,
@@ -397,13 +402,14 @@ const MainStyles = StyleSheet.create({
   textDefault: {
     fontSize: 16,
     textAlign: "center",
-    color: colors.WHITE,
+    color: colors.MAIN_BLUE_CLIENT,
+    fontWeight: "600",
   },
   scrollTab: {},
   screenTitle: {
     fontSize: 25,
     fontWeight: "bold",
-    color: themeColors.lightBackground,
+    color: colors.MAIN_BLUE_CLIENT,
     textAlign: "center",
     marginBottom: 10,
   },
@@ -442,6 +448,13 @@ const MainStyles = StyleSheet.create({
     fontWeight: "600",
     paddingRight: SCREEN_WIDTH * 0.04,
   },
+  textCardJobMain: {
+    color: colors.MAIN_BLUE_CLIENT,
+    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: "600",
+    paddingRight: SCREEN_WIDTH * 0.04,
+  },
   cardContentJob: {
     backgroundColor: colors.WHITE,
     borderRadius: 5,
@@ -450,7 +463,7 @@ const MainStyles = StyleSheet.create({
     backgroundColor: colors.primary[100],
   },
   rowMargin: {
-    marginVertical: 8,
+    marginVertical: 6,
   },
   line: {
     backgroundColor: colors.MAIN_BLUE_CLIENT,

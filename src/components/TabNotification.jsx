@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { Layout, Tab, TabView, Text } from '@ui-kitten/components';
 import MainStyles, { SCREEN_HEIGHT } from '../styles/MainStyle';
 import CardZaloChat from './CardZaloChat';

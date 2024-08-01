@@ -38,6 +38,7 @@ import {
 import LayoutBottom from './layouts/LayoutBottom';
 import Box from './Box';
 import { RoundUpNumber } from '../utils/RoundUpNumber';
+import { dateTimeFormat } from '../utils/FormatTime';
 
 const JobDetailsModal = forwardRef((_, ref) => {
   const [data, setData] = useState(null);
@@ -240,7 +241,7 @@ const JobDetailsModal = forwardRef((_, ref) => {
                       style={{ width: 22, height: 22 }}
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Thời gian tạo :{data?.CreateAt}
+                      Thời gian tạo :{dateTimeFormat(data?.CreateAt, 2)}
                     </Text>
                   </View>
                 </View>

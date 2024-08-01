@@ -37,7 +37,41 @@ export const parseTimeSql = (time, type) => {
     return format(date, 'dd/MM/yyyy HH:mm');
   } else if (type === 2) {
     return format(date, 'HH:mm');
+  } else if (type === 3) {
+    return format(date, "dd/MM/yyyy HH:mm");
   } else {
     throw new Error('sai định dạng');
   }
 };
+
+export function dateTimeFormat(dateTimeString, type) {
+  // Tách chuỗi thời gian thành ngày và giờ
+  const [datePart, timePart] = dateTimeString.split(" ");
+
+  // Tách phần ngày thành năm, tháng, ngày
+  const [year, month, day] = datePart.split("-");
+
+  let formattedDateTime;
+
+  // Xác định định dạng đầu ra dựa trên giá trị của type
+  switch (type) {
+    case 1:
+      // Định dạng ngày/tháng/năm giờ:phút:giây
+      formattedDateTime = `${day}/${month}/${year} ${timePart}`;
+      break;
+    case 2:
+      // Định dạng ngày/tháng/năm giờ:phút
+      formattedDateTime = `${day}/${month}/${year} ${timePart.slice(0, 5)}`;
+      break;
+    case 3:
+      // Định dạng ngày/tháng/năm
+      formattedDateTime = `${day}/${month}/${year}`;
+      break;
+    default:
+      // Định dạng mặc định nếu type không hợp lệ
+      formattedDateTime = `${day}/${month}/${year} ${timePart}`;
+      break;
+  }
+
+  return formattedDateTime;
+}

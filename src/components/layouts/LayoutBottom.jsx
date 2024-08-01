@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { colors } from '../../styles/Colors';
 
 const LayoutBottom = ({ children }) => {
   return (
@@ -16,6 +17,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     justifyContent: 'center',
+    backgroundColor: colors.WHITE,
+    paddingVertical: 5
   }
 });
 

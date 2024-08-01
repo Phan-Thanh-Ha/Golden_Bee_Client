@@ -1,11 +1,11 @@
-import React, {useCallback, useState} from 'react';
-import {FlatList, StyleSheet, View, ActivityIndicator} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useCallback, useState } from 'react';
+import { FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import CardJobDone from './CardJobDone';
-import {SCREEN_HEIGHT} from '../styles/MainStyle';
+import { SCREEN_HEIGHT } from '../styles/MainStyle';
 import CardDefault from './CardDefault';
-import {useFocusEffect} from '@react-navigation/native';
-import {mainAction} from '../Redux/Action';
+import { useFocusEffect } from '@react-navigation/native';
+import { mainAction } from '../Redux/Action';
 import {
   startOfWeek,
   endOfWeek,
@@ -16,7 +16,7 @@ import {
 } from 'date-fns';
 import FilterComponent from './FilterComponent';
 
-const TabJobDone = ({modalJobDoneRef}) => {
+const TabJobDone = ({ modalJobDoneRef }) => {
   const userLogin = useSelector(state => state.main.userLogin);
   const dispatch = useDispatch();
   const [dataJobDone, setDataJobDone] = useState([]);
@@ -52,8 +52,8 @@ const TabJobDone = ({modalJobDoneRef}) => {
     const now = new Date();
     switch (filterType) {
       case 'week':
-        const startOfThisWeek = startOfWeek(now, {weekStartsOn: 1});
-        const endOfThisWeek = endOfWeek(now, {weekStartsOn: 1});
+        const startOfThisWeek = startOfWeek(now, { weekStartsOn: 1 });
+        const endOfThisWeek = endOfWeek(now, { weekStartsOn: 1 });
         return data.filter(item => {
           const bookingTime = parseISO(item.BookingTime);
           return isWithinInterval(bookingTime, {
@@ -97,14 +97,14 @@ const TabJobDone = ({modalJobDoneRef}) => {
   const renderFooter = () => <View style={styles.footer} />;
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <FilterComponent applyFilter={applyFilter} />
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : dataJobDone?.length > 0 ? (
         <FlatList
           data={dataJobDone}
-          renderItem={({item, index}) => (
+          renderItem={({ item, index }) => (
             <CardJobDone key={index} data={item} modalRef={modalJobDoneRef} />
           )}
           ListFooterComponent={renderFooter}

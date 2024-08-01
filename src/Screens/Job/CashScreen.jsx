@@ -5,11 +5,12 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import { colors } from '../../styles/Colors';
+import { colors, themeColors } from '../../styles/Colors';
 import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
 import Box from '../../components/Box';
 import Header from '../../components/Header';
@@ -18,7 +19,6 @@ import CustomLabel from '../../components/forms/CustomLabel';
 import {
   cirtificate,
   coin_icon,
-  ic_chronometer,
   ic_clearning,
   ic_clearning_basic,
   ic_glass,
@@ -43,7 +43,7 @@ import Down from '../../components/svg/Down';
 import BtnGetImageModal from '../../components/BtnGetImageModal';
 import AlertConfirm from '../../components/modal/AlertConfirm';
 import { RoundUpNumber } from '../../utils/RoundUpNumber';
-import NumericInput from '../../components/NumericInput ';
+import { Icon } from '@ui-kitten/components';
 
 const CashScreen = ({ route }) => {
   const navi = useNavigation();
@@ -69,6 +69,13 @@ const CashScreen = ({ route }) => {
     }
   }, [number])
   // console.log('data', data);
+  const renderItem = ({ item }) => (
+    <View>
+      <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
+        🔸{item.ServiceDetailName}
+      </Text>
+    </View>
+  );
 
   const validation = () => {
     if (!imageBefore[0]) {
@@ -148,7 +155,7 @@ const CashScreen = ({ route }) => {
     <LayoutGradientBlue>
       <StatusBarCustom />
       <Header />
-      <LogoBeeBox color={colors.WHITE} sizeImage={70} sizeText={20} />
+      <LogoBeeBox color={colors.MAIN_BLUE_CLIENT} sizeImage={70} sizeText={20} />
       <ScrollView>
         <View style={MainStyles.containerTabPayment}>
           <View style={MainStyles.layoutTabPayment}>
@@ -157,7 +164,7 @@ const CashScreen = ({ route }) => {
                 Dịch vụ {data?.DataService?.ServiceName.toLowerCase()}
               </Text>
             </View>
-            {data?.BookingCode ? (
+            {data?.BookingCode && (
               <Text
                 style={{
                   textAlign: 'center',
@@ -167,74 +174,77 @@ const CashScreen = ({ route }) => {
                 }}>
                 {data?.BookingCode}
               </Text>
-            ) : null}
+            )}
             <View style={MainStyles.flexRowCenter}>
               <View style={MainStyles.line} />
             </View>
             <View style={MainStyles.rowMargin}>
-              <View style={MainStyles.flexRowSpaceBetween}>
-                <View style={MainStyles.flexRowFlexStart}>
-                  <Image source={ic_person} style={{ width: 22, height: 22 }} />
-                  <Text style={MainStyles.textCardJob}>
-                    {data?.DataService?.TotalStaff} Nhân viên
-                  </Text>
-                </View>
-                {data?.DataService?.TotalRoom ? (
-                  <View style={MainStyles.flexRowFlexStart}>
-                    <Image
-                      source={ic_living_room}
-                      style={{ width: 22, height: 22 }}
-                    />
-                    <Text style={MainStyles.textCardJob}>
-                      {data?.DataService?.TotalRoom} Phòng
-                    </Text>
-                  </View>
-                ) : null}
+              <View style={MainStyles.flexRowFlexStart}>
+                <Icon
+                  style={MainStyles.CardIcon}
+                  fill="#3366FF"
+                  name="person-outline"
+                />
+                <Text style={MainStyles.textCardJob}>
+                  Khách hàng : {data?.DataService?.CustomerName}
+                </Text>
               </View>
             </View>
+            {
+              data?.DataService?.CustomerPhone && (
+                <View style={MainStyles.rowMargin}>
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="phone-outline"
+                    />
+                    <Text style={MainStyles.textCardJob}>
+                      Số điện thoại :{data?.DataService?.CustomerPhone}
+                    </Text>
+                  </View>
+                </View>
+              )
+            }
+            {
+              data?.DataService?.TotalStaff && (
+                <View style={MainStyles.rowMargin}>
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="people-outline"
+                    />
+                    <Text style={MainStyles.textCardJob}>
+                      Số lượng nhân viên : {data?.DataService?.TotalStaff} Nhân viên
+                    </Text>
+                  </View>
+                </View>
+              )
+            }
             <View style={MainStyles.rowMargin}>
               <View style={MainStyles.flexRowSpaceBetween}>
                 <View style={MainStyles.flexRowFlexEnd}>
-                  <Image source={ic_glass} style={{ width: 22, height: 22 }} />
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#3366FF"
+                    name="clock-outline"
+                  />
                   <Text style={MainStyles.textCardJob}>
                     {' '}
-                    Trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
+                    Làm việc trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
                   </Text>
                 </View>
               </View>
             </View>
             {more ? (
               <>
-                {data?.DataService?.IsPremium ? (
-                  <View style={MainStyles.rowMargin}>
-                    <View style={MainStyles.flexRowFlexStart}>
-                      <Image
-                        source={cirtificate}
-                        style={{ width: 22, height: 22 }}
-                      />
-                      <Text style={MainStyles.textCardJob}>
-                        Dịch vụ Premium
-                      </Text>
-                    </View>
-                  </View>
-                ) : (
-                  <View style={MainStyles.rowMargin}>
-                    <View style={MainStyles.flexRowFlexStart}>
-                      <Image
-                        source={ic_clearning_basic}
-                        style={{ width: 22, height: 22 }}
-                      />
-                      <Text style={MainStyles.textCardJob}>
-                        Dịch vụ thông thường
-                      </Text>
-                    </View>
-                  </View>
-                )}
                 <View style={MainStyles.rowMargin}>
                   <View style={MainStyles.flexRowFlexStart}>
-                    <Image
-                      source={ic_clearning}
-                      style={{ width: 22, height: 22 }}
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="plus-square-outline"
                     />
                     <Text style={MainStyles.textCardJob}>
                       Dịch vụ thêm :{' '}
@@ -243,51 +253,46 @@ const CashScreen = ({ route }) => {
                         : 'Không kèm dịch vụ thêm'}
                     </Text>
                   </View>
-                  {data?.DataService?.OtherService?.length > 0
-                    ? data?.DataService?.OtherService.map(item => (
-                      <View key={item?.ServiceDetailId?.toString()}>
-                        <Text
-                          style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
-                          🔸{item?.ServiceDetailName}
-                        </Text>
-                      </View>
-                    ))
-                    : null}
+                  {data?.DataService?.OtherService?.length > 0 ? (
+                    <FlatList
+                      data={data?.DataService?.OtherService}
+                      renderItem={renderItem}
+                      keyExtractor={item => item?.ServiceDetailId?.toString()}
+                    />
+                  ) : null}
                 </View>
                 {
-                  data?.DataService?.Voucher?.length > 0 ? (
+                  data?.DataService?.Voucher?.length > 0 && (
                     <View style={MainStyles.rowMargin}>
                       <View style={MainStyles.flexRowFlexStart}>
+                        <Icon
+                          style={MainStyles.CardIcon}
+                          fill="#3366FF"
+                          name="pricetags-outline"
+                        />
                         <Text style={MainStyles.textCardJob}>
-                          🎁   Đã áp mã voucher :
+                          Đã sử dụng voucher :
                         </Text>
                       </View>
                       {data?.DataService?.Voucher?.length > 0
-                        ? data?.DataService?.Voucher?.map(item => (
-                          <View key={item?.VoucherId?.toString()}>
+                        ? data?.DataService?.Voucher.map(item => (
+                          <View key={item?.VoucherId.toString()}>
                             <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
-                              🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " VNĐ"}
+                              🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
                             </Text>
                           </View>
                         ))
                         : null}
                     </View>
-                  ) : null
+                  )
                 }
                 <View style={MainStyles.rowMargin}>
                   <View style={MainStyles.flexRowFlexStart}>
-                    <Image
-                      source={ic_location}
-                      style={{ width: 22, height: 22 }}
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="message-square-outline"
                     />
-                    <Text style={MainStyles.textCardJob}>
-                      Địa chỉ: {data?.DataService?.Address}
-                    </Text>
-                  </View>
-                </View>
-                <View style={MainStyles.rowMargin}>
-                  <View style={MainStyles.flexRowFlexStart}>
-                    <Image source={ic_note} style={{ width: 22, height: 22 }} />
                     <Text style={MainStyles.textCardJob}>
                       {data?.DataService?.NoteBooking
                         ? 'Ghi chú: ' + data?.DataService?.NoteBooking.trim()
@@ -295,8 +300,21 @@ const CashScreen = ({ route }) => {
                     </Text>
                   </View>
                 </View>
+                <View style={MainStyles.rowMargin}>
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="pin-outline"
+                    />
+                    <Text style={MainStyles.textCardJob}>
+                      Địa chỉ : {data?.DataService?.Address}
+                    </Text>
+                  </View>
+                </View>
               </>
             ) : null}
+
             <View style={MainStyles.flexRowCenter}>
               {more ? (
                 <TouchableOpacity onPress={() => setMore(false)}>
@@ -344,23 +362,6 @@ const CashScreen = ({ route }) => {
               </View>
             </View>
             <Box height={responsivescreen.height(2)} />
-            {/* <View>
-              <Text style={MainStyles.textCardJob}>
-                Chi phí phát sinh
-              </Text>
-              <View style={MainStyles.flexRowCenter}>
-                <Image source={coin_icon} style={{ width: 22, height: 22 }} />
-                <NumericInput value={number} onChange={setNumber} />
-                <Text style={{
-                  color: colors.MAIN_COLOR_CLIENT,
-                  fontSize: 18,
-                  fontWeight: '700',
-                }}>VND</Text>
-              </View>
-            </View>
-            <View>
-              <Text style={{ textAlign: 'center' }}>🔶</Text>
-            </View> */}
             <View
               style={[
                 MainStyles.cardContentJob,
@@ -410,7 +411,7 @@ const CashScreen = ({ route }) => {
         </View>
         <Button
           disable={isLoading}
-          bgColor={colors.PRIMARY_GREEN}
+          bgColor={themeColors.confirm}
           onPress={handlePayment}
           isLoading={isLoading}
           icon={() => <ArrowRight color={colors.WHITE} />}>

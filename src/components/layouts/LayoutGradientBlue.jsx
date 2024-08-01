@@ -3,7 +3,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { colors } from "../../styles/Colors";
+import { colors, themeColors } from "../../styles/Colors";
 import StatusBarCustom from '../StatusBarCustom';
 
 const LayoutGradientBlue = ({ children }) => {
@@ -11,7 +11,7 @@ const LayoutGradientBlue = ({ children }) => {
     <View style={styles.container}>
       <StatusBarCustom />
       <LinearGradient
-        colors={[colors.MAIN_BLUE_CLIENT, colors.SECOND_BLUE_CLIENT]}
+        colors={[themeColors.background, themeColors.lightBackground]}
         style={styles.gradient}
       />
       {children}

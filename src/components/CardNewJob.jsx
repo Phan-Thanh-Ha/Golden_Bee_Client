@@ -1,31 +1,20 @@
 import React from 'react';
-import { FlatList, Image, Pressable, View } from 'react-native';
-import { Text } from '@ui-kitten/components';
-import { colors } from '../styles/Colors';
+import { FlatList, Image, Linking, Pressable, View } from 'react-native';
+import { Icon, Text } from '@ui-kitten/components';
+import { colors, themeColors } from '../styles/Colors';
 import MainStyles from '../styles/MainStyle';
 import { FormatMoney } from '../utils/FormatMoney';
 import Button from './buttons/Button';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../Constants';
 import {
-  cirtificate,
   coin_icon,
-  ic_chronometer,
-  ic_clearning,
-  ic_clearning_basic,
-  ic_glass,
-  ic_human,
-  ic_living_room,
-  ic_location,
-  ic_note,
-  ic_person,
-  ic_phone_call,
-  ic_schedule,
 } from '../assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { mainAction } from '../Redux/Action';
 import { updateStatusOrder } from '../firebaseService/HandleOrder';
 import { RoundUpNumber } from '../utils/RoundUpNumber';
+import { dateTimeFormat } from '../utils/FormatTime';
 
 const CardNewJob = ({ data, modalRef }) => {
   const navigation = useNavigation();
@@ -111,90 +100,120 @@ const CardNewJob = ({ data, modalRef }) => {
               Dịch vụ {data?.DataService?.ServiceName.toLowerCase()}
             </Text>
           </View>
-          {data?.BookingCode ? (
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 12,
-                color: colors.primary[700],
-                fontWeight: 'bold',
-              }}>
-              {data?.BookingCode}
-            </Text>
-          ) : null}
+          {
+            data?.BookingCode && (
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 12,
+                  color: colors.primary[700],
+                  fontWeight: 'bold',
+                }}>
+                {data?.BookingCode}
+              </Text>
+            )
+          }
           <View style={MainStyles.flexRowCenter}>
             <View style={MainStyles.line} />
           </View>
           <View style={MainStyles.rowMargin}>
-            <View style={MainStyles.flexRowSpaceBetween}>
-              <View style={MainStyles.flexRowFlexStart}>
-                <Image source={ic_person} style={{ width: 22, height: 22 }} />
-                <Text style={MainStyles.textCardJob}>
-                  {data?.DataService?.TotalStaff} Nhân viên
-                </Text>
-              </View>
-              {data?.DataService?.TotalRoom ? (
+            <View style={MainStyles.flexRowFlexStart}>
+              <Icon
+                style={MainStyles.CardIcon}
+                fill="#3366FF"
+                name="person-outline"
+              />
+              <Text style={MainStyles.textCardJob}>
+                Khách hàng : {data?.DataService?.CustomerName}
+              </Text>
+            </View>
+          </View>
+          {
+            data?.DataService?.CustomerPhone && (
+              <View style={MainStyles.rowMargin}>
                 <View style={MainStyles.flexRowFlexStart}>
-                  <Image
-                    source={ic_living_room}
-                    style={{ width: 22, height: 22 }}
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#3366FF"
+                    name="phone-outline"
                   />
                   <Text style={MainStyles.textCardJob}>
-                    {data?.DataService?.TotalRoom} Phòng
+                    Số điện thoại :{data?.DataService?.CustomerPhone}
                   </Text>
                 </View>
-              ) : null}
-              {
-                data?.DataService?.SelectOption?.length ? (
-                  <View style={MainStyles.flexRowFlexStart}>
-                    <Text style={MainStyles.textCardJob}>
-                      ⚙️  {data?.DataService?.SelectOption[0]?.OptionName}
-                    </Text>
-                  </View>
-                ) : null
-              }
-            </View>
-          </View>
+              </View>
+            )
+          }
+          {
+            data?.DataService?.TotalStaff && (
+              <View style={MainStyles.rowMargin}>
+                <View style={MainStyles.flexRowFlexStart}>
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#3366FF"
+                    name="people-outline"
+                  />
+                  <Text style={MainStyles.textCardJob}>
+                    Số lượng nhân viên : {data?.DataService?.TotalStaff} Nhân viên
+                  </Text>
+                </View>
+              </View>
+            )
+          }
+          {
+            data?.DataService?.TotalRoom && (
+              <View style={MainStyles.rowMargin}>
+                <View style={MainStyles.flexRowFlexStart}>
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#3366FF"
+                    name="share-outline"
+                  />
+                  <Text style={MainStyles.textCardJob}>
+                    Số phòng : {data?.DataService?.TotalRoom} Phòng
+                  </Text>
+                </View>
+              </View>
+            )
+          }
+          {
+            data?.DataService?.SelectOption?.length && (
+              <View style={MainStyles.rowMargin}>
+                <View style={MainStyles.flexRowFlexStart}>
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#3366FF"
+                    name="share-outline"
+                  />
+                  <Text style={MainStyles.textCardJob}>
+                    Loại công việc : {data?.DataService?.SelectOption[0]?.OptionName}
+                  </Text>
+                </View>
+              </View>
+            )
+          }
           <View style={MainStyles.rowMargin}>
             <View style={MainStyles.flexRowSpaceBetween}>
               <View style={MainStyles.flexRowFlexEnd}>
-                <Image source={ic_glass} style={{ width: 22, height: 22 }} />
+                <Icon
+                  style={MainStyles.CardIcon}
+                  fill="#3366FF"
+                  name="clock-outline"
+                />
                 <Text style={MainStyles.textCardJob}>
                   {' '}
-                  Trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
+                  Làm việc trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
                 </Text>
-              </View>
-              <View style={MainStyles.flexRowFlexEnd}>
-                <Image
-                  source={ic_chronometer}
-                  style={{ width: 22, height: 22 }}
-                />
-                <Text style={MainStyles.textCardJob}>Làm ngay</Text>
               </View>
             </View>
           </View>
-          {data?.DataService?.IsPremium ? (
-            <View style={MainStyles.rowMargin}>
-              <View style={MainStyles.flexRowFlexStart}>
-                <Image source={cirtificate} style={{ width: 22, height: 22 }} />
-                <Text style={MainStyles.textCardJob}>Dịch vụ Premium</Text>
-              </View>
-            </View>
-          ) : (
-            <View View style={MainStyles.rowMargin}>
-              <View style={MainStyles.flexRowFlexStart}>
-                <Image
-                  source={ic_clearning_basic}
-                  style={{ width: 22, height: 22 }}
-                />
-                <Text style={MainStyles.textCardJob}>Dịch vụ thông thường</Text>
-              </View>
-            </View>
-          )}
-
           <View style={MainStyles.rowMargin}>
             <View style={MainStyles.flexRowFlexStart}>
-              <Image source={ic_clearning} style={{ width: 22, height: 22 }} />
+              <Icon
+                style={MainStyles.CardIcon}
+                fill="#3366FF"
+                name="plus-square-outline"
+              />
               <Text style={MainStyles.textCardJob}>
                 Dịch vụ thêm :{' '}
                 {data?.DataService?.OtherService?.length > 0
@@ -212,15 +231,23 @@ const CardNewJob = ({ data, modalRef }) => {
           </View>
           <View style={MainStyles.rowMargin}>
             <View style={MainStyles.flexRowFlexStart}>
-              <Image source={ic_location} style={{ width: 22, height: 22 }} />
+              <Icon
+                style={MainStyles.CardIcon}
+                fill="#3366FF"
+                name="pin-outline"
+              />
               <Text style={MainStyles.textCardJob}>
-                Địa chỉ: {data?.DataService?.Address}
+                Địa chỉ : {data?.DataService?.Address}
               </Text>
             </View>
           </View>
           <View style={MainStyles.rowMargin}>
             <View style={MainStyles.flexRowFlexStart}>
-              <Image source={ic_note} style={{ width: 22, height: 22 }} />
+              <Icon
+                style={MainStyles.CardIcon}
+                fill="#3366FF"
+                name="message-square-outline"
+              />
               <Text style={MainStyles.textCardJob}>
                 {data?.DataService?.NoteBooking
                   ? 'Ghi chú: ' + data?.DataService?.NoteBooking.trim()
@@ -229,11 +256,16 @@ const CardNewJob = ({ data, modalRef }) => {
             </View>
           </View>
           {
-            data?.DataService?.Voucher?.length > 0 ? (
+            data?.DataService?.Voucher?.length > 0 && (
               <View style={MainStyles.rowMargin}>
                 <View style={MainStyles.flexRowFlexStart}>
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#3366FF"
+                    name="pricetags-outline"
+                  />
                   <Text style={MainStyles.textCardJob}>
-                    🎁   Đã áp mã voucher :
+                    Đã sử dụng voucher :
                   </Text>
                 </View>
                 {data?.DataService?.Voucher?.length > 0
@@ -246,36 +278,17 @@ const CardNewJob = ({ data, modalRef }) => {
                   ))
                   : null}
               </View>
-            ) : null
+            )
           }
-
           <View style={MainStyles.rowMargin}>
             <View style={MainStyles.flexRowFlexStart}>
-              <Image
-                source={ic_schedule}
-                style={{ width: 22, height: 22 }}
+              <Icon
+                style={MainStyles.CardIcon}
+                fill="#3366FF"
+                name="calendar-outline"
               />
               <Text style={MainStyles.textCardJob}>
-                Thời gian tạo :{data?.CreateAt}
-              </Text>
-            </View>
-          </View>
-          <View style={MainStyles.rowMargin}>
-            <View style={MainStyles.flexRowFlexStart}>
-              <Image source={ic_human} style={{ width: 22, height: 22 }} />
-              <Text style={MainStyles.textCardJob}>
-                Tên khách hàng :{data?.DataService?.CustomerName}
-              </Text>
-            </View>
-          </View>
-          <View style={MainStyles.rowMargin}>
-            <View style={MainStyles.flexRowFlexStart}>
-              <Image
-                source={ic_phone_call}
-                style={{ width: 22, height: 22 }}
-              />
-              <Text style={MainStyles.textCardJob}>
-                Số điện thoại :{data?.StaffPhone}
+                Thời gian tạo :{dateTimeFormat(data?.CreateAt, 2)}
               </Text>
             </View>
           </View>
@@ -306,37 +319,98 @@ const CardNewJob = ({ data, modalRef }) => {
         </View>
       </Pressable>
       {acceptedOrder?.StatusOrder === 1 ? (
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
-            <Button
-              fontSize={14}
-              disable={isLoading}
-              paddingHorizontal={10}
-              paddingVertical={8}
-              bgColor={colors.CONFIRM2}
-              onPress={handleReadyGo}
-              isLoading={isLoading}>
-              Bắt đầu đi
-            </Button>
-          </View>
-        </View>
-      ) : null}
-      {
-        acceptedOrder?.StatusOrder === 2 ? (
+        <View>
           <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, marginHorizontal: 2 }}>
               <Button
                 fontSize={14}
                 disable={isLoading}
                 paddingHorizontal={10}
                 paddingVertical={8}
-                bgColor={colors.CONFIRM2}
-                onPress={HandleConfirm}
+                bgColor={themeColors.confirm}
+                onPress={handleReadyGo}
                 isLoading={isLoading}>
-                Bắt đầu làm việc
+                <View style={MainStyles.flexRowCenter}>
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#FFFF"
+                    name="navigation-2-outline"
+                  />
+                  <Text style={{ color: colors.WHITE, textAlign: 'center' }}>Bắt đầu đi</Text>
+                </View>
+              </Button>
+            </View>
+            <View style={{ flex: 1, marginHorizontal: 2 }}>
+              <Button
+                fontSize={14}
+                disable={isLoading}
+                paddingHorizontal={10}
+                paddingVertical={8}
+                bgColor={themeColors.cancel}
+                onPress={() => {
+                  Linking.openURL(`tel:${data?.DataService?.CustomerPhone}`);
+                }}
+                isLoading={false}>
+                <View style={MainStyles.flexRow}>
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#FFFF"
+                    name="phone-outline"
+                  />
+                  <Text style={{ color: colors.WHITE, textAlign: 'center' }}>Liên Hệ KH</Text>
+                </View>
               </Button>
             </View>
           </View>
+        </View>
+      ) : null}
+      {
+        acceptedOrder?.StatusOrder === 2 ? (
+          <View>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex: 1, marginHorizontal: 2 }}>
+                <Button
+                  fontSize={14}
+                  disable={isLoading}
+                  paddingHorizontal={10}
+                  paddingVertical={8}
+                  bgColor={themeColors.confirm}
+                  onPress={HandleConfirm}
+                  isLoading={isLoading}>
+                  <View style={MainStyles.flexRow}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#FFFF"
+                      name="play-circle-outline"
+                    />
+                    <Text style={{ color: colors.WHITE, textAlign: 'center' }}>Bắt đầu làm</Text>
+                  </View>
+                </Button>
+              </View>
+              <View style={{ flex: 1, marginHorizontal: 2 }}>
+                <Button
+                  fontSize={14}
+                  disable={isLoading}
+                  paddingHorizontal={10}
+                  paddingVertical={8}
+                  bgColor={themeColors.cancel}
+                  onPress={() => {
+                    Linking.openURL(`tel:${data?.DataService?.CustomerPhone}`);
+                  }}
+                  isLoading={false}>
+                  <View style={MainStyles.flexRow}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#FFFF"
+                      name="phone-outline"
+                    />
+                    <Text style={{ color: colors.WHITE, textAlign: 'center' }}>Liên Hệ KH</Text>
+                  </View>
+                </Button>
+              </View>
+            </View>
+          </View>
+
         ) : null
       }
       {
@@ -344,13 +418,21 @@ const CardNewJob = ({ data, modalRef }) => {
           (
             <View style={{ flexDirection: 'row' }}>
               <View style={{ flex: 1 }}>
+
                 <Button
                   paddingHorizontal={10}
                   paddingVertical={8}
                   bgColor={colors.DEFAULT_GREEN}
                   fontSize={16}
                   onPress={payment}>
-                  💰    Thanh toán dịch vụ
+                  <View style={MainStyles.flexRow}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#FFFF"
+                      name="credit-card-outline"
+                    />
+                    <Text style={{ color: colors.WHITE, textAlign: 'center' }}>Thanh toán dịch vụ</Text>
+                  </View>
                 </Button>
               </View>
             </View>

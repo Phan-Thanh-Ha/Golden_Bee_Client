@@ -139,7 +139,7 @@ android {
         applicationId "com.golden_bee_clients"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
+        versionCode 
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         multiDexEnabled true
@@ -274,7 +274,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
 
   // cấu hình debug trên trình duyệt
-  implementation project(':react-native-screens')
+//   implementation project(':react-native-screens')
 
 
   // Add the dependencies for any other desired Firebase products
