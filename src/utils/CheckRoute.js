@@ -27,7 +27,7 @@ const CheckRoute = () => {
     try {
       const userLogin = await getData(StorageNames.USER_PROFILE);
       if (!userLogin) {
-        navi.navigate(ScreenNames.AUTH_HOME);
+        navi.navigate(ScreenNames.LOGIN);
       } else {
         checkUploadCCCD(userLogin);
       }

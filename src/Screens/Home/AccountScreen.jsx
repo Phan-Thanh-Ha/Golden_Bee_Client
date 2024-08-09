@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, ScrollView, Linking } from 'react-native';
+import { Text, View, Image, ScrollView, Linking, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../Constants';
 import Button from '../../components/buttons/Button';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
-import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
+import MainStyles, { SCREEN_HEIGHT } from '../../styles/MainStyle';
 import { coin_icon } from '../../assets';
 import { colors } from '../../styles/Colors';
 import Rating from '../../components/Rating';
@@ -20,6 +20,7 @@ import { APIImage } from '../../Config/Api';
 import Geolocation from '@react-native-community/geolocation';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
 import BackButton from '../../components/BackButton';
+import { Avatar, Card, Icon } from '@ui-kitten/components';
 const AccountScreen = () => {
   const navi = useNavigation();
   const dispatch = useDispatch();
@@ -66,14 +67,14 @@ const AccountScreen = () => {
     try {
       await removeData(StorageNames.USER_PROFILE);
       mainAction.userLogin(null, dispatch);
-      navi.navigate(ScreenNames.AUTH_HOME);
+      navi.navigate(ScreenNames.LOGIN);
     } catch (error) { }
   };
   const handleClearAccount = async () => {
     try {
       await removeData(StorageNames.USER_PROFILE);
       mainAction.userLogin(null, dispatch);
-      navi.navigate(ScreenNames.AUTH_HOME);
+      navi.navigate(ScreenNames.LOGIN);
     } catch (error) { }
   };
   useEffect(() => {
@@ -153,7 +154,7 @@ const AccountScreen = () => {
         TotalBookingAll: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.TotalBookingAll : userLogin?.TotalBookingAll,
         TotalMoneyAll: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.TotalMoneyAll : userLogin?.TotalMoneyAll,
         TotalPoint: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.TotalPointAll : userLogin?.TotalPoint,
-        CustomerRank: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.CustomerRank : userLogin?.CustomerRank,
+        CustomerRank: result?.Officer_Ponit_Rank?.CustomerRank || userLogin?.CustomerRank,
       }
       await setData(StorageNames.USER_PROFILE, userChange);
       mainAction.userLogin(userChange, dispatch);
@@ -170,60 +171,45 @@ const AccountScreen = () => {
       <ScrollView>
         <Text style={MainStyles.screenTitle}>Tài khoản</Text>
         <View style={MainStyles.contentContainer}>
-          <Box height={SCREEN_HEIGHT * 0.01} />
           <Text style={MainStyles.labelTitle}>Thông tin</Text>
-          <Box height={SCREEN_HEIGHT * 0.01} />
-          <View style={MainStyles.flexRowFlexStart}>
-            <Image
-              source={{
-                uri: APIImage + userLogin?.FilesImage,
-              }}
-              style={{
-                width: 80,
-                height: 120,
-                resizeMode: 'contain',
-                marginRight: 10,
-              }}
-            />
-            <View>
-              <View style={MainStyles.flexRowFlexStart}>
-                <Text
-                  style={{
-                    color: colors.MAIN_BLUE_CLIENT,
-                    fontSize: 15,
-                    width: 120,
-                  }}>
-                  Họ tên :
-                </Text>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
-                  {userLogin?.OfficerName}
-                </Text>
-              </View>
-              <View style={MainStyles.flexRowFlexStart}>
-                <Text
-                  style={{
-                    color: colors.MAIN_BLUE_CLIENT,
-                    fontSize: 15,
-                    width: 120,
-                  }}>
-                  SĐT :
-                </Text>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
-                  {userLogin?.Phone}
-                </Text>
-              </View>
-              <View style={MainStyles.flexRowFlexStart}>
-                <Text
-                  style={{
-                    color: colors.MAIN_BLUE_CLIENT,
-                    fontSize: 15,
-                    width: 120,
-                  }}>
-                  Mã nhân viên :
-                </Text>
-                <Text style={{ color: colors.MAIN_BLUE_CLIENT, fontSize: 15 }}>
-                  {userLogin?.OfficerID}
-                </Text>
+          <Box height={SCREEN_HEIGHT * 0.02} />
+          <View style={[{ flex: 1 }]}>
+            <View style={[MainStyles.flexRowCenter]}>
+              <Avatar
+                source={{
+                  uri: APIImage + userLogin?.FilesImage,
+                }}
+                size="giant"
+                // shape="square"
+                style={styles.avatar}
+              />
+              <View style={styles.info}>
+                <View style={styles.infoRow}>
+                  <Icon
+                    style={styles.icon}
+                    fill="#3366FF"
+                    name="person-outline"
+                  />
+                  <Text category="s1" style={styles.textT}>
+                    Mã nhân viên:  {userLogin?.OfficerID}
+                  </Text>
+                </View>
+                <View style={styles.infoRow}>
+                  <Icon
+                    style={styles.icon}
+                    fill="#3366FF"
+                    name="bookmark-outline"
+                  />
+                  <Text category="s1" style={styles.textT}>
+                    Tên nhân viên: {userLogin?.OfficerName}
+                  </Text>
+                </View>
+                <View style={styles.infoRow}>
+                  <Icon style={styles.icon} fill="#3366FF" name="phone-outline" />
+                  <Text category="s1" style={styles.textT}>
+                    SĐT: {userLogin?.Phone}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -414,8 +400,7 @@ const AccountScreen = () => {
                 color: colors.MAIN_BLUE_CLIENT,
                 marginVertical: 10,
               }}>
-              Liên hệ tổng đài để dược hỗ trợ các thắc mắc liên quan trong quá
-              trình hoạt động và sử dụng ứng dụng.
+              Liên hệ tổng đài để được hỗ trợ các thắc mắc liên quan trong quá trình hoạt động và sử dụng ứng dụng.
             </Text>
           </View>
           <Button
@@ -441,8 +426,7 @@ const AccountScreen = () => {
                 color: colors.MAIN_BLUE_CLIENT,
                 marginVertical: 10,
               }}>
-              Trạng thái hoạt động và các dữ liệu về tài khoản sẽ được làm mới
-              và hỗ trợ khắc phục sự cố trong trường hợp cần thiết !
+              Trạng thái hoạt động và các dữ liệu về tài khoản sẽ được làm mới và hỗ trợ khắc phục sự cố trong trường hợp cần thiết !
             </Text>
           </View>
           <Button
@@ -482,7 +466,7 @@ const AccountScreen = () => {
       </ScrollView>
       <ModalConfirm
         title={
-          'Bạn đnag muốn xóa tài khoản này ! bạn có chắc chắn muốn xóa tài khoản hiện tại không ? Mọi thông tin của bạn sẽ không còn trên hệ thống sau khi bạn xác nhận !'
+          'Bạn có chắc chắn muốn xóa tài khoản hiện tại không ? Mọi thông tin của bạn sẽ không còn trên hệ thống sau khi bạn xác nhận !'
         }
         isModalVisible={isModalVisible}
         setModalVisible={setIsModalVisible}
@@ -501,3 +485,48 @@ const AccountScreen = () => {
 };
 
 export default AccountScreen;
+
+const styles = StyleSheet.create({
+  card: {
+    margin: 16,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  editIcon: {
+    width: 24,
+    height: 24,
+  },
+  content: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  avatar: {
+    marginRight: 16,
+  },
+  info: {
+  },
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginRight: 8,
+  },
+});

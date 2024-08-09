@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { Platform, StyleSheet, View } from "react-native";
 import messaging from "@react-native-firebase/messaging";
 import PushNotification from "react-native-push-notification";
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
-import { useDispatch } from "react-redux";
-// import moment from "moment";
 
 export const SetupNotification = () => {
-  const dispatch = useDispatch();
   const parseDate = (date) => {
     const newDate = new Date(parseInt(date));
     // return moment(newDate).format("DD-MM-YYYY hh:mm:ss");
@@ -20,7 +17,6 @@ export const SetupNotification = () => {
         channelId: "rn-push-notification-channel-id-4-default-300", // (required)
         channelName: "My channel", // (required)
         channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
-        // soundName: "notification_sound", // (optional) See `soundName` parameter of `localNotification` function
         importance: 4, // (optional) default: 4. Int value of the Android notification importance
         vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
       },
@@ -111,5 +107,3 @@ export const SetupNotification = () => {
 
   return <View />;
 };
-
-const styles = StyleSheet.create({});

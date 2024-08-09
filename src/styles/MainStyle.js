@@ -161,7 +161,7 @@ const MainStyles = StyleSheet.create({
   titleForgotPasswordForm: {
     fontSize: 30,
     fontWeight: "bold",
-    color: "#fff",
+    color: themeColors.primary,
     textAlign: "center",
     marginTop: 20,
     marginBottom: 20,

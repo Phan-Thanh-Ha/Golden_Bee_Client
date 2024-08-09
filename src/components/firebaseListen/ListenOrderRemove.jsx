@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 import AlertModal from '../AlertModal';
 import MainStyles from '../../styles/MainStyle';
-import {colors} from '../../styles/Colors';
+import { colors } from '../../styles/Colors';
 
 const ListenOrderRemove = ({
   orderRemove,
@@ -28,7 +28,7 @@ const ListenOrderRemove = ({
         {orderRemove?.orderId ? (
           <View style={[MainStyles.cardJob]}>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
+              <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
                 {orderRemove?.DataService?.ServiceName}
               </Text>
             </View>
@@ -47,9 +47,9 @@ const ListenOrderRemove = ({
               <View style={MainStyles.line} />
             </View>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={[{textAlign: 'center'}]}>
+              <Text style={[{ textAlign: 'center' }]}>
                 {
-                  'Quản trị viên đã xóa đơn dịch vụ của bạn, vui lòng kiểm tra lại thông tin dịch vụ và liên hệ quản trị viên nếu cần!'
+                  'Đơn dịch vụ của bạn đã được hoàn thành !'
                 }
               </Text>
             </View>

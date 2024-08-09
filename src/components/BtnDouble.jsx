@@ -1,19 +1,38 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Spinner } from "@ui-kitten/components";
 
-const BtnDouble = ({ isLoading1, isLoading2, title1, title2, onConfirm1, onConfirm2, btn1Visible = true, btn2Visible = true }) => {
+const BtnDouble = ({
+  isLoading1,
+  isLoading2,
+  title1,
+  title2,
+  onConfirm1,
+  onConfirm2,
+  btn1Visible = true,
+  btn2Visible = true,
+  btn1Disable = false,
+  btn2Disable = false
+}) => {
   return (
     <View style={styles.buttonContainer}>
       {
         btn1Visible &&
-        <TouchableOpacity style={styles.confirmButton} onPress={onConfirm1}>
+        <TouchableOpacity
+          style={styles.confirmButton}
+          onPress={onConfirm1}
+          disabled={btn1Disable}
+        >
           {isLoading1 ? <Spinner /> : <Text style={styles.buttonText}>{title1}</Text>}
         </TouchableOpacity>
       }
 
       {
         btn2Visible &&
-        <TouchableOpacity style={styles.cancelButton} onPress={onConfirm2}>
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={onConfirm2}
+          disabled={btn2Disable}
+        >
           {isLoading2 ? <Spinner /> : <Text style={styles.buttonText}>{title2}</Text>}
         </TouchableOpacity>
       }

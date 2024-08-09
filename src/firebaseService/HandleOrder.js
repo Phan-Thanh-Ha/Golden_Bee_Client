@@ -23,7 +23,6 @@ export const listenForAcceptedOrders = (
     return;
   }
   try {
-    // console.log("Listening for accepted orders for staff:", staffId);
     databaseOrder
       .orderByChild("StaffId")
       .equalTo(staffId)
@@ -133,7 +132,7 @@ export const acceptOrder = async (
 };
 
 //CẬp nhật lat lng
-export const updateLocation = async (
+export const OVG_FBRT_UpdateLocation = async (
   orderId,
   LatitudeStaff,
   LongitudeStaff
@@ -163,7 +162,7 @@ export const updateLocation = async (
 };
 
 // cập nhật Status
-export const updateStatusOrder = async (orderId, statusOrder) => {
+export const OVG_UpdateStatusOrder = async (orderId, statusOrder) => {
   const status = {
     StatusOrder: statusOrder,
   };

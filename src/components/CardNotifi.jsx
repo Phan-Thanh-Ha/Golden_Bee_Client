@@ -1,14 +1,9 @@
 import React from 'react';
-import { FlatList, Image, Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { Icon, Text } from '@ui-kitten/components';
 import { colors } from '../styles/Colors';
 import MainStyles from '../styles/MainStyle';
-import {
-  ic_location,
-  ic_note,
-  ic_schedule,
-} from '../assets';
-import { FormatTime, parseTimeSql } from '../utils/FormatTime';
+import { parseTimeSql } from '../utils/FormatTime';
 import Rating from './Rating';
 
 const CardNotifi = ({ data }) => {
@@ -70,8 +65,8 @@ const CardNotifi = ({ data }) => {
               name="message-square-outline"
             />
             <Text style={MainStyles.textCardJob}>
-              {data?.Note
-                ? 'Feedback: ' + data?.Note.trim()
+              {data?.RatingNote
+                ? 'Feedback: ' + data?.RatingNote.trim()
                 : 'Khách hàng không để lại Feedback'}
             </Text>
           </View>

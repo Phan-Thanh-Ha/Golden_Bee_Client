@@ -10,6 +10,7 @@ import ProgressBar from '../../components/ProgressBar';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {responsivescreen} from '../../utils/responsive-screen';
 import {useSelector} from 'react-redux';
+import React from 'react';
 
 const UpdateProfileScreen = () => {
   const route = useRoute();

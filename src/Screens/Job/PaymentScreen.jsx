@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, Image, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
@@ -28,6 +28,7 @@ import { Icon, Spinner } from '@ui-kitten/components';
 import AlertConfirm from '../../components/modal/AlertConfirm';
 import { RoundUpNumber } from '../../utils/RoundUpNumber';
 import NumericInput from '../../components/NumericInput ';
+import { OVG_DeleteOrdersByBookingCode } from '../../firebaseService/ListenOrder';
 
 const PaymentScreen = ({ route }) => {
   const [isModalVisible, setIsModalVisible] = useState(true);
@@ -43,6 +44,7 @@ const PaymentScreen = ({ route }) => {
   const [alertTitle, setAlertTitle] = useState('');
   const [isModalAlertVisible, setIsModalAlertVisible] = useState(false);
   const [number, setNumber] = useState(0);
+  const [success, setSuccess] = useState(false);
 
   const [totalMoneyAll, setTotalMoneyAll] = useState(data?.DataService?.PriceAfterDiscount);
 
@@ -88,13 +90,13 @@ const PaymentScreen = ({ route }) => {
       };
       const params = {
         Json: JSON.stringify(pr),
-        func: "OVG_spOfficer_Booking_Save",
+        func: "OVG_spOfficer_Booking_Save_V1",
       };
 
       const result = await mainAction.API_spCallServer(params, dispatch);
       if (result?.Status === "OK") {
         //call update firebase
-        const complete = completeOrder(data?.OrderId);
+        const complete = await OVG_DeleteOrdersByBookingCode(data?.BookingCode);
         if (complete) {
           const userChange = {
             ...userLogin,
@@ -167,7 +169,7 @@ const PaymentScreen = ({ route }) => {
                   name="person-outline"
                 />
                 <Text style={MainStyles.textCardJob}>
-                  Khách hàng : {data?.DataService?.CustomerName}
+                  Khách hàng: {data?.DataService?.CustomerName}
                 </Text>
               </View>
             </View>
@@ -181,7 +183,7 @@ const PaymentScreen = ({ route }) => {
                       name="phone-outline"
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Số điện thoại :{data?.DataService?.CustomerPhone}
+                      Số điện thoại: {data?.DataService?.CustomerPhone}
                     </Text>
                   </View>
                 </View>
@@ -197,7 +199,7 @@ const PaymentScreen = ({ route }) => {
                       name="people-outline"
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Số lượng nhân viên : {data?.DataService?.TotalStaff} Nhân viên
+                      Số lượng nhân viên: {data?.DataService?.TotalStaff} nhân viên
                     </Text>
                   </View>
                 </View>
@@ -213,7 +215,7 @@ const PaymentScreen = ({ route }) => {
                   />
                   <Text style={MainStyles.textCardJob}>
                     {' '}
-                    Làm việc trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
+                    Làm việc trong: {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
                   </Text>
                 </View>
               </View>
@@ -228,7 +230,7 @@ const PaymentScreen = ({ route }) => {
                       name="plus-square-outline"
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Dịch vụ thêm :{' '}
+                      Dịch vụ thêm:{' '}
                       {data?.DataService?.OtherService?.length > 0
                         ? ''
                         : 'Không kèm dịch vụ thêm'}
@@ -242,31 +244,37 @@ const PaymentScreen = ({ route }) => {
                     />
                   ) : null}
                 </View>
-                {
-                  data?.DataService?.Voucher?.length > 0 && (
-                    <View style={MainStyles.rowMargin}>
-                      <View style={MainStyles.flexRowFlexStart}>
-                        <Icon
-                          style={MainStyles.CardIcon}
-                          fill="#3366FF"
-                          name="pricetags-outline"
-                        />
-                        <Text style={MainStyles.textCardJob}>
-                          Đã sử dụng voucher :
-                        </Text>
-                      </View>
-                      {data?.DataService?.Voucher?.length > 0
-                        ? data?.DataService?.Voucher.map(item => (
-                          <View key={item?.VoucherId.toString()}>
-                            <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
-                              🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
-                            </Text>
-                          </View>
-                        ))
-                        : null}
+                {data?.DataService?.Voucher?.length > 0 && (
+                  <View style={MainStyles.rowMargin}>
+                    <View style={MainStyles.flexRowFlexStart}>
+                      <Icon
+                        style={MainStyles.CardIcon}
+                        fill="#3366FF"
+                        name="pricetags-outline"
+                      />
+                      <Text style={MainStyles.textCardJob}>Đã sử dụng voucher:</Text>
                     </View>
-                  )
-                }
+                    {data?.DataService?.Voucher?.length > 0
+                      ? data?.DataService?.Voucher.map((item) => (
+                        <View key={item?.VoucherId.toString()} style={MainStyles.flexRowFlexStart}>
+                          <Icon
+                            style={{ marginLeft: SCREEN_WIDTH * 0.07, width: 20, height: 20 }}
+                            fill="#3366FF"
+                            name="plus-outline"
+                          />
+                          <Text
+                            style={[MainStyles.textCardJob]}
+                          >
+                            CODE: {item?.VoucherCode} - giảm{" "}
+                            {item?.TypeDiscount === 1
+                              ? item?.Discount + "%"
+                              : FormatMoney(item?.Discount) + " VND"}
+                          </Text>
+                        </View>
+                      ))
+                      : null}
+                  </View>
+                )}
                 <View style={MainStyles.rowMargin}>
                   <View style={MainStyles.flexRowFlexStart}>
                     <Icon
@@ -289,7 +297,7 @@ const PaymentScreen = ({ route }) => {
                       name="pin-outline"
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Địa chỉ : {data?.DataService?.Address}
+                      Địa chỉ: {data?.DataService?.Address}
                     </Text>
                   </View>
                 </View>
@@ -337,23 +345,6 @@ const PaymentScreen = ({ route }) => {
               </View>
             </View>
             <Box height={responsivescreen.height(2)} />
-            {/* <View>
-              <Text style={MainStyles.textCardJob}>
-                Chi phí phát sinh
-              </Text>
-              <View style={MainStyles.flexRowCenter}>
-                <Image source={coin_icon} style={{ width: 22, height: 22 }} />
-                <NumericInput value={number} onChange={setNumber} />
-                <Text style={{
-                  color: colors.MAIN_COLOR_CLIENT,
-                  fontSize: 18,
-                  fontWeight: '700',
-                }}>VND</Text>
-              </View>
-            </View>
-            <View>
-              <Text style={{ textAlign: 'center' }}>🔶</Text>
-            </View> */}
             <View
               style={[
                 MainStyles.cardContentJob,
@@ -392,23 +383,37 @@ const PaymentScreen = ({ route }) => {
       </ScrollView>
       <LayoutBottom>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.confirmButton} onPress={confirmGetQrCode}>
-            <Text style={styles.buttonText}>lấy mã QR</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.cancelButton} onPress={handlePayment}>
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <Text style={styles.buttonText}>Thanh toán</Text>
-            )}
-          </TouchableOpacity>
+          {
+            success ? (
+              <TouchableOpacity style={styles.confirmButton} onPress={handlePayment}>
+                {isLoading ? (
+                  <Spinner />
+                ) : (
+                  <Text style={styles.buttonText}>Hoàn tất dịch vụ</Text>
+                )}
+              </TouchableOpacity>
+            )
+              : (
+                <>
+                  <TouchableOpacity style={styles.confirmButton} onPress={confirmGetQrCode}>
+                    <Text style={styles.buttonText}>lấy mã QR</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.cancelButton} onPress={() => {
+                    Linking.openURL(`tel:${'0922277782'}`);
+                  }}>
+                    <Text style={styles.buttonText}>Liên hệ Admin</Text>
+                  </TouchableOpacity>
+                </>
+              )
+          }
         </View>
       </LayoutBottom>
       <ModalBlockFunction
+        setIsSuccess={setSuccess}
         isModalVisible={isModalVisible}
         setModalVisible={setIsModalVisible}
         onConfirm={() => setIsModalVisible(false)}
+        bookingCode={data?.BookingCode}
         title={`${data?.DataService?.ServiceName}  ${data?.BookingCode}`}
         amount={totalMoneyAll}
       />

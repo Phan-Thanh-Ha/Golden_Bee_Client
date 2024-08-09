@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, Image, Linking, Pressable, View } from 'react-native';
 import { Icon, Text } from '@ui-kitten/components';
 import { colors, themeColors } from '../styles/Colors';
-import MainStyles from '../styles/MainStyle';
+import MainStyles, { SCREEN_WIDTH } from '../styles/MainStyle';
 import { FormatMoney } from '../utils/FormatMoney';
 import Button from './buttons/Button';
 import { useNavigation } from '@react-navigation/native';
@@ -12,7 +12,7 @@ import {
 } from '../assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { mainAction } from '../Redux/Action';
-import { updateStatusOrder } from '../firebaseService/HandleOrder';
+import { OVG_UpdateStatusOrder } from '../firebaseService/HandleOrder';
 import { RoundUpNumber } from '../utils/RoundUpNumber';
 import { dateTimeFormat } from '../utils/FormatTime';
 
@@ -44,12 +44,12 @@ const CardNewJob = ({ data, modalRef }) => {
       };
       const params = {
         Json: JSON.stringify(pr),
-        func: 'OVG_spOfficer_Booking_Save',
+        func: 'OVG_spOfficer_Booking_Save_V1',
       };
       const result = await mainAction.API_spCallServer(params, dispatch);
       if (result?.Status === 'OK') {
         //call update firebase
-        updateStatusOrder(data?.OrderId, 3);
+        OVG_UpdateStatusOrder(data?.OrderId, 3);
         mainAction.acceptedOrder(
           {
             ...acceptedOrder,
@@ -70,7 +70,7 @@ const CardNewJob = ({ data, modalRef }) => {
   };
 
   const handleReadyGo = () => {
-    updateStatusOrder(data?.OrderId, 2);
+    OVG_UpdateStatusOrder(data?.OrderId, 2);
   };
 
   const openModal = () => {
@@ -124,7 +124,7 @@ const CardNewJob = ({ data, modalRef }) => {
                 name="person-outline"
               />
               <Text style={MainStyles.textCardJob}>
-                Khách hàng : {data?.DataService?.CustomerName}
+                Khách hàng: {data?.DataService?.CustomerName}
               </Text>
             </View>
           </View>
@@ -138,7 +138,7 @@ const CardNewJob = ({ data, modalRef }) => {
                     name="phone-outline"
                   />
                   <Text style={MainStyles.textCardJob}>
-                    Số điện thoại :{data?.DataService?.CustomerPhone}
+                    Số điện thoại: {data?.DataService?.CustomerPhone}
                   </Text>
                 </View>
               </View>
@@ -154,7 +154,7 @@ const CardNewJob = ({ data, modalRef }) => {
                     name="people-outline"
                   />
                   <Text style={MainStyles.textCardJob}>
-                    Số lượng nhân viên : {data?.DataService?.TotalStaff} Nhân viên
+                    Số lượng nhân viên: {data?.DataService?.TotalStaff} nhân viên
                   </Text>
                 </View>
               </View>
@@ -170,28 +170,27 @@ const CardNewJob = ({ data, modalRef }) => {
                     name="share-outline"
                   />
                   <Text style={MainStyles.textCardJob}>
-                    Số phòng : {data?.DataService?.TotalRoom} Phòng
+                    Số phòng: {data?.DataService?.TotalRoom} phòng
                   </Text>
                 </View>
               </View>
             )
           }
-          {
-            data?.DataService?.SelectOption?.length && (
-              <View style={MainStyles.rowMargin}>
-                <View style={MainStyles.flexRowFlexStart}>
-                  <Icon
-                    style={MainStyles.CardIcon}
-                    fill="#3366FF"
-                    name="share-outline"
-                  />
-                  <Text style={MainStyles.textCardJob}>
-                    Loại công việc : {data?.DataService?.SelectOption[0]?.OptionName}
-                  </Text>
-                </View>
+          {data?.DataService?.SelectOption?.length && (
+            <View style={MainStyles.rowMargin}>
+              <View style={MainStyles.flexRowFlexStart}>
+                <Icon
+                  style={MainStyles.CardIcon}
+                  fill="#3366FF"
+                  name="share-outline"
+                />
+                <Text style={MainStyles.textCardJob}>
+                  Loại công việc:{" "}
+                  {data?.DataService?.SelectOption[0]?.OptionName}
+                </Text>
               </View>
-            )
-          }
+            </View>
+          )}
           <View style={MainStyles.rowMargin}>
             <View style={MainStyles.flexRowSpaceBetween}>
               <View style={MainStyles.flexRowFlexEnd}>
@@ -202,7 +201,7 @@ const CardNewJob = ({ data, modalRef }) => {
                 />
                 <Text style={MainStyles.textCardJob}>
                   {' '}
-                  Làm việc trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
+                  Làm việc trong: {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
                 </Text>
               </View>
             </View>
@@ -215,19 +214,27 @@ const CardNewJob = ({ data, modalRef }) => {
                 name="plus-square-outline"
               />
               <Text style={MainStyles.textCardJob}>
-                Dịch vụ thêm :{' '}
+                Dịch vụ thêm:{" "}
                 {data?.DataService?.OtherService?.length > 0
-                  ? ''
-                  : 'Không kèm dịch vụ thêm'}
+                  ? ""
+                  : "Không kèm dịch vụ thêm"}
               </Text>
             </View>
-            {data?.DataService?.OtherService?.length > 0 ? (
-              <FlatList
-                data={data?.DataService?.OtherService}
-                renderItem={renderItem}
-                keyExtractor={item => item?.ServiceDetailId?.toString()}
-              />
-            ) : null}
+            {data?.DataService?.OtherService?.length > 0 &&
+              data?.DataService?.OtherService.map((item) => (
+                <View key={item?.ServiceDetailId?.toString()} style={MainStyles.flexRowFlexStart}>
+                  <Icon
+                    style={{ marginLeft: SCREEN_WIDTH * 0.07, width: 20, height: 20 }}
+                    fill="#3366FF"
+                    name="plus-outline"
+                  />
+                  <Text
+                    style={[MainStyles.textCardJob]}
+                  >
+                    {item?.ServiceDetailName}
+                  </Text>
+                </View>
+              ))}
           </View>
           <View style={MainStyles.rowMargin}>
             <View style={MainStyles.flexRowFlexStart}>
@@ -237,7 +244,7 @@ const CardNewJob = ({ data, modalRef }) => {
                 name="pin-outline"
               />
               <Text style={MainStyles.textCardJob}>
-                Địa chỉ : {data?.DataService?.Address}
+                Địa chỉ: {data?.DataService?.Address}
               </Text>
             </View>
           </View>
@@ -255,31 +262,37 @@ const CardNewJob = ({ data, modalRef }) => {
               </Text>
             </View>
           </View>
-          {
-            data?.DataService?.Voucher?.length > 0 && (
-              <View style={MainStyles.rowMargin}>
-                <View style={MainStyles.flexRowFlexStart}>
-                  <Icon
-                    style={MainStyles.CardIcon}
-                    fill="#3366FF"
-                    name="pricetags-outline"
-                  />
-                  <Text style={MainStyles.textCardJob}>
-                    Đã sử dụng voucher :
-                  </Text>
-                </View>
-                {data?.DataService?.Voucher?.length > 0
-                  ? data?.DataService?.Voucher.map(item => (
-                    <View key={item?.VoucherId.toString()}>
-                      <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
-                        🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
-                      </Text>
-                    </View>
-                  ))
-                  : null}
+          {data?.DataService?.Voucher?.length > 0 && (
+            <View style={MainStyles.rowMargin}>
+              <View style={MainStyles.flexRowFlexStart}>
+                <Icon
+                  style={MainStyles.CardIcon}
+                  fill="#3366FF"
+                  name="pricetags-outline"
+                />
+                <Text style={MainStyles.textCardJob}>Đã sử dụng voucher:</Text>
               </View>
-            )
-          }
+              {data?.DataService?.Voucher?.length > 0
+                ? data?.DataService?.Voucher.map((item) => (
+                  <View key={item?.VoucherId.toString()} style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={{ marginLeft: SCREEN_WIDTH * 0.07, width: 20, height: 20 }}
+                      fill="#3366FF"
+                      name="plus-outline"
+                    />
+                    <Text
+                      style={[MainStyles.textCardJob]}
+                    >
+                      CODE: {item?.VoucherCode} - giảm{" "}
+                      {item?.TypeDiscount === 1
+                        ? item?.Discount + "%"
+                        : FormatMoney(item?.Discount) + " VND"}
+                    </Text>
+                  </View>
+                ))
+                : null}
+            </View>
+          )}
           <View style={MainStyles.rowMargin}>
             <View style={MainStyles.flexRowFlexStart}>
               <Icon
@@ -288,7 +301,7 @@ const CardNewJob = ({ data, modalRef }) => {
                 name="calendar-outline"
               />
               <Text style={MainStyles.textCardJob}>
-                Thời gian tạo :{dateTimeFormat(data?.CreateAt, 2)}
+                Thời gian tạo: {dateTimeFormat(data?.CreateAt, 2)}
               </Text>
             </View>
           </View>

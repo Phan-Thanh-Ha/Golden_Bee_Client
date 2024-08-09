@@ -44,6 +44,7 @@ import BtnGetImageModal from '../../components/BtnGetImageModal';
 import AlertConfirm from '../../components/modal/AlertConfirm';
 import { RoundUpNumber } from '../../utils/RoundUpNumber';
 import { Icon } from '@ui-kitten/components';
+import { OVG_DeleteOrdersByBookingCode } from '../../firebaseService/ListenOrder';
 
 const CashScreen = ({ route }) => {
   const navi = useNavigation();
@@ -110,13 +111,12 @@ const CashScreen = ({ route }) => {
       };
       const params = {
         Json: JSON.stringify(pr),
-        func: 'OVG_spOfficer_Booking_Save',
+        func: 'OVG_spOfficer_Booking_Save_V1',
       };
       const result = await mainAction.API_spCallServer(params, dispatch);
-      console.log('result', result);
       if (result?.Status === 'OK') {
         // call update firebase
-        const complete = completeOrder(data?.OrderId);
+        const complete = await OVG_DeleteOrdersByBookingCode(data?.BookingCode);
         if (complete) {
           const userChange = {
             ...userLogin,
@@ -135,7 +135,6 @@ const CashScreen = ({ route }) => {
             index: 0,
             routes: [{ name: ScreenNames.CONGRATULATION, params: { data: dataConfirm } }],
           })
-          // navi.navigate(ScreenNames.CONGRATULATION, {data: data});
         }
         return;
       }
@@ -186,7 +185,7 @@ const CashScreen = ({ route }) => {
                   name="person-outline"
                 />
                 <Text style={MainStyles.textCardJob}>
-                  Khách hàng : {data?.DataService?.CustomerName}
+                  Khách hàng: {data?.DataService?.CustomerName}
                 </Text>
               </View>
             </View>
@@ -200,7 +199,7 @@ const CashScreen = ({ route }) => {
                       name="phone-outline"
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Số điện thoại :{data?.DataService?.CustomerPhone}
+                      Số điện thoại: {data?.DataService?.CustomerPhone}
                     </Text>
                   </View>
                 </View>
@@ -216,7 +215,7 @@ const CashScreen = ({ route }) => {
                       name="people-outline"
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Số lượng nhân viên : {data?.DataService?.TotalStaff} Nhân viên
+                      Số lượng nhân viên: {data?.DataService?.TotalStaff} nhân viên
                     </Text>
                   </View>
                 </View>
@@ -232,7 +231,7 @@ const CashScreen = ({ route }) => {
                   />
                   <Text style={MainStyles.textCardJob}>
                     {' '}
-                    Làm việc trong {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
+                    Làm việc trong: {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
                   </Text>
                 </View>
               </View>
@@ -247,19 +246,27 @@ const CashScreen = ({ route }) => {
                       name="plus-square-outline"
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Dịch vụ thêm :{' '}
+                      Dịch vụ thêm:{" "}
                       {data?.DataService?.OtherService?.length > 0
-                        ? ''
-                        : 'Không kèm dịch vụ thêm'}
+                        ? ""
+                        : "Không kèm dịch vụ thêm"}
                     </Text>
                   </View>
-                  {data?.DataService?.OtherService?.length > 0 ? (
-                    <FlatList
-                      data={data?.DataService?.OtherService}
-                      renderItem={renderItem}
-                      keyExtractor={item => item?.ServiceDetailId?.toString()}
-                    />
-                  ) : null}
+                  {data?.DataService?.OtherService?.length > 0 &&
+                    data?.DataService?.OtherService.map((item) => (
+                      <View key={item?.ServiceDetailId?.toString()} style={MainStyles.flexRowFlexStart}>
+                        <Icon
+                          style={{ marginLeft: SCREEN_WIDTH * 0.07, width: 20, height: 20 }}
+                          fill="#3366FF"
+                          name="plus-outline"
+                        />
+                        <Text
+                          style={[MainStyles.textCardJob]}
+                        >
+                          {item?.ServiceDetailName}
+                        </Text>
+                      </View>
+                    ))}
                 </View>
                 {
                   data?.DataService?.Voucher?.length > 0 && (
@@ -270,22 +277,29 @@ const CashScreen = ({ route }) => {
                           fill="#3366FF"
                           name="pricetags-outline"
                         />
-                        <Text style={MainStyles.textCardJob}>
-                          Đã sử dụng voucher :
-                        </Text>
+                        <Text style={MainStyles.textCardJob}>Đã sử dụng voucher:</Text>
                       </View>
                       {data?.DataService?.Voucher?.length > 0
-                        ? data?.DataService?.Voucher.map(item => (
-                          <View key={item?.VoucherId.toString()}>
-                            <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
-                              🔸CODE : {item?.VoucherCode} - giảm {item?.TypeDiscount === 1 ? item?.Discount + "%" : FormatMoney(item?.Discount) + " đ"}
+                        ? data?.DataService?.Voucher.map((item) => (
+                          <View key={item?.VoucherId.toString()} style={MainStyles.flexRowFlexStart}>
+                            <Icon
+                              style={{ marginLeft: SCREEN_WIDTH * 0.07, width: 20, height: 20 }}
+                              fill="#3366FF"
+                              name="plus-outline"
+                            />
+                            <Text
+                              style={[MainStyles.textCardJob]}
+                            >
+                              CODE: {item?.VoucherCode} - giảm{" "}
+                              {item?.TypeDiscount === 1
+                                ? item?.Discount + "%"
+                                : FormatMoney(item?.Discount) + " VND"}
                             </Text>
                           </View>
                         ))
                         : null}
                     </View>
-                  )
-                }
+                  )}
                 <View style={MainStyles.rowMargin}>
                   <View style={MainStyles.flexRowFlexStart}>
                     <Icon
@@ -308,7 +322,7 @@ const CashScreen = ({ route }) => {
                       name="pin-outline"
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Địa chỉ : {data?.DataService?.Address}
+                      Địa chỉ: {data?.DataService?.Address}
                     </Text>
                   </View>
                 </View>
