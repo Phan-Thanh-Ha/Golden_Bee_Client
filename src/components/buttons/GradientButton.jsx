@@ -4,10 +4,6 @@ import {colors} from '../../styles/Colors';
 import ArrowRight from '../svg/ArrowRight';
 import {PropTypes} from 'prop-types';
 
-GradientButton.propTypes = {
-  children: PropTypes.node.isRequired,
-  onPress: PropTypes.func.isRequired,
-};
 const GradientButton = ({children, onPress}) => {
   return (
     <Pressable
@@ -50,5 +46,8 @@ const styles = StyleSheet.create({
   },
   arrow: {},
 });
-
+GradientButton.propTypes = {
+  children: PropTypes.node.isRequired,
+  onPress: PropTypes.func.isRequired,
+};
 export default GradientButton;

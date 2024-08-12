@@ -4,12 +4,6 @@ import AlertModal from '../AlertModal';
 import MainStyles from '../../styles/MainStyle';
 import {PropTypes} from 'prop-types';
 
-AlertConfirm.propTypes = {
-  title: PropTypes.string.isRequired,
-  isModalVisible: PropTypes.bool.isRequired,
-  setModalVisible: PropTypes.func.isRequired,
-  onConfirm: PropTypes.func.isRequired,
-};
 const AlertConfirm = ({title, isModalVisible, setModalVisible, onConfirm}) => {
   const handleConfirm = () => {
     onConfirm();
@@ -38,5 +32,10 @@ const AlertConfirm = ({title, isModalVisible, setModalVisible, onConfirm}) => {
     </AlertModal>
   );
 };
-
+AlertConfirm.propTypes = {
+  title: PropTypes.string.isRequired,
+  isModalVisible: PropTypes.bool.isRequired,
+  setModalVisible: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+};
 export default AlertConfirm;

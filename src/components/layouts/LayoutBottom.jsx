@@ -3,9 +3,6 @@ import {View, StyleSheet} from 'react-native';
 import {colors} from '../../styles/Colors';
 import {PropTypes} from 'prop-types';
 
-LayoutBottom.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 const LayoutBottom = ({children}) => {
   return <View style={styles.footer}>{children}</View>;
 };
@@ -21,5 +18,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 });
-
+LayoutBottom.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 export default LayoutBottom;

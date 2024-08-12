@@ -442,4 +442,11 @@ const CardNewJob = ({data}) => {
   );
 };
 
+CardNewJob.defaultProps = {
+  data: {},
+};
+CardNewJob.propTypes = {
+  data: {},
+};
+
 export default CardNewJob;

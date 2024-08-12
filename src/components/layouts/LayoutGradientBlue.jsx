@@ -7,9 +7,6 @@ import StatusBarCustom from '../StatusBarCustom';
 import {PropTypes} from 'prop-types';
 import {themeColors} from '../../styles/Colors';
 
-LayoutGradientBlue.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 const LayoutGradientBlue = ({children}) => {
   return (
     <View style={styles.container}>
@@ -22,7 +19,9 @@ const LayoutGradientBlue = ({children}) => {
     </View>
   );
 };
-
+LayoutGradientBlue.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,

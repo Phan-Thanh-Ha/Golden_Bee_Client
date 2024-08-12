@@ -7,6 +7,7 @@ import {useSelector} from 'react-redux';
 import {checkCaseStatus} from '../utils/CheckCaseStaus';
 import {SCREEN_HEIGHT} from '../styles/MainStyle';
 import TabJobDone from './TabJobDone';
+import {PropTypes} from 'prop-types';
 
 export const TabCustom = ({modalRef, modalJobDoneRef, height}) => {
   const userLogin = useSelector(state => state.main.userLogin);
@@ -60,5 +61,16 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT * 0.05,
   },
 });
+
+TabCustom.defaultProps = {
+  height: SCREEN_HEIGHT * 0.8,
+  modalRef: null,
+  modalJobDoneRef: null,
+};
+TabCustom.propTypes = {
+  height: PropTypes.number,
+  modalRef: PropTypes.object,
+  modalJobDoneRef: PropTypes.object,
+};
 
 export default TabCustom;

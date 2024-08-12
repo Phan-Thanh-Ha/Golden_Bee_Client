@@ -17,9 +17,6 @@ import {PropTypes} from 'prop-types';
 
 const CELL_COUNT = 4;
 
-FormActiveAccount.prototype = {
-  data: PropTypes.object,
-};
 const FormActiveAccount = ({data}) => {
   const navi = useNavigation();
   const [errorMessage, setErrorMessage] = useState('');
@@ -139,5 +136,7 @@ const FormActiveAccount = ({data}) => {
     </View>
   );
 };
-
+FormActiveAccount.prototype = {
+  data: PropTypes.object,
+};
 export default FormActiveAccount;

@@ -5,12 +5,6 @@ import {SCREEN_WIDTH} from '../../styles/MainStyle';
 import {PropTypes} from 'prop-types';
 import React from 'react';
 
-CustomSwiper.propTypes = {
-  dataSlider: PropTypes.array.isRequired,
-  currentIndex: PropTypes.number.isRequired,
-  setCurrentIndex: PropTypes.func.isRequired,
-  swiperRef: PropTypes.object.isRequired,
-};
 const CustomSwiper = ({
   dataSlider,
   currentIndex,
@@ -102,4 +96,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+CustomSwiper.propTypes = {
+  dataSlider: PropTypes.array.isRequired,
+  currentIndex: PropTypes.number.isRequired,
+  setCurrentIndex: PropTypes.func.isRequired,
+  swiperRef: PropTypes.object.isRequired,
+};
 export default CustomSwiper;

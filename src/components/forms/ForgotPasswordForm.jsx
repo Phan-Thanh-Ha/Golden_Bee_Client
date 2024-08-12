@@ -12,10 +12,6 @@ import {ScreenNames} from '../../Constants';
 import LogoBeeBox from '../LogoBeeBox';
 import {PropTypes} from 'prop-types';
 
-ForgotPasswordForm.propTypes = {
-  navigation: PropTypes.object,
-};
-
 const ForgotPasswordForm = ({navigation}) => {
   const validationSchema = yup.object().shape({
     phoneNumber: yup
@@ -102,7 +98,9 @@ const ForgotPasswordForm = ({navigation}) => {
     </Formik>
   );
 };
-
+ForgotPasswordForm.propTypes = {
+  navigation: PropTypes.object,
+};
 const styles = StyleSheet.create({
   regis: {
     flexDirection: 'row',

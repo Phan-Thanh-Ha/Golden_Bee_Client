@@ -15,9 +15,6 @@ import {useDispatch} from 'react-redux';
 import {AlertToaster} from '../../utils';
 import {PropTypes} from 'prop-types';
 
-RegisterForm.propTypes = {
-  navigation: PropTypes.object,
-};
 const RegisterForm = ({navigation}) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -207,5 +204,7 @@ const RegisterForm = ({navigation}) => {
 //     justifyContent: 'center',
 //   },
 // });
-
+RegisterForm.propTypes = {
+  navigation: PropTypes.object,
+};
 export default RegisterForm;

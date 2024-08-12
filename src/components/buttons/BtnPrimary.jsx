@@ -4,10 +4,6 @@ import {colors} from '../../styles/Colors';
 import ArrowRight from '../svg/ArrowRight';
 import {PropTypes} from 'prop-types';
 
-BtnPrimary.propTypes = {
-  children: PropTypes.node.isRequired,
-  onPress: PropTypes.func.isRequired,
-};
 const BtnPrimary = ({children, onPress}) => {
   return (
     <Pressable
@@ -50,5 +46,8 @@ const styles = StyleSheet.create({
   },
   arrow: {},
 });
-
+BtnPrimary.propTypes = {
+  children: PropTypes.node.isRequired,
+  onPress: PropTypes.func.isRequired,
+};
 export default BtnPrimary;

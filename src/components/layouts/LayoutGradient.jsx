@@ -4,9 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import {colors} from '../../styles/Colors';
 import {PropTypes} from 'prop-types';
 
-LayoutGradient.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 const LayoutGradient = ({children}) => {
   return (
     <LinearGradient
@@ -22,5 +19,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
+LayoutGradient.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 export default LayoutGradient;

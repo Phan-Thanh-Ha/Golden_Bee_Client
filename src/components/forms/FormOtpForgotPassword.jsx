@@ -14,11 +14,6 @@ import {PropTypes} from 'prop-types';
 
 const CELL_COUNT = 4;
 
-FormOtpForgotPassword.propTypes = {
-  setSubmit: PropTypes.func,
-  data: PropTypes.object,
-};
-
 const FormOtpForgotPassword = ({setSubmit, data}) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [otpValue, setOtpValue] = useState('');
@@ -144,5 +139,8 @@ const FormOtpForgotPassword = ({setSubmit, data}) => {
     </View>
   );
 };
-
+FormOtpForgotPassword.propTypes = {
+  setSubmit: PropTypes.func,
+  data: PropTypes.object,
+};
 export default FormOtpForgotPassword;

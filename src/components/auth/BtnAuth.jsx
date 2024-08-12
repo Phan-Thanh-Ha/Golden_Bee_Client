@@ -3,11 +3,6 @@ import {colors, themeColors} from '../../styles/Colors';
 import React from 'react';
 import {PropTypes} from 'prop-types';
 
-BtnAuth.propTypes = {
-  children: PropTypes.node.isRequired,
-  onPress: PropTypes.func.isRequired,
-};
-
 const BtnAuth = ({children, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
@@ -44,5 +39,8 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 });
-
+BtnAuth.propTypes = {
+  children: PropTypes.node.isRequired,
+  onPress: PropTypes.func.isRequired,
+};
 export default BtnAuth;

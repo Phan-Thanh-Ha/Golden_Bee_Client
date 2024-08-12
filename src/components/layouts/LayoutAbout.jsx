@@ -5,9 +5,6 @@ import MainStyle from '../../styles/MainStyle';
 import {colors} from '../../styles/Colors';
 import {PropTypes} from 'prop-types';
 
-LayoutAbout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 const LayoutAbout = ({children}) => {
   return (
     <View style={styles.container}>
@@ -42,5 +39,7 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 500,
   },
 });
-
+LayoutAbout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 export default LayoutAbout;

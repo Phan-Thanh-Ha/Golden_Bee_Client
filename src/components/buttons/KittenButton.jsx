@@ -4,12 +4,6 @@ import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {PropTypes} from 'prop-types';
 
-KittenButton.propTypes = {
-  bgColor: PropTypes.string,
-  textColor: PropTypes.string,
-  children: PropTypes.node.isRequired,
-};
-
 const KittenButton = ({bgColor, textColor = 'white', children, ...props}) => {
   const gradientColors = bgColor
     ? [bgColor, bgColor]
@@ -47,5 +41,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
+KittenButton.propTypes = {
+  bgColor: PropTypes.string,
+  textColor: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
 export default KittenButton;
