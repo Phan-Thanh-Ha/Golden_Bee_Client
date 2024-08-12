@@ -1,13 +1,16 @@
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { colors, themeColors } from "../../styles/Colors";
-import React from "react";
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {colors, themeColors} from '../../styles/Colors';
+import React from 'react';
+import {PropTypes} from 'prop-types';
 
-const BtnAuth = ({ children, onPress }) => {
+BtnAuth.propTypes = {
+  children: PropTypes.node.isRequired,
+  onPress: PropTypes.func.isRequired,
+};
+
+const BtnAuth = ({children, onPress}) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={styles.button}
-    >
+    <TouchableOpacity onPress={onPress} style={styles.button}>
       <View style={styles.content}>
         <Text style={styles.text}>{children}</Text>
       </View>
@@ -23,7 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 15,
-    width: 330
+    width: 330,
   },
   content: {
     flexDirection: 'row',

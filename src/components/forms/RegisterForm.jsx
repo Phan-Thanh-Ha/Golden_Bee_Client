@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { Formik } from 'formik';
+import React, {useState} from 'react';
+import {View, Text, Pressable} from 'react-native';
+import {Formik} from 'formik';
 import * as yup from 'yup';
-import Toast from 'react-native-toast-message';
 import CustomInput from './CustomInput'; // Import CustomInput component
 import CustomLabel from './CustomLabel';
-import { colors } from '../../styles/Colors';
+import {colors} from '../../styles/Colors';
 import CustomFormError from './CustomFormError';
 import ArrowRight from '../svg/ArrowRight'; // Import CustomLabel component
 import Button from '../buttons/Button';
-import { ScreenNames } from '../../Constants';
+import {ScreenNames} from '../../Constants';
 import MainStyle from '../../styles/MainStyle';
-import { mainAction } from '../../Redux/Action';
-import { useDispatch } from 'react-redux';
-import { AlertToaster } from '../../utils';
+import {mainAction} from '../../Redux/Action';
+import {useDispatch} from 'react-redux';
+import {AlertToaster} from '../../utils';
+import {PropTypes} from 'prop-types';
 
-const RegisterForm = ({ setSubmit, navigation }) => {
+RegisterForm.propTypes = {
+  navigation: PropTypes.object,
+};
+const RegisterForm = ({navigation}) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,7 +69,7 @@ const RegisterForm = ({ setSubmit, navigation }) => {
         setIsLoading(false);
       }
       setIsLoading(false);
-    } catch (error) {
+    } catch {
       setIsLoading(false);
     }
   };
@@ -81,7 +84,7 @@ const RegisterForm = ({ setSubmit, navigation }) => {
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}>
-      {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+      {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <View style={MainStyle.containerForm}>
           <CustomLabel>Họ và tên:</CustomLabel>
           <CustomInput
@@ -163,46 +166,46 @@ const RegisterForm = ({ setSubmit, navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  regis: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 10,
-  },
-  regisSub: {
-    fontSize: 15,
-    marginRight: 10,
-  },
-  regisBtn: {
-    fontSize: 15,
-    color: colors.MAIN_BLUE_CLIENT,
-  },
-  container: {
-    margin: 15,
-    backgroundColor: colors.WHITE,
-    padding: 15,
-    borderRadius: 10,
-  },
-  dot: {
-    width: 10,
-    height: 5,
-    borderRadius: 10,
-    margin: 2,
-    backgroundColor: colors.WHITE,
-  },
-  dotActive: {
-    backgroundColor: colors.YELLOW,
-    width: 20,
-    height: 5,
-    borderRadius: 5,
-    margin: 2,
-  },
-  pagination: {
-    flexDirection: 'row',
-    marginVertical: 10,
-    justifyContent: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   regis: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     margin: 10,
+//   },
+//   regisSub: {
+//     fontSize: 15,
+//     marginRight: 10,
+//   },
+//   regisBtn: {
+//     fontSize: 15,
+//     color: colors.MAIN_BLUE_CLIENT,
+//   },
+//   container: {
+//     margin: 15,
+//     backgroundColor: colors.WHITE,
+//     padding: 15,
+//     borderRadius: 10,
+//   },
+//   dot: {
+//     width: 10,
+//     height: 5,
+//     borderRadius: 10,
+//     margin: 2,
+//     backgroundColor: colors.WHITE,
+//   },
+//   dotActive: {
+//     backgroundColor: colors.YELLOW,
+//     width: 20,
+//     height: 5,
+//     borderRadius: 5,
+//     margin: 2,
+//   },
+//   pagination: {
+//     flexDirection: 'row',
+//     marginVertical: 10,
+//     justifyContent: 'center',
+//   },
+// });
 
 export default RegisterForm;

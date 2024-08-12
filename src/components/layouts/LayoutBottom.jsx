@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../../styles/Colors';
+import {View, StyleSheet} from 'react-native';
+import {colors} from '../../styles/Colors';
+import {PropTypes} from 'prop-types';
 
-const LayoutBottom = ({ children }) => {
-  return (
-    <View style={styles.footer}>
-      {children}
-    </View>
-  );
+LayoutBottom.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+const LayoutBottom = ({children}) => {
+  return <View style={styles.footer}>{children}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     right: 0,
     justifyContent: 'center',
     backgroundColor: colors.WHITE,
-    paddingVertical: 5
-  }
+    paddingVertical: 5,
+  },
 });
 
 export default LayoutBottom;

@@ -261,7 +261,7 @@ const AccountScreen = () => {
             <Text style={MainStyles.labelTitle}>Trạng thái nhận đơn </Text>
             <View style={MainStyles.flexRow}>
               <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>
-                {userLogin?.StateOnline ? 'Bật' : 'Tắt'} nhận đơn
+                {userLogin?.StateOnline ? 'Bật' : 'Tắt'}
               </Text>
               <BtnToggle
                 value={userLogin?.StateOnline}
@@ -291,7 +291,7 @@ const AccountScreen = () => {
                   color: colors.MAIN_BLUE_CLIENT,
                 },
               ]}>
-              Thu nhập tuần này :
+              Thu nhập tuần này:
             </Text>
             <Text
               style={[
@@ -311,7 +311,7 @@ const AccountScreen = () => {
                   color: colors.MAIN_BLUE_CLIENT,
                 },
               ]}>
-              Công việc tuần này :
+              Công việc tuần này:
             </Text>
             {
               userLogin?.TotalBookingAll === 0 || !userLogin?.TotalBookingAll ? (
@@ -346,7 +346,7 @@ const AccountScreen = () => {
                   width: 200,
                 },
               ]}>
-              Thứ 2 đến thứ 7 :
+              Thứ 2 đến thứ 7
             </Text>
             <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>
               Chủ nhật
@@ -363,7 +363,7 @@ const AccountScreen = () => {
                   width: 200,
                 },
               ]}>
-              08:00 - 12:00 :
+              08:00 - 12:00
             </Text>
             <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>
               09:00 - 12:00
@@ -380,7 +380,7 @@ const AccountScreen = () => {
                   width: 200,
                 },
               ]}>
-              08:00 - 12:00 :
+              08:00 - 12:00
             </Text>
             <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>
               09:00 - 12:00

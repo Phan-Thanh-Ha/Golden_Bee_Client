@@ -78,15 +78,15 @@ const BenefitsScreen = () => {
             }}>
             <View style={MainStyles.flexRowFlexStart}>
               <View style={MainStyles.flexRowFlexStart}>
-                <Text style={[styles.text1]}>Điểm tích lũy : </Text>
+                <Text style={[styles.text1]}>Điểm tích lũy: </Text>
                 <Text style={[styles.text2]}>
-                  {FormatMoney(userLogin?.TotalPoint) || 0} Điểm
+                  {FormatMoney(userLogin?.TotalPoint) || 0} điểm
                 </Text>
               </View>
             </View>
             <View style={MainStyles.flexRowFlexStart}>
               <View style={MainStyles.flexRowFlexStart}>
-                <Text style={[styles.text1]}>Cấp độ :</Text>
+                <Text style={[styles.text1]}>Cấp độ: </Text>
                 <Text style={[styles.text2]}> {userLogin?.CustomerRank || "Cộng tác viên thử việc"}</Text>
               </View>
             </View>

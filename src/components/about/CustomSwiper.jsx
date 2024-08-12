@@ -1,34 +1,45 @@
-import SwiperFlatList from "react-native-swiper-flatlist";
-import { colors, themeColors } from "../../styles/Colors";
-import { Image, StyleSheet, Text, View } from "react-native";
-import MainStyles, { SCREEN_WIDTH } from "../../styles/MainStyle";
+import SwiperFlatList from 'react-native-swiper-flatlist';
+import {colors, themeColors} from '../../styles/Colors';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {SCREEN_WIDTH} from '../../styles/MainStyle';
+import {PropTypes} from 'prop-types';
+import React from 'react';
 
-const CustomSwiper = ({ dataSlider, currentIndex, setCurrentIndex, swiperRef }) => {
+CustomSwiper.propTypes = {
+  dataSlider: PropTypes.array.isRequired,
+  currentIndex: PropTypes.number.isRequired,
+  setCurrentIndex: PropTypes.func.isRequired,
+  swiperRef: PropTypes.object.isRequired,
+};
+const CustomSwiper = ({
+  dataSlider,
+  currentIndex,
+  setCurrentIndex,
+  swiperRef,
+}) => {
   return (
     <>
       <SwiperFlatList
         ref={swiperRef}
         index={currentIndex}
-        onChangeIndex={({ index }) => setCurrentIndex(index)}
+        onChangeIndex={({index}) => setCurrentIndex(index)}
         showPagination={false}
-        paginationStyleItem={{ width: 10, height: 10 }}
-        paginationStyle={{ position: 'absolute', bottom: 16 }}
+        paginationStyleItem={{width: 10, height: 10}}
+        paginationStyle={{position: 'absolute', bottom: 16}}
         paginationActiveColor={colors.YELLOW}
-        paginationDefaultColor={colors.WHITE}
-      >
+        paginationDefaultColor={colors.WHITE}>
         {dataSlider.map((item, index) => (
           <View style={styles.slide} key={index}>
-            <Image
-              source={item.image}
-              style={styles.image}
-            />
+            <Image source={item.image} style={styles.image} />
             <View style={styles.pagination}>
               {dataSlider.map((_, index) => (
                 <View
                   key={index}
                   style={[
                     styles.dot,
-                    index === currentIndex ? styles.activeDot : styles.inactiveDot,
+                    index === currentIndex
+                      ? styles.activeDot
+                      : styles.inactiveDot,
                   ]}
                 />
               ))}
@@ -40,14 +51,14 @@ const CustomSwiper = ({ dataSlider, currentIndex, setCurrentIndex, swiperRef }) 
         ))}
       </SwiperFlatList>
     </>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   slide: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: SCREEN_WIDTH
+    width: SCREEN_WIDTH,
   },
   image: {
     width: SCREEN_WIDTH * 0.8,

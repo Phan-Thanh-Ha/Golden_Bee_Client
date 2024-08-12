@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { OVG_FBRT_ListenMyOrders } from '../../firebaseService/ListenOrder';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {View} from 'react-native';
+import {OVG_FBRT_ListenMyOrders} from '../../firebaseService/ListenOrder';
+import {useDispatch, useSelector} from 'react-redux';
 import ListenOrderChange from './ListenOrderChange';
 import ListenOrderRemove from './ListenOrderRemove';
 import ListenOrderAdd from './ListenOrderAdd';
-import { mainAction } from '../../Redux/Action';
-import { setData } from '../../utils';
+import {mainAction} from '../../Redux/Action';
+import {setData} from '../../utils';
 import StorageNames from '../../Constants/StorageNames';
-import ListenOrderTotal from './ListenTotalOrder';
 
 const MyOrders = () => {
   const dispatch = useDispatch();

@@ -233,7 +233,7 @@ const PaymentScreen = ({ route }) => {
                       Dịch vụ thêm:{' '}
                       {data?.DataService?.OtherService?.length > 0
                         ? ''
-                        : 'Không kèm dịch vụ thêm'}
+                        : 'không kèm dịch vụ thêm'}
                     </Text>
                   </View>
                   {data?.DataService?.OtherService?.length > 0 ? (

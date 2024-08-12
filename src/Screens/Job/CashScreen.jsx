@@ -249,7 +249,7 @@ const CashScreen = ({ route }) => {
                       Dịch vụ thêm:{" "}
                       {data?.DataService?.OtherService?.length > 0
                         ? ""
-                        : "Không kèm dịch vụ thêm"}
+                        : " Không kèm dịch vụ thêm"}
                     </Text>
                   </View>
                   {data?.DataService?.OtherService?.length > 0 &&
@@ -328,7 +328,6 @@ const CashScreen = ({ route }) => {
                 </View>
               </>
             ) : null}
-
             <View style={MainStyles.flexRowCenter}>
               {more ? (
                 <TouchableOpacity onPress={() => setMore(false)}>

@@ -2,17 +2,14 @@ import {Text, View} from 'react-native';
 import AlertModal from '../AlertModal';
 import MainStyles from '../../styles/MainStyle';
 import {colors} from '../../styles/Colors';
-
+import React from 'react';
+import {PropTypes} from 'prop-types';
 const ListenOrderChange = ({
   orderChange,
   isModalVisible,
   setModalVisible,
   onConfirm,
 }) => {
-  const showModal = () => {
-    setModalVisible(true);
-  };
-
   const hideModal = () => {
     setModalVisible(false);
   };
@@ -66,5 +63,16 @@ const ListenOrderChange = ({
     </AlertModal>
   );
 };
-
+ListenOrderChange.propTypes = {
+  orderChange: PropTypes.shape({
+    orderId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    DataService: PropTypes.shape({
+      ServiceName: PropTypes.string,
+    }),
+    BookingCode: PropTypes.string,
+  }),
+  isModalVisible: PropTypes.bool.isRequired,
+  setModalVisible: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+};
 export default ListenOrderChange;

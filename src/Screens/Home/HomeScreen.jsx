@@ -14,7 +14,7 @@ import ListenOrderTotal from '../../components/firebaseListen/ListenTotalOrder';
 import {Linking} from 'react-native';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
 import {GROUP_USER_ID} from '../../utils';
-import { OVG_FBRT_UpdateLocation } from '../../firebaseService/HandleOrder';
+import {OVG_FBRT_UpdateLocation} from '../../firebaseService/HandleOrder';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -63,10 +63,11 @@ const HomeScreen = () => {
             OVG_spOfficer_Update_LocationTime(position, userLogin?.OfficerID);
           }
         },
-        error => {},
         {enableHighAccuracy: false, timeout: 20000},
       );
-    } catch (e) {}
+    } catch {
+      //
+    }
   };
   const OVG_spOfficer_Update_LocationTime = async (position, officerId) => {
     try {
@@ -108,7 +109,8 @@ const HomeScreen = () => {
                 OVG_FBRT_UpdateLocation(
                   acceptedOrder?.OrderId,
                   position.coords.latitude,
-                  position.coords.longitude, ``
+                  position.coords.longitude,
+                  ``,
                 );
                 mainAction.locationUpdate(params, dispatch);
               }

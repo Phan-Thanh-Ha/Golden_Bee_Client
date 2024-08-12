@@ -42,7 +42,7 @@ const CardNotifi = ({ data }) => {
               name="calendar-outline"
             />
             <Text style={MainStyles.textCardJob}>
-              Ngày hoàn thành : {parseTimeSql(data?.BookingTime, 3)}
+              Ngày hoàn thành: {parseTimeSql(data?.BookingTime, 3)}
             </Text>
           </View>
         </View>
@@ -53,7 +53,7 @@ const CardNotifi = ({ data }) => {
               fill="#3366FF"
               name="star-outline"
             />
-            <Text style={MainStyles.textCardJob}>Được đánh giá : </Text>
+            <Text style={MainStyles.textCardJob}>Được đánh giá: </Text>
             <Rating rating={data?.StartNumber || 5} />
           </View>
         </View>

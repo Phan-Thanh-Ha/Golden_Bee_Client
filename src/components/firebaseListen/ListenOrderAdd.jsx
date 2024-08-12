@@ -3,6 +3,7 @@ import {Text, View} from 'react-native';
 import AlertModal from '../AlertModal';
 import MainStyles from '../../styles/MainStyle';
 import {colors} from '../../styles/Colors';
+import {PropTypes} from 'prop-types';
 
 const ListenOrderAdd = ({
   orderAdd,
@@ -58,6 +59,13 @@ const ListenOrderAdd = ({
       </View>
     </AlertModal>
   );
+};
+
+ListenOrderAdd.propTypes = {
+  orderAdd: PropTypes.object,
+  isModalVisible: PropTypes.bool,
+  setModalVisible: PropTypes.func,
+  onConfirm: PropTypes.func,
 };
 
 export default ListenOrderAdd;

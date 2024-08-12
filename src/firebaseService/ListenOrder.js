@@ -93,6 +93,7 @@ export const OVG_FBRT_ListenMyOrders = (
 
   try {
     const myOrdersRef = databaseOrder.orderByChild('StaffId').equalTo(staffId);
+    console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  myOrdersRef:', myOrdersRef);
 
     myOrdersRef.once('value', snapshot => {
       const orders = snapshot.val();
@@ -127,14 +128,14 @@ export const OVG_FBRT_ListenMyOrders = (
   }
 };
 
-export const OVG_DeleteOrdersByBookingCode = async (bookingCode) => {
-  if (typeof bookingCode !== "string" || !bookingCode.trim()) {
-    console.error("Invalid BookingCode. It should be a non-empty string.");
+export const OVG_DeleteOrdersByBookingCode = async bookingCode => {
+  if (typeof bookingCode !== 'string' || !bookingCode.trim()) {
+    console.error('Invalid BookingCode. It should be a non-empty string.');
     return false;
   }
 
   try {
-    const snapshot = await databaseOrder.once("value");
+    const snapshot = await databaseOrder.once('value');
     const orders = snapshot.val();
     const updates = {};
 
@@ -148,19 +149,19 @@ export const OVG_DeleteOrdersByBookingCode = async (bookingCode) => {
       if (Object.keys(updates).length > 0) {
         await databaseOrder.update(updates);
         console.log(
-          `Orders with BookingCode ${bookingCode} deleted successfully.`
+          `Orders with BookingCode ${bookingCode} deleted successfully.`,
         );
         return true;
       } else {
-        console.log("No orders found with the given BookingCode.");
+        console.log('No orders found with the given BookingCode.');
         return false;
       }
     } else {
-      console.log("No orders found in the database.");
+      console.log('No orders found in the database.');
       return false;
     }
   } catch (error) {
-    console.error("Error deleting orders:", error);
+    console.error('Error deleting orders:', error);
     return false;
   }
 };

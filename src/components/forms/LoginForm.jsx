@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Pressable, Linking} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import CustomInput from './CustomInput';
@@ -22,25 +22,6 @@ const LoginForm = () => {
   const [loginMessage, setLoginMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const defaultUser = {
-    CreateTime: '2024-06-28T11:10:55.407',
-    FilesBC: '/OVG_Booking/2024/072024/04/_2024-07-04-09-27-30_1.jpg',
-    FilesCCCD: '/OVG_Booking/2024/072024/04/_2024-07-04-09-27-15_1.jpg',
-    FilesCCCD_BackSide:
-      '/OVG_Booking/2024/072024/04/_2024-07-04-09-27-21_1.jpg',
-    FilesCV: '/OVG_Booking/2024/072024/04/_2024-07-04-09-27-26_1.jpg',
-    FilesImage: '/OVG_Booking/2024/072024/04/_2024-07-04-09-27-07_1.jpg',
-    GroupUserId: 10060,
-    Identified: '123456789012',
-    OfficerID: 7347,
-    OfficerName: 'Phan Ha',
-    OfficerStatus: 1,
-    Password: 'MN4J4MDO/7s=',
-    Phone: '0943214791',
-    State: 0,
-    StateOnline: false,
-    Surplus: 111111110051111,
-  };
   const validationSchema = yup.object().shape({
     phoneNumber: yup
       .string()
@@ -75,7 +56,7 @@ const LoginForm = () => {
         Json: JSON.stringify(pr),
         func: 'AVG_spOfficer_Login',
       };
-
+      // const result = await OVG_FBRT_AddOfficer(1231, true);
       const result = await mainAction.API_spCallServer(params, dispatch);
       if (result?.Status === 'OK') {
         await setData(StorageNames.USER_PROFILE, result.Result[0]);

@@ -1,19 +1,23 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors } from "../../styles/Colors";
-import ArrowRight from "../svg/ArrowRight";
+import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {colors} from '../../styles/Colors';
+import ArrowRight from '../svg/ArrowRight';
+import {PropTypes} from 'prop-types';
 
-const GradientButton = ({ children, onPress }) => {
+GradientButton.propTypes = {
+  children: PropTypes.node.isRequired,
+  onPress: PropTypes.func.isRequired,
+};
+const GradientButton = ({children, onPress}) => {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [
+      style={({pressed}) => [
         {
           backgroundColor: pressed ? colors.SUCCESS : colors.PRIMARY_GREEN,
         },
         styles.button,
-      ]}
-    >
+      ]}>
       <View style={styles.content}>
         <Text style={styles.text}>{children} </Text>
         <ArrowRight color={colors.WHITE} />
@@ -44,8 +48,7 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: 5,
   },
-  arrow: {
-  }
+  arrow: {},
 });
 
 export default GradientButton;
