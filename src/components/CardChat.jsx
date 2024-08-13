@@ -1,8 +1,10 @@
-import {Image, Pressable, View} from 'react-native';
+import {Pressable, View} from 'react-native';
 import MainStyles from '../styles/MainStyle';
 import {Text} from 'react-native';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default CardChat = ({data}) => {
+const CardChat = ({data}) => {
   const onpenModal = () => {};
   return (
     <View>
@@ -16,3 +18,13 @@ export default CardChat = ({data}) => {
     </View>
   );
 };
+
+CardChat.displayName = 'CardChat';
+
+CardChat.propTypes = {
+  data: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+export default CardChat;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,17 +6,23 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { Image } from 'react-native-compressor';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {Image} from 'react-native-compressor';
 import FastImage from 'react-native-fast-image';
 import ProgressImage from 'react-native-image-progress';
-import { ProgressBar } from '@ui-kitten/components';
+import {ProgressBar} from '@ui-kitten/components';
 import Modal from 'react-native-modal';
 import axios from 'axios';
-import { APIImage } from '../Config/Api';
-import { ic_upload } from '../assets';
+import {APIImage} from '../Config/Api';
+import {ic_upload} from '../assets';
+import {PropTypes} from 'prop-types';
 
-const ImageUploadComponent = ({ setImageUrl, btnWidth = 200, btnHeight = 200, total = 1 }) => {
+const ImageUploadComponent = ({
+  setImageUrl,
+  btnWidth = 200,
+  btnHeight = 200,
+  total = 1,
+}) => {
   const [isUpload, setIsUpload] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [imageList, setImageList] = useState([]);
@@ -66,7 +72,7 @@ const ImageUploadComponent = ({ setImageUrl, btnWidth = 200, btnHeight = 200, to
     setIsLoadingMedia(true);
     try {
       const compressedImages = await Promise.all(
-        imageUris.map(uri => Image.compress(uri, optionsMedia))
+        imageUris.map(uri => Image.compress(uri, optionsMedia)),
       );
       if (compressedImages.length === 0) {
         setIsLoadingMedia(false);
@@ -115,7 +121,7 @@ const ImageUploadComponent = ({ setImageUrl, btnWidth = 200, btnHeight = 200, to
         setImageUrl(result.data);
         setImageList(prevList => [
           ...prevList,
-          { id: currentID, source: APIImage + result.data[0] },
+          {id: currentID, source: APIImage + result.data[0]},
         ]);
         setCurrentID(prevID => prevID + 1);
       } else {
@@ -131,9 +137,7 @@ const ImageUploadComponent = ({ setImageUrl, btnWidth = 200, btnHeight = 200, to
   const deleteImage = () => {
     setIsUpload(false);
     setSelectedImages([]);
-    setImageList(
-      imageList.filter(image => image.source !== selectedImages[0]),
-    );
+    setImageList(imageList.filter(image => image.source !== selectedImages[0]));
   };
 
   const toggleOptionsModal = () => {
@@ -154,10 +158,8 @@ const ImageUploadComponent = ({ setImageUrl, btnWidth = 200, btnHeight = 200, to
                 alignItems: 'center',
               },
             ]}>
-            <FastImage source={ic_upload} style={{ width: 45, height: 45 }} />
-            <Text style={styles.textBtnUpload}>
-              Tải lên hoặc chụp hình ảnh
-            </Text>
+            <FastImage source={ic_upload} style={{width: 45, height: 45}} />
+            <Text style={styles.textBtnUpload}>Tải lên hoặc chụp hình ảnh</Text>
           </View>
         </TouchableOpacity>
       )}
@@ -166,13 +168,8 @@ const ImageUploadComponent = ({ setImageUrl, btnWidth = 200, btnHeight = 200, to
         <View style={styles.imageContainer}>
           {selectedImages.length > 0 && (
             <ProgressImage
-              source={{ uri: selectedImages[0] }}
-              indicator={() => (
-                <ActivityIndicator
-                  animating={true}
-                  size={30}
-                />
-              )}
+              source={{uri: selectedImages[0]}}
+              indicator={() => <ActivityIndicator animating={true} size={30} />}
               indicatorProps={{
                 size: 80,
                 borderWidth: 0,
@@ -189,10 +186,10 @@ const ImageUploadComponent = ({ setImageUrl, btnWidth = 200, btnHeight = 200, to
       {selectedImages.length > 0 && !isLoadingMedia && (
         <View style={styles.imageContainer}>
           <TouchableOpacity onPress={toggleOptionsModal}>
-            <View style={{ position: 'relative' }}>
+            <View style={{position: 'relative'}}>
               <FastImage
-                source={{ uri: selectedImages[0] }}
-                style={{ width: btnWidth, height: btnHeight, borderRadius: 5 }}
+                source={{uri: selectedImages[0]}}
+                style={{width: btnWidth, height: btnHeight, borderRadius: 5}}
               />
               {selectedImages.length > 1 && (
                 <View style={styles.multipleImageIndicator}>
@@ -233,10 +230,7 @@ const ImageUploadComponent = ({ setImageUrl, btnWidth = 200, btnHeight = 200, to
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.option} onPress={toggleOptionsModal}>
-            <Text
-              style={{ fontSize: 16, fontWeight: '700' }}>
-              Hủy
-            </Text>
+            <Text style={{fontSize: 16, fontWeight: '700'}}>Hủy</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -313,5 +307,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+ImageUploadComponent.defaultProps = {
+  setImageUrl: () => {},
+  btnWidth: 200,
+  btnHeight: 200,
+  total: 1,
+};
+ImageUploadComponent.propTypes = {
+  setImageUrl: PropTypes.func,
+  btnWidth: PropTypes.number,
+  btnHeight: PropTypes.number,
+  total: PropTypes.number,
+};
 
 export default ImageUploadComponent;

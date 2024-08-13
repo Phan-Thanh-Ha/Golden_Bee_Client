@@ -91,7 +91,7 @@ export const BottomTabNavigator = () => {
       bgColor="white"
       initialRouteName={ScreenNames.HOME}
       borderTopLeftRight
-      renderCircle={({selectedTab, navigate}) => (
+      renderCircle={({navigate}) => (
         <Animated.View style={styles.btnCircleUp}>
           <TouchableOpacity
             style={styles.button}

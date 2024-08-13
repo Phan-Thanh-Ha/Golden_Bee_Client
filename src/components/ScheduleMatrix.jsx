@@ -8,9 +8,8 @@ import {
 } from 'react-native';
 import {colors} from '../styles/Colors';
 import Button from './buttons/Button';
+import {PropTypes} from 'prop-types';
 
-// const periods = ['Morning', 'Afternoon', 'Evening', 'Night'];
-// const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const periods = ['Sáng', 'Trưa', 'Chiều', 'Tối'];
 const days = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'thứ 6', 'thứ 7', 'CN'];
 
@@ -150,5 +149,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+
+ScheduleMatrix.defaultProps = {
+  initialSchedule: null,
+  onBook: () => {},
+};
+ScheduleMatrix.propTypes = {
+  initialSchedule: PropTypes.array,
+  onBook: PropTypes.func,
+};
 
 export default ScheduleMatrix;

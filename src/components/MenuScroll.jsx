@@ -1,16 +1,15 @@
-import React, { useState, useRef } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import FastImage from "react-native-fast-image";
-import { useNavigation } from "@react-navigation/native";
-import { ScreenNames } from "../Constants";
-import { SCREEN_WIDTH } from "../styles/MainStyle";
-import { menuData } from "../Screens/data";
-import { getIconById } from "../utils/RoutingService";
-import { colors, themeColors } from "../styles/Colors";
+import React, {useState, useRef} from 'react';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import FastImage from 'react-native-fast-image';
+import {useNavigation} from '@react-navigation/native';
+import {ScreenNames} from '../Constants';
+import {SCREEN_WIDTH} from '../styles/MainStyle';
+import {menuData} from '../Screens/data';
+import {getIconById} from '../utils/RoutingService';
+import {colors, themeColors} from '../styles/Colors';
 
 const ITEMS_PER_ROW = 2;
-const ITEM_WIDTH = SCREEN_WIDTH * 0.3 + 10;
 const PROGRESS_BAR_WIDTH = SCREEN_WIDTH * 0.08;
 
 export const MenuScroll = () => {
@@ -21,7 +20,7 @@ export const MenuScroll = () => {
   const renderItems = () => {
     const rows = [];
     for (let i = 0; i < menuData.length; i += ITEMS_PER_ROW) {
-      const rowItems = menuData.slice(i, i + ITEMS_PER_ROW).map((item) => (
+      const rowItems = menuData.slice(i, i + ITEMS_PER_ROW).map(item => (
         <TouchableOpacity
           key={item?.ServiceCode}
           onPress={() => {
@@ -29,14 +28,13 @@ export const MenuScroll = () => {
               service: item,
             });
           }}
-          style={styles.itemContainer}
-        >
+          style={styles.itemContainer}>
           <FastImage
             style={styles.image}
             source={
               getIconById(item.ServiceId)
                 ? getIconById(item.ServiceId)
-                : { uri: "https://picsum.photos/200" }
+                : {uri: 'https://picsum.photos/200'}
             }
           />
           <View style={styles.textContainer}>
@@ -48,18 +46,19 @@ export const MenuScroll = () => {
       rows.push(
         <View key={i} style={styles.row}>
           {rowItems}
-        </View>
+        </View>,
       );
     }
     return rows;
   };
 
-  const handleScroll = (event) => {
+  const handleScroll = event => {
     const contentOffset = event.nativeEvent.contentOffset.x;
     const contentWidth = event.nativeEvent.contentSize.width;
     const layoutWidth = event.nativeEvent.layoutMeasurement.width;
 
-    const scrollPercentage = (contentOffset / (contentWidth - layoutWidth)) * 100;
+    const scrollPercentage =
+      (contentOffset / (contentWidth - layoutWidth)) * 100;
     setScrollPosition(scrollPercentage);
   };
 
@@ -71,18 +70,12 @@ export const MenuScroll = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}
         onScroll={handleScroll}
-        scrollEventThrottle={16}
-      >
+        scrollEventThrottle={16}>
         {renderItems()}
       </ScrollView>
       <View style={styles.progressBarContainer}>
         <View style={styles.progressBar}>
-          <View
-            style={[
-              styles.progressDot,
-              { left: `${scrollPosition}%` }
-            ]}
-          />
+          <View style={[styles.progressDot, {left: `${scrollPosition}%`}]} />
         </View>
       </View>
     </View>
@@ -95,7 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: themeColors.lightBackground,
     borderRadius: 10,
     margin: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -105,14 +98,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   scrollViewContent: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   row: {
-    flexDirection: "column",
+    flexDirection: 'column',
   },
   itemContainer: {
     width: SCREEN_WIDTH * 0.3,
-    alignItems: "center",
+    alignItems: 'center',
     marginVertical: 10,
     marginHorizontal: 5,
   },
@@ -121,12 +114,12 @@ const styles = StyleSheet.create({
     height: 70,
   },
   textContainer: {
-    textAlign: "center",
+    textAlign: 'center',
     width: SCREEN_WIDTH * 0.25,
   },
   text: {
-    textAlign: "center",
-    flexWrap: "wrap",
+    textAlign: 'center',
+    flexWrap: 'wrap',
     fontSize: 12,
   },
   progressBarContainer: {

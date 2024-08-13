@@ -1,24 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {colors} from '../styles/Colors';
+import {PropTypes} from 'prop-types';
 
 const ProgressBar = ({total, pass, UserProfile}) => {
-  // Hàm tính toán tiến trình
-  // const calculateProgress = UserProfile => {
-  //   const totalFields = 5; //Object.keys(UserProfile).length;
-  //   let filledFields = 0;
-
-  //   // Duyệt qua mỗi trường và kiểm tra nếu có giá trị
-  //   Object.values(UserProfile).forEach(value => {
-  //     if (value !== '') {
-  //       filledFields += 1;
-  //     }
-  //   });
-
-  //   // Tính toán tiến trình
-  //   const progress = (filledFields / totalFields) * 100;
-  //   return progress;
-  // };
   const progress = 5; //calculateProgress(UserProfile);
 
   return (
@@ -72,5 +57,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
+
+ProgressBar.defaultProps = {
+  total: 0,
+  pass: 0,
+  UserProfile: {},
+};
+ProgressBar.propTypes = {
+  total: PropTypes.number,
+  pass: PropTypes.number,
+  UserProfile: PropTypes.object,
+};
 
 export default ProgressBar;

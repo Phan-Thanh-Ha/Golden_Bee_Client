@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { Layout, Tab, TabView, Text } from '@ui-kitten/components';
-import MainStyles, { SCREEN_HEIGHT } from '../styles/MainStyle';
+import React, {useEffect, useState} from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
+import {Layout, Tab, TabView, Text} from '@ui-kitten/components';
+import MainStyles, {SCREEN_HEIGHT} from '../styles/MainStyle';
 import CardZaloChat from './CardZaloChat';
 import CardDefault from './CardDefault';
 import CardNotifi from './CardNotifi';
-import { useDispatch, useSelector } from 'react-redux';
-import { mainAction } from '../Redux/Action';
+import {useDispatch, useSelector} from 'react-redux';
+import {mainAction} from '../Redux/Action';
+import {PropTypes} from 'prop-types';
 
-export default TabNotification = ({ height }) => {
+const TabNotification = ({height}) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const userLogin = useSelector(state => state.main.userLogin);
   const acceptedOrder = useSelector(state => state.main.acceptedOrder);
@@ -35,23 +36,19 @@ export default TabNotification = ({ height }) => {
         setDataJobDone(result);
       }
     } catch (error) {
-      console.error("lỗi lấy dữu liệu:", error);
-    } finally {
+      console.error('lỗi lấy dữu liệu:', error);
     }
   };
 
   const renderFooter = () => <View style={styles.footer} />;
 
   return (
-    <View style={{ height }}>
+    <View style={{height}}>
       <TabView
         selectedIndex={selectedIndex}
         onSelect={index => setSelectedIndex(index)}
-        style={styles.tabView}
-      >
-        <Tab
-          style={{ height: 40 }}
-          title='Chat'>
+        style={styles.tabView}>
+        <Tab style={{height: 40}} title="Chat">
           <View>
             <CardZaloChat />
             <Layout style={MainStyles.tabContainerDefault}>
@@ -59,30 +56,25 @@ export default TabNotification = ({ height }) => {
             </Layout>
           </View>
         </Tab>
-        <Tab style={{ height: 40 }} title="Thông báo">
-          <View style={{ flex: 1 }}>
-            {
-              dataJobDone?.length > 0 ? (
-                <FlatList
-                  data={dataJobDone.slice(0, 10)}
-                  renderItem={({ item, index }) => (
-                    <CardNotifi
-                      key={index}
-                      data={item}
-                    />
-                  )}
-                  ListFooterComponent={renderFooter}
-                />
-              ) : (
-                <CardDefault title="Chưa có thông báo mới" />
-              )
-            }
+        <Tab style={{height: 40}} title="Thông báo">
+          <View style={{flex: 1}}>
+            {dataJobDone?.length > 0 ? (
+              <FlatList
+                data={dataJobDone.slice(0, 10)}
+                renderItem={({item, index}) => (
+                  <CardNotifi key={index} data={item} />
+                )}
+                ListFooterComponent={renderFooter}
+              />
+            ) : (
+              <CardDefault title="Chưa có thông báo mới" />
+            )}
           </View>
         </Tab>
       </TabView>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   tabView: {
@@ -92,3 +84,11 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT * 0.05,
   },
 });
+TabNotification.defaultProps = {
+  height: SCREEN_HEIGHT * 0.8,
+};
+TabNotification.propTypes = {
+  height: PropTypes.number,
+};
+
+export default TabNotification;

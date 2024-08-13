@@ -1,24 +1,25 @@
-import { ScrollView, Text, View } from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import Header from '../../components/Header';
-import { colors } from '../../styles/Colors';
-import React, { useState } from 'react';
-import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
+import {colors} from '../../styles/Colors';
+import React, {useState} from 'react';
+import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../styles/MainStyle';
 import Button from '../../components/buttons/Button';
-import { ScreenNames } from '../../Constants';
+import {ScreenNames} from '../../Constants';
 import CustomLabel from '../../components/forms/CustomLabel';
 import LayoutBottom from '../../components/layouts/LayoutBottom';
 import BtnGetImageModal from '../../components/BtnGetImageModal';
 import ArrowRight from '../../components/svg/ArrowRight';
-import { useDispatch, useSelector } from 'react-redux';
-import { mainAction } from '../../Redux/Action';
-import { setData } from '../../utils';
+import {useDispatch, useSelector} from 'react-redux';
+import {mainAction} from '../../Redux/Action';
+import {setData} from '../../utils';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import AlertConfirm from '../../components/modal/AlertConfirm';
 import StorageNames from '../../Constants/StorageNames';
+import {PropTypes} from 'prop-types';
 
-const AddProfileScreen = ({ route }) => {
+const AddProfileScreen = () => {
   const [cmndFront, setCmndFront] = useState([]);
   const [cmndBack, setCmndBack] = useState([]);
   const [confirmAddress, setConfirmAddress] = useState([]);
@@ -165,8 +166,8 @@ const AddProfileScreen = ({ route }) => {
           // } else {
           //   setIsLoading(false);
           navi.reset({
-            routes: [{ name: ScreenNames.MAIN_NAVIGATOR }],
-          })
+            routes: [{name: ScreenNames.MAIN_NAVIGATOR}],
+          });
           // navi.navigate(ScreenNames.MAIN_NAVIGATOR);
           // }
           setIsLoading(false);
@@ -174,7 +175,6 @@ const AddProfileScreen = ({ route }) => {
         setIsLoading(false);
       } catch {
         setIsLoading(false);
-        console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  error:', error);
       }
       setIsLoading(false);
     }
@@ -295,6 +295,13 @@ const AddProfileScreen = ({ route }) => {
       />
     </LayoutGradientBlue>
   );
+};
+
+AddProfileScreen.defaultProps = {
+  route: {},
+};
+AddProfileScreen.propTypes = {
+  route: PropTypes.object,
 };
 
 export default AddProfileScreen;

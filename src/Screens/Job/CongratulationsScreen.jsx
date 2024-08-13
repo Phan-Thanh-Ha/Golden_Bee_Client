@@ -1,39 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import ConfettiCannon from 'react-native-confetti-cannon';
-import { ScreenNames } from '../../Constants';
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import {ScreenNames} from '../../Constants';
 import FastImage from 'react-native-fast-image';
-import { coin_icon, ic_success } from '../../assets';
-import MainStyles, { SCREEN_HEIGHT } from '../../styles/MainStyle';
-import { useSelector } from 'react-redux';
+import {coin_icon, ic_success} from '../../assets';
+import MainStyles, {SCREEN_HEIGHT} from '../../styles/MainStyle';
+import {useSelector} from 'react-redux';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import Box from '../../components/Box';
-import { colors } from '../../styles/Colors';
-import { Image } from 'react-native';
-import { FormatMoney } from '../../utils/FormatMoney';
+import {colors} from '../../styles/Colors';
+import {Image} from 'react-native';
+import {FormatMoney} from '../../utils/FormatMoney';
 import LayoutBottom from '../../components/layouts/LayoutBottom';
 import Button from '../../components/buttons/Button';
 import ArrowRight from '../../components/svg/ArrowRight';
+import {PropTypes} from 'prop-types';
 
-const CongratulationsScreen = ({ navigation, route }) => {
-  const { data } = route.params || {};
+const CongratulationsScreen = ({navigation, route}) => {
+  const {data} = route.params || {};
   const userLogin = useSelector(state => state.main.userLogin);
-
-  // const confettiRef = useRef(null);
-  // const [startConfetti, setStartConfetti] = useState(false);
-
-  // useEffect(() => {
-  //   setStartConfetti(true);
-  // }, []);
-
-  // const handleConfettiComplete = () => {
-  // };
 
   return (
     <LayoutGradientBlue>
       <Box height={SCREEN_HEIGHT * 0.1} />
       <View style={MainStyles.flexRowCenter}>
-        <FastImage source={ic_success} style={{ width: 100, height: 100 }} />
+        <FastImage source={ic_success} style={{width: 100, height: 100}} />
       </View>
       <Text style={styles.congratsText}>Hoàn thành dịch vụ</Text>
       <Text style={styles.subTitle}>
@@ -49,7 +39,7 @@ const CongratulationsScreen = ({ navigation, route }) => {
           paddingVertical: 20,
         }}>
         <View style={MainStyles.flexRowCenter}>
-          <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
+          <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
             Dịch vụ {data?.DataService?.ServiceName.toLowerCase()}
           </Text>
         </View>
@@ -65,7 +55,7 @@ const CongratulationsScreen = ({ navigation, route }) => {
           </Text>
         ) : null}
         <View style={MainStyles.flexRowCenter}>
-          <View style={[MainStyles.line, { backgroundColor: colors.WHITE }]} />
+          <View style={[MainStyles.line, {backgroundColor: colors.WHITE}]} />
         </View>
 
         <View style={MainStyles.flexRowCenter}>
@@ -81,7 +71,7 @@ const CongratulationsScreen = ({ navigation, route }) => {
               Tổng tiền
             </Text>
             <View style={MainStyles.flexRowCenter}>
-              <Image source={coin_icon} style={{ width: 22, height: 22 }} />
+              <Image source={coin_icon} style={{width: 22, height: 22}} />
               <Text
                 style={{
                   color: colors.MAIN_COLOR_CLIENT,
@@ -104,7 +94,7 @@ const CongratulationsScreen = ({ navigation, route }) => {
                 Thực nhận
               </Text>
               <View style={MainStyles.flexRowCenter}>
-                <Image source={coin_icon} style={{ width: 22, height: 22 }} />
+                <Image source={coin_icon} style={{width: 22, height: 22}} />
                 <Text
                   style={{
                     color: colors.MAIN_COLOR_CLIENT,
@@ -173,5 +163,16 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
 });
+
+CongratulationsScreen.defaultProps = {
+  data: {},
+  navigation: {},
+  route: {},
+};
+CongratulationsScreen.propTypes = {
+  data: PropTypes.object,
+  navigation: PropTypes.object,
+  route: PropTypes.object,
+};
 
 export default CongratulationsScreen;

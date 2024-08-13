@@ -3,10 +3,11 @@ import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import Header from '../../components/Header';
 import {colors} from '../../styles/Colors';
 import FormActiveAccount from '../../components/forms/FormActiveAccount';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Footer from '../../components/Footer';
 import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
 import {ScreenNames} from '../../Constants';
+import {PropTypes} from 'prop-types';
 
 const ActiveAccount = ({navigation, route}) => {
   const [isSubmit, setIsSubmit] = useState(false);
@@ -50,4 +51,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
+
+ActiveAccount.defaultProps = {
+  navigation: {},
+  route: {},
+};
+ActiveAccount.propTypes = {
+  navigation: PropTypes.object,
+  route: PropTypes.object,
+};
+
 export default ActiveAccount;

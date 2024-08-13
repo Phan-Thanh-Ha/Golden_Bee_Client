@@ -3,12 +3,10 @@ import MainStyles, {SCREEN_HEIGHT} from '../styles/MainStyle';
 import {themeColors} from '../styles/Colors';
 import {useSelector} from 'react-redux';
 import {logo_bee_blue} from '../assets';
-import {useNavigation} from '@react-navigation/native';
 import {SCREEN_WIDTH} from '@gorhom/bottom-sheet';
 import React from 'react';
 const UserHeader = () => {
   const userLogin = useSelector(state => state.main.userLogin);
-  const navi = useNavigation();
   return (
     <View style={styles.container}>
       {userLogin ? (
@@ -46,7 +44,6 @@ const styles = StyleSheet.create({
     }),
     paddingBottom: SCREEN_HEIGHT * 0.04,
     paddingHorizontal: 20,
-    paddingBottom: 20,
     backgroundColor: themeColors.lightBackground,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,

@@ -303,4 +303,6 @@ const styles = StyleSheet.create({
   },
 });
 
+JobDoneModal.displayName = 'JobDoneModal';
+
 export default JobDoneModal;

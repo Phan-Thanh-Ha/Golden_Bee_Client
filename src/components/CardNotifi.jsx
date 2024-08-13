@@ -1,17 +1,22 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Icon, Text } from '@ui-kitten/components';
-import { colors } from '../styles/Colors';
+import {View} from 'react-native';
+import {Icon, Text} from '@ui-kitten/components';
+import {colors} from '../styles/Colors';
 import MainStyles from '../styles/MainStyle';
-import { parseTimeSql } from '../utils/FormatTime';
+import {parseTimeSql} from '../utils/FormatTime';
 import Rating from './Rating';
+import {PropTypes} from 'prop-types';
 
-const CardNotifi = ({ data }) => {
+const CardNotifi = ({data}) => {
   return (
     <View>
       <View style={MainStyles.cardJob}>
         <View style={MainStyles.flexRowCenter}>
-          <Text style={[MainStyles.titleCardJob, { textAlign: 'center', color: colors.MAIN_BLUE_CLIENT }]}>
+          <Text
+            style={[
+              MainStyles.titleCardJob,
+              {textAlign: 'center', color: colors.MAIN_BLUE_CLIENT},
+            ]}>
             Thông báo hoàn thành dịch vụ
           </Text>
         </View>
@@ -19,7 +24,7 @@ const CardNotifi = ({ data }) => {
           <View style={MainStyles.line} />
         </View>
         <View style={MainStyles.flexRowCenter}>
-          <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
+          <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
             Dịch vụ {data?.ServiceName.toLowerCase()}
           </Text>
         </View>
@@ -74,6 +79,13 @@ const CardNotifi = ({ data }) => {
       </View>
     </View>
   );
+};
+
+CardNotifi.defaultProps = {
+  data: {},
+};
+CardNotifi.propTypes = {
+  data: PropTypes.object,
 };
 
 export default CardNotifi;

@@ -1,11 +1,12 @@
-import { Image, SafeAreaView, View, StyleSheet } from "react-native";
-import LogoBee from "../components/LogoBee";
-import { colors } from "../styles/Colors";
-import { useEffect } from "react";
-import { image_banner_1 } from "../assets";
-import { ScreenNames } from "../Constants";
+import {Image, SafeAreaView, View, StyleSheet} from 'react-native';
+import LogoBee from '../components/LogoBee';
+import {colors} from '../styles/Colors';
+import React, {useEffect} from 'react';
+import {image_banner_1} from '../assets';
+import {ScreenNames} from '../Constants';
+import {PropTypes} from 'prop-types';
 
-const SplashScreen = ({ navigation }) => {
+const SplashScreen = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
       navigation.navigate(ScreenNames.ABOUT);
@@ -17,10 +18,7 @@ const SplashScreen = ({ navigation }) => {
       <View style={styles.content}>
         <LogoBee />
         <View style={styles.imageContainer}>
-          <Image
-            source={image_banner_1}
-            style={styles.image}
-          />
+          <Image source={image_banner_1} style={styles.image} />
         </View>
       </View>
     </SafeAreaView>
@@ -31,7 +29,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: colors.WHITE
+    backgroundColor: colors.WHITE,
   },
   content: {
     flex: 1,
@@ -49,5 +47,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
+
+SplashScreen.defaultProps = {
+  navigation: {},
+};
+SplashScreen.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default SplashScreen;

@@ -1,6 +1,7 @@
-import MainStyle from '../styles/MainStyle';
-import {Image, Text, View} from 'react-native';
+import {Image, View} from 'react-native';
 import {logo_bee_blue} from '../assets';
+import React from 'react';
+import {PropTypes} from 'prop-types';
 
 const Logo = ({sizeImage = 120}) => {
   return (
@@ -20,6 +21,13 @@ const Logo = ({sizeImage = 120}) => {
       </View>
     </>
   );
+};
+
+Logo.defaultProps = {
+  sizeImage: 120,
+};
+Logo.propTypes = {
+  sizeImage: PropTypes.number,
 };
 
 export default Logo;

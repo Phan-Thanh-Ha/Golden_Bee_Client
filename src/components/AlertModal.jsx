@@ -1,13 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../styles/MainStyle';
-import { colors } from '../styles/Colors';
-import LogoBee from './LogoBee';
-import LogoBeeBox from './LogoBeeBox';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../styles/MainStyle';
+import {colors} from '../styles/Colors';
 import Logo from './Logo';
+import {PropTypes} from 'prop-types';
 
-const AlertModal = ({ isVisible, onClose, children, isAuto, autoCloseTime = 3000, onConfirm, title, backdropCloseable = true, isCancelable = true, isConfirmable = true }) => {
+const AlertModal = ({
+  isVisible,
+  onClose,
+  children,
+  isAuto,
+  autoCloseTime = 3000,
+  onConfirm,
+  title,
+  backdropCloseable = true,
+  isCancelable = true,
+  isConfirmable = true,
+}) => {
   const [countdown, setCountdown] = useState(autoCloseTime / 1000);
 
   useEffect(() => {
@@ -52,8 +62,7 @@ const AlertModal = ({ isVisible, onClose, children, isAuto, autoCloseTime = 3000
       animationIn="slideInUp"
       animationOut="slideOutDown"
       backdropOpacity={0.5}
-      backdropColor="black"
-    >
+      backdropColor="black">
       <View style={styles.modalContent}>
         <View style={styles.logoContainer}>
           <Logo sizeImage={SCREEN_WIDTH * 0.18} />
@@ -64,20 +73,18 @@ const AlertModal = ({ isVisible, onClose, children, isAuto, autoCloseTime = 3000
           <Text style={styles.countdown}>Đóng trong {countdown} giây</Text>
         ) : (
           <View style={styles.buttonContainer}>
-            {
-              isConfirmable ? (
-                <TouchableOpacity style={styles.confirmButton} onPress={onConfirm}>
-                  <Text style={styles.buttonText}>Xác nhận</Text>
-                </TouchableOpacity>
-              ) : null
-            }
-            {
-              isCancelable ? (
-                <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-                  <Text style={styles.buttonText}>Hủy</Text>
-                </TouchableOpacity>
-              ) : null
-            }
+            {isConfirmable ? (
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={onConfirm}>
+                <Text style={styles.buttonText}>Xác nhận</Text>
+              </TouchableOpacity>
+            ) : null}
+            {isCancelable ? (
+              <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
+                <Text style={styles.buttonText}>Hủy</Text>
+              </TouchableOpacity>
+            ) : null}
           </View>
         )}
       </View>
@@ -105,7 +112,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 12,
-    color: colors.MAIN_BLUE_CLIENT
+    color: colors.MAIN_BLUE_CLIENT,
   },
   countdown: {
     marginTop: 12,
@@ -138,5 +145,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+AlertModal.defaultProps = {
+  isVisible: false,
+  isAuto: false,
+  autoCloseTime: 3000,
+  backdropCloseable: true,
+  isCancelable: true,
+  isConfirmable: true,
+};
+AlertModal.propTypes = {
+  isVisible: PropTypes.bool,
+  onClose: PropTypes.func,
+  children: PropTypes.node,
+  isAuto: PropTypes.bool,
+  autoCloseTime: PropTypes.number,
+  onConfirm: PropTypes.func,
+  title: PropTypes.string,
+  backdropCloseable: PropTypes.bool,
+  isCancelable: PropTypes.bool,
+  isConfirmable: PropTypes.bool,
+};
 
 export default AlertModal;

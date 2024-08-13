@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
-import { getData } from "./LocalStorage";
-import { useNavigation } from "@react-navigation/native";
-import { ScreenNames } from "../Constants";
+import React, {useEffect} from 'react';
+import {getData} from './LocalStorage';
+import {useNavigation} from '@react-navigation/native';
+import {ScreenNames} from '../Constants';
+import StorageNames from '../Constants/StorageNames';
+import {View} from 'react-native';
 
 const CheckRoute = () => {
   const navi = useNavigation();
@@ -9,13 +11,13 @@ const CheckRoute = () => {
     getRouter();
   }, []);
 
-  const checkUploadCCCD = async (userLogin) => {
+  const checkUploadCCCD = async userLogin => {
     if (
-      userLogin?.FilesBC === "" ||
-      userLogin?.FilesCCCD === "" ||
-      userLogin?.FilesCCCD_BackSide === "" ||
-      userLogin?.FilesCV === "" ||
-      userLogin?.FilesImage === ""
+      userLogin?.FilesBC === '' ||
+      userLogin?.FilesCCCD === '' ||
+      userLogin?.FilesCCCD_BackSide === '' ||
+      userLogin?.FilesCV === '' ||
+      userLogin?.FilesImage === ''
     ) {
       navi.navigate(ScreenNames.UPDATE_PROFILE);
     } else {
@@ -32,7 +34,7 @@ const CheckRoute = () => {
         checkUploadCCCD(userLogin);
       }
     } catch (error) {
-      console.error("Failed to fetch the user from AsyncStorage:", error);
+      console.error('Failed to fetch the user from AsyncStorage:', error);
     }
   };
 

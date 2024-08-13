@@ -1,18 +1,31 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Input, Icon } from '@ui-kitten/components';
-import { colors } from '../styles/Colors';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Input, Icon} from '@ui-kitten/components';
+import {colors} from '../styles/Colors';
+import {PropTypes} from 'prop-types';
 
-const InputNumber = ({ style, bgColor = '#FFFFFF', textColor = '#000000', min = 0, value, setFieldValue, fieldName, ...props }) => {
+const InputNumber = ({
+  style,
+  bgColor = '#FFFFFF',
+  textColor = '#000000',
+  min = 0,
+  value,
+  setFieldValue,
+  fieldName,
+  ...props
+}) => {
   const handleIncrease = () => {
     setFieldValue(fieldName, parseInt(value, 10) + 1);
   };
 
   const handleDecrease = () => {
-    setFieldValue(fieldName, parseInt(value, 10) > min ? parseInt(value, 10) - 1 : min);
+    setFieldValue(
+      fieldName,
+      parseInt(value, 10) > min ? parseInt(value, 10) - 1 : min,
+    );
   };
 
-  const handleChange = (text) => {
+  const handleChange = text => {
     const numericValue = parseInt(text, 10);
     if (text === '') {
       setFieldValue(fieldName, 0);
@@ -24,7 +37,7 @@ const InputNumber = ({ style, bgColor = '#FFFFFF', textColor = '#000000', min = 
   return (
     <View style={[styles.container, style]}>
       <Input
-        style={[styles.input, { backgroundColor: bgColor, color: textColor }]}
+        style={[styles.input, {backgroundColor: bgColor, color: textColor}]}
         placeholderTextColor="#A0A0A0"
         keyboardType="numeric"
         value={String(value)}
@@ -34,14 +47,14 @@ const InputNumber = ({ style, bgColor = '#FFFFFF', textColor = '#000000', min = 
       <View style={styles.iconContainer}>
         <TouchableOpacity style={styles.iconButton} onPress={handleDecrease}>
           <Icon
-            name='minus-outline'
+            name="minus-outline"
             fill={colors.MAIN_BLUE_CLIENT}
             style={styles.iconStyle}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconButton} onPress={handleIncrease}>
           <Icon
-            name='plus-outline'
+            name="plus-outline"
             fill={colors.MAIN_BLUE_CLIENT}
             style={styles.iconStyle}
           />
@@ -75,5 +88,23 @@ const styles = StyleSheet.create({
     height: 24,
   },
 });
+InputNumber.defaultProps = {
+  value: 0,
+  setFieldValue: () => {},
+  fieldName: '',
+  min: 0,
+  style: {},
+  bgColor: '#FFFFFF',
+  textColor: '#000000',
+};
+InputNumber.propTypes = {
+  value: PropTypes.number,
+  setFieldValue: PropTypes.func,
+  fieldName: PropTypes.string,
+  min: PropTypes.number,
+  style: PropTypes.object,
+  bgColor: PropTypes.string,
+  textColor: PropTypes.string,
+};
 
 export default InputNumber;

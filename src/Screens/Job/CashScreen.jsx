@@ -1,78 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Text,
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {Text, View, Image, ScrollView, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import { colors, themeColors } from '../../styles/Colors';
-import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
+import {colors, themeColors} from '../../styles/Colors';
+import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../styles/MainStyle';
 import Box from '../../components/Box';
 import Header from '../../components/Header';
-import { FormatMoney } from '../../utils/FormatMoney';
+import {FormatMoney} from '../../utils/FormatMoney';
 import CustomLabel from '../../components/forms/CustomLabel';
-import {
-  cirtificate,
-  coin_icon,
-  ic_clearning,
-  ic_clearning_basic,
-  ic_glass,
-  ic_living_room,
-  ic_location,
-  ic_note,
-  ic_person,
-} from '../../assets';
+import {coin_icon} from '../../assets';
 import Button from '../../components/buttons/Button';
 import StatusBarCustom from '../../components/StatusBarCustom';
 import LayoutBottom from '../../components/layouts/LayoutBottom';
-import { responsivescreen } from '../../utils/responsive-screen';
+import {responsivescreen} from '../../utils/responsive-screen';
 import ArrowRight from '../../components/svg/ArrowRight';
-import { setData } from '../../utils';
-import { completeOrder } from '../../firebaseService/HandleOrder';
-import { ScreenNames } from '../../Constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { mainAction } from '../../Redux/Action';
+import {setData} from '../../utils';
+import {ScreenNames} from '../../Constants';
+import {useDispatch, useSelector} from 'react-redux';
+import {mainAction} from '../../Redux/Action';
 import StorageNames from '../../Constants/StorageNames';
 import Up from '../../components/svg/Up';
 import Down from '../../components/svg/Down';
 import BtnGetImageModal from '../../components/BtnGetImageModal';
 import AlertConfirm from '../../components/modal/AlertConfirm';
-import { RoundUpNumber } from '../../utils/RoundUpNumber';
-import { Icon } from '@ui-kitten/components';
-import { OVG_DeleteOrdersByBookingCode } from '../../firebaseService/ListenOrder';
+import {RoundUpNumber} from '../../utils/RoundUpNumber';
+import {Icon} from '@ui-kitten/components';
+import {OVG_DeleteOrdersByBookingCode} from '../../firebaseService/ListenOrder';
+import {PropTypes} from 'prop-types';
 
-const CashScreen = ({ route }) => {
+const CashScreen = ({route}) => {
   const navi = useNavigation();
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.main.userLogin);
   const [isLoading, setIsLoading] = React.useState(false);
   const location = useSelector(state => state.main.locationTime);
-  const { data } = route.params;
+  const {data} = route.params;
   const [more, setMore] = useState(false);
   const [imageBefore, setImageBefore] = useState([]);
   const [imageAfter, setImageAfter] = useState([]);
   const [alertTitle, setAlertTitle] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [number, setNumber] = useState(0);
-  const [totalMoneyAll, setTotalMoneyAll] = useState(data?.DataService?.PriceAfterDiscount);
+  const [totalMoneyAll, setTotalMoneyAll] = useState(
+    data?.DataService?.PriceAfterDiscount,
+  );
 
   useEffect(() => {
     if (number) {
-      setTotalMoneyAll(RoundUpNumber(parseFloat(data?.DataService?.PriceAfterDiscount) + parseFloat(number), 0))
-
+      setTotalMoneyAll(
+        RoundUpNumber(
+          parseFloat(data?.DataService?.PriceAfterDiscount) +
+            parseFloat(number),
+          0,
+        ),
+      );
     } else {
-      setTotalMoneyAll(data?.DataService?.PriceAfterDiscount)
+      setTotalMoneyAll(data?.DataService?.PriceAfterDiscount);
     }
-  }, [number])
+  }, [number]);
   // console.log('data', data);
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View>
-      <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
+      <Text style={[MainStyles.textCardJob, {paddingLeft: 10}]}>
         🔸{item.ServiceDetailName}
       </Text>
     </View>
@@ -129,18 +119,22 @@ const CashScreen = ({ route }) => {
             DataService: {
               ...data?.DataService,
               PriceAfterDiscount: totalMoneyAll,
-            }
-          }
+            },
+          };
           navi.reset({
             index: 0,
-            routes: [{ name: ScreenNames.CONGRATULATION, params: { data: dataConfirm } }],
-          })
+            routes: [
+              {name: ScreenNames.CONGRATULATION, params: {data: dataConfirm}},
+            ],
+          });
         }
         return;
       }
       setIsLoading(false);
       return;
-    } catch (error) { }
+    } catch {
+      //
+    }
   };
   const handlePayment = () => {
     const valid = validation();
@@ -154,12 +148,16 @@ const CashScreen = ({ route }) => {
     <LayoutGradientBlue>
       <StatusBarCustom />
       <Header />
-      <LogoBeeBox color={colors.MAIN_BLUE_CLIENT} sizeImage={70} sizeText={20} />
+      <LogoBeeBox
+        color={colors.MAIN_BLUE_CLIENT}
+        sizeImage={70}
+        sizeText={20}
+      />
       <ScrollView>
         <View style={MainStyles.containerTabPayment}>
           <View style={MainStyles.layoutTabPayment}>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
+              <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
                 Dịch vụ {data?.DataService?.ServiceName.toLowerCase()}
               </Text>
             </View>
@@ -189,38 +187,35 @@ const CashScreen = ({ route }) => {
                 </Text>
               </View>
             </View>
-            {
-              data?.DataService?.CustomerPhone && (
-                <View style={MainStyles.rowMargin}>
-                  <View style={MainStyles.flexRowFlexStart}>
-                    <Icon
-                      style={MainStyles.CardIcon}
-                      fill="#3366FF"
-                      name="phone-outline"
-                    />
-                    <Text style={MainStyles.textCardJob}>
-                      Số điện thoại: {data?.DataService?.CustomerPhone}
-                    </Text>
-                  </View>
+            {data?.DataService?.CustomerPhone && (
+              <View style={MainStyles.rowMargin}>
+                <View style={MainStyles.flexRowFlexStart}>
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#3366FF"
+                    name="phone-outline"
+                  />
+                  <Text style={MainStyles.textCardJob}>
+                    Số điện thoại: {data?.DataService?.CustomerPhone}
+                  </Text>
                 </View>
-              )
-            }
-            {
-              data?.DataService?.TotalStaff && (
-                <View style={MainStyles.rowMargin}>
-                  <View style={MainStyles.flexRowFlexStart}>
-                    <Icon
-                      style={MainStyles.CardIcon}
-                      fill="#3366FF"
-                      name="people-outline"
-                    />
-                    <Text style={MainStyles.textCardJob}>
-                      Số lượng nhân viên: {data?.DataService?.TotalStaff} nhân viên
-                    </Text>
-                  </View>
+              </View>
+            )}
+            {data?.DataService?.TotalStaff && (
+              <View style={MainStyles.rowMargin}>
+                <View style={MainStyles.flexRowFlexStart}>
+                  <Icon
+                    style={MainStyles.CardIcon}
+                    fill="#3366FF"
+                    name="people-outline"
+                  />
+                  <Text style={MainStyles.textCardJob}>
+                    Số lượng nhân viên: {data?.DataService?.TotalStaff} nhân
+                    viên
+                  </Text>
                 </View>
-              )
-            }
+              </View>
+            )}
             <View style={MainStyles.rowMargin}>
               <View style={MainStyles.flexRowSpaceBetween}>
                 <View style={MainStyles.flexRowFlexEnd}>
@@ -231,7 +226,8 @@ const CashScreen = ({ route }) => {
                   />
                   <Text style={MainStyles.textCardJob}>
                     {' '}
-                    Làm việc trong: {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
+                    Làm việc trong:{' '}
+                    {RoundUpNumber(data?.DataService?.TimeWorking, 0)} giờ
                   </Text>
                 </View>
               </View>
@@ -246,60 +242,69 @@ const CashScreen = ({ route }) => {
                       name="plus-square-outline"
                     />
                     <Text style={MainStyles.textCardJob}>
-                      Dịch vụ thêm:{" "}
+                      Dịch vụ thêm:{' '}
                       {data?.DataService?.OtherService?.length > 0
-                        ? ""
-                        : " Không kèm dịch vụ thêm"}
+                        ? ''
+                        : ' Không kèm dịch vụ thêm'}
                     </Text>
                   </View>
                   {data?.DataService?.OtherService?.length > 0 &&
-                    data?.DataService?.OtherService.map((item) => (
-                      <View key={item?.ServiceDetailId?.toString()} style={MainStyles.flexRowFlexStart}>
+                    data?.DataService?.OtherService.map(item => (
+                      <View
+                        key={item?.ServiceDetailId?.toString()}
+                        style={MainStyles.flexRowFlexStart}>
                         <Icon
-                          style={{ marginLeft: SCREEN_WIDTH * 0.07, width: 20, height: 20 }}
+                          style={{
+                            marginLeft: SCREEN_WIDTH * 0.07,
+                            width: 20,
+                            height: 20,
+                          }}
                           fill="#3366FF"
                           name="plus-outline"
                         />
-                        <Text
-                          style={[MainStyles.textCardJob]}
-                        >
+                        <Text style={[MainStyles.textCardJob]}>
                           {item?.ServiceDetailName}
                         </Text>
                       </View>
                     ))}
                 </View>
-                {
-                  data?.DataService?.Voucher?.length > 0 && (
-                    <View style={MainStyles.rowMargin}>
-                      <View style={MainStyles.flexRowFlexStart}>
-                        <Icon
-                          style={MainStyles.CardIcon}
-                          fill="#3366FF"
-                          name="pricetags-outline"
-                        />
-                        <Text style={MainStyles.textCardJob}>Đã sử dụng voucher:</Text>
-                      </View>
-                      {data?.DataService?.Voucher?.length > 0
-                        ? data?.DataService?.Voucher.map((item) => (
-                          <View key={item?.VoucherId.toString()} style={MainStyles.flexRowFlexStart}>
+                {data?.DataService?.Voucher?.length > 0 && (
+                  <View style={MainStyles.rowMargin}>
+                    <View style={MainStyles.flexRowFlexStart}>
+                      <Icon
+                        style={MainStyles.CardIcon}
+                        fill="#3366FF"
+                        name="pricetags-outline"
+                      />
+                      <Text style={MainStyles.textCardJob}>
+                        Đã sử dụng voucher:
+                      </Text>
+                    </View>
+                    {data?.DataService?.Voucher?.length > 0
+                      ? data?.DataService?.Voucher.map(item => (
+                          <View
+                            key={item?.VoucherId.toString()}
+                            style={MainStyles.flexRowFlexStart}>
                             <Icon
-                              style={{ marginLeft: SCREEN_WIDTH * 0.07, width: 20, height: 20 }}
+                              style={{
+                                marginLeft: SCREEN_WIDTH * 0.07,
+                                width: 20,
+                                height: 20,
+                              }}
                               fill="#3366FF"
                               name="plus-outline"
                             />
-                            <Text
-                              style={[MainStyles.textCardJob]}
-                            >
-                              CODE: {item?.VoucherCode} - giảm{" "}
+                            <Text style={[MainStyles.textCardJob]}>
+                              CODE: {item?.VoucherCode} - giảm{' '}
                               {item?.TypeDiscount === 1
-                                ? item?.Discount + "%"
-                                : FormatMoney(item?.Discount) + " VND"}
+                                ? item?.Discount + '%'
+                                : FormatMoney(item?.Discount) + ' VND'}
                             </Text>
                           </View>
                         ))
-                        : null}
-                    </View>
-                  )}
+                      : null}
+                  </View>
+                )}
                 <View style={MainStyles.rowMargin}>
                   <View style={MainStyles.flexRowFlexStart}>
                     <Icon
@@ -378,7 +383,7 @@ const CashScreen = ({ route }) => {
             <View
               style={[
                 MainStyles.cardContentJob,
-                { backgroundColor: colors.WHITE },
+                {backgroundColor: colors.WHITE},
               ]}>
               <View style={MainStyles.flexRowCenter}>
                 <View>
@@ -393,7 +398,7 @@ const CashScreen = ({ route }) => {
                     Tổng tiền
                   </Text>
                   <View style={MainStyles.flexRowCenter}>
-                    <Image source={coin_icon} style={{ width: 22, height: 22 }} />
+                    <Image source={coin_icon} style={{width: 22, height: 22}} />
                     <Text
                       style={{
                         color: colors.MAIN_COLOR_CLIENT,
@@ -443,4 +448,11 @@ const CashScreen = ({ route }) => {
   );
 };
 
+CashScreen.defaultProps = {
+  route: {},
+};
+
+CashScreen.propTypes = {
+  route: PropTypes.object,
+};
 export default CashScreen;

@@ -1,14 +1,13 @@
 import React from 'react';
-import { CheckBox, Layout } from '@ui-kitten/components';
-import { StyleSheet, Text, View } from 'react-native';
-import { colors } from '../styles/Colors';
+import {CheckBox, Layout} from '@ui-kitten/components';
+import {StyleSheet, Text, View} from 'react-native';
+import {colors} from '../styles/Colors';
+import {PropTypes} from 'prop-types';
 
-const InputCheckBox = ({ data, selectedValues, onChange }) => {
+const InputCheckBox = ({data, selectedValues, onChange}) => {
   // Nếu không có dữ liệu, hiển thị thông báo
   if (!data || data.length === 0) {
-    return (
-      null
-    );
+    return null;
   }
 
   // Chia dữ liệu thành các hàng với 2 cột
@@ -21,14 +20,15 @@ const InputCheckBox = ({ data, selectedValues, onChange }) => {
     <Layout style={styles.container}>
       {rows.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
-          {row.map((item) => (
+          {row.map(item => (
             <View key={item.ServiceDetailId} style={styles.itemContainer}>
               <CheckBox
-                checked={selectedValues.some((value) => value.ServiceDetailId === item.ServiceDetailId)}
+                checked={selectedValues.some(
+                  value => value.ServiceDetailId === item.ServiceDetailId,
+                )}
                 onChange={() => onChange(item)}
                 style={styles.checkbox}
-                textStyle={styles.itemText}
-              >
+                textStyle={styles.itemText}>
                 {item.ServiceDetailName}
               </CheckBox>
             </View>
@@ -65,5 +65,16 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
 });
+
+InputCheckBox.defaultProps = {
+  data: [],
+  selectedValues: [],
+  onChange: () => {},
+};
+InputCheckBox.propTypes = {
+  data: PropTypes.array,
+  selectedValues: PropTypes.array,
+  onChange: PropTypes.func,
+};
 
 export default InputCheckBox;

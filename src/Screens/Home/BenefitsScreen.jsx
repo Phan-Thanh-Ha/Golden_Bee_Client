@@ -1,74 +1,27 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
-import { colors } from '../../styles/Colors';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {colors} from '../../styles/Colors';
 import Box from '../../components/Box';
-import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
-import { useDispatch, useSelector } from 'react-redux';
-import { mainAction } from '../../Redux/Action';
+import MainStyles, {SCREEN_HEIGHT} from '../../styles/MainStyle';
+import {useSelector} from 'react-redux';
 import RankProgress from '../../components/RankProgress';
-import { FormatMoney } from '../../utils/FormatMoney';
+import {FormatMoney} from '../../utils/FormatMoney';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import { cirtificate, gift } from '../../assets';
+import {cirtificate, gift} from '../../assets';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
-import StorageNames from '../../Constants/StorageNames';
-import { setData } from '../../utils';
 
 const BenefitsScreen = () => {
   const userLogin = useSelector(state => state.main.userLogin);
-  const dispatch = useDispatch();
-  const [benefitValue, setBenefitValue] = useState({});
 
-  // useEffect(() => {
-  //   OVG_spCustomer_Total_Point();
-  // }, []);
-
-  // const OVG_spCustomer_Total_Point = async () => {
-  //   try {
-  //     const pr = {
-  //       OfficerId: userLogin?.OfficerID,
-  //       GroupUserId: 10060,
-  //     };
-  //     const params = {
-  //       Json: JSON.stringify(pr),
-  //       func: 'OVG_spOfficer_Rating_Star',
-  //     };
-  //     const result = await mainAction.API_spCallServer(params, dispatch);
-  //     if (result?.length) {
-  //       if (benefitValue) {
-  //         setBenefitValue(result[0]);
-  //         await setData(StorageNames.USER_PROFILE, {
-  //           ...userLogin,
-  //           CustomerRank: result[0]?.CustomerRank,
-  //         });
-  //         mainAction.userLogin(
-  //           {
-  //             ...userLogin,
-  //             CustomerRank: result[0]?.CustomerRank,
-  //           },
-  //           dispatch,
-  //         );
-  //       } else {
-  //         setBenefitValue(result[0]);
-  //         await setData(StorageNames.USER_PROFILE, {
-  //           ...userLogin,
-  //           CustomerRank: result[0]?.CustomerRank,
-  //         });
-  //         mainAction.userLogin(
-  //           {
-  //             ...userLogin,
-  //             CustomerRank: result[0]?.CustomerRank,
-  //           },
-  //           dispatch,
-  //         );
-  //       }
-  //     }
-  //   } catch (error) { }
-  // };
   return (
     <LayoutGradientBlue>
       <ScrollView>
-        <LogoBeeBox color={colors.MAIN_BLUE_CLIENT} sizeImage={70} sizeText={20} />
-        <View style={{ padding: 10 }}>
+        <LogoBeeBox
+          color={colors.MAIN_BLUE_CLIENT}
+          sizeImage={70}
+          sizeText={20}
+        />
+        <View style={{padding: 10}}>
           <View
             style={{
               backgroundColor: colors.WHITE,
@@ -87,7 +40,10 @@ const BenefitsScreen = () => {
             <View style={MainStyles.flexRowFlexStart}>
               <View style={MainStyles.flexRowFlexStart}>
                 <Text style={[styles.text1]}>Cấp độ: </Text>
-                <Text style={[styles.text2]}> {userLogin?.CustomerRank || "Cộng tác viên thử việc"}</Text>
+                <Text style={[styles.text2]}>
+                  {' '}
+                  {userLogin?.CustomerRank || 'Cộng tác viên thử việc'}
+                </Text>
               </View>
             </View>
           </View>

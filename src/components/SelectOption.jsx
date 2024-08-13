@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Select, SelectItem, IndexPath, Text } from '@ui-kitten/components';
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
+import {Select, SelectItem, IndexPath} from '@ui-kitten/components';
+import {PropTypes} from 'prop-types';
 
-const SelectOption = ({ selectedValue, onValueChange, size }) => {
+const SelectOption = ({selectedValue, onValueChange, size}) => {
   const data = ['60 phút', '30 phút', '10 phút'];
 
   // Chuyển đổi giá trị selectedValue thành IndexPath
   const getSelectedIndex = () => {
     const index = data.findIndex(
-      (label) => label.split(' ')[0] === selectedValue
+      label => label.split(' ')[0] === selectedValue,
     );
     return new IndexPath(index);
   };
 
-  const handleSelect = (index) => {
+  const handleSelect = index => {
     const selectedLabel = data[index.row];
     const value = selectedLabel.split(' ')[0]; // Extract the numeric part
     onValueChange(value);
@@ -32,8 +33,7 @@ const SelectOption = ({ selectedValue, onValueChange, size }) => {
         selectedIndex={getSelectedIndex()}
         onSelect={handleSelect}
         value={data[getSelectedIndex().row]}
-        style={selectStyles}
-      >
+        style={selectStyles}>
         {data.map((label, index) => (
           <SelectItem key={index} title={label} />
         ))}
@@ -44,7 +44,7 @@ const SelectOption = ({ selectedValue, onValueChange, size }) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 4
+    margin: 4,
   },
   label: {
     fontSize: 16,
@@ -59,5 +59,16 @@ const styles = StyleSheet.create({
     width: 200,
   },
 });
+
+SelectOption.defaultProps = {
+  size: 'normal',
+  onValueChange: () => {},
+  selectedValue: '',
+};
+SelectOption.propTypes = {
+  selectedValue: PropTypes.string.isRequired,
+  onValueChange: PropTypes.func.isRequired,
+  size: PropTypes.oneOf(['small', 'normal', 'large']),
+};
 
 export default SelectOption;

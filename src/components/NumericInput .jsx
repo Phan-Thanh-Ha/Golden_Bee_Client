@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
-import { colors } from '../styles/Colors';
-import { SCREEN_WIDTH } from '../styles/MainStyle';
+import React, {useState} from 'react';
+import {View, TextInput, StyleSheet} from 'react-native';
+import {colors} from '../styles/Colors';
+import {SCREEN_WIDTH} from '../styles/MainStyle';
+import {PropTypes} from 'prop-types';
 
-const NumericInput = ({ value, onChange }) => {
+const NumericInput = ({value, onChange}) => {
   // Hàm định dạng số thành tiền tệ
-  const formatCurrency = (num) => {
+  const formatCurrency = num => {
     if (!num) return '0';
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
   // Hàm chuyển đổi chuỗi tiền tệ về số nguyên
-  const parseCurrency = (text) => {
+  const parseCurrency = text => {
     const numericValue = text.replace(/,/g, '');
     return isNaN(numericValue) ? 0 : parseInt(numericValue, 10);
   };
@@ -20,7 +21,7 @@ const NumericInput = ({ value, onChange }) => {
   const [displayValue, setDisplayValue] = useState(formatCurrency(value));
 
   // Hàm xử lý thay đổi giá trị nhập vào
-  const handleChangeText = (text) => {
+  const handleChangeText = text => {
     const numericValue = parseCurrency(text);
     const formattedValue = numericValue >= 0 ? numericValue : 0;
     setDisplayValue(formatCurrency(formattedValue));
@@ -54,5 +55,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
+
+NumericInput.defaultProps = {
+  value: 0,
+  onChange: () => {},
+};
+NumericInput.propTypes = {
+  value: PropTypes.number,
+  onChange: PropTypes.func,
+};
 
 export default NumericInput;

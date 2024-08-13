@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View, Image, ScrollView, Linking, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { ScreenNames } from '../../Constants';
+import React, {useEffect, useState} from 'react';
+import {Text, View, Image, ScrollView, Linking, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {ScreenNames} from '../../Constants';
 import Button from '../../components/buttons/Button';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
-import MainStyles, { SCREEN_HEIGHT } from '../../styles/MainStyle';
-import { coin_icon } from '../../assets';
-import { colors } from '../../styles/Colors';
+import MainStyles, {SCREEN_HEIGHT} from '../../styles/MainStyle';
+import {coin_icon} from '../../assets';
+import {colors} from '../../styles/Colors';
 import Rating from '../../components/Rating';
 import Box from '../../components/Box';
-import { FormatMoney } from '../../utils/FormatMoney';
+import {FormatMoney} from '../../utils/FormatMoney';
 import StorageNames from '../../Constants/StorageNames';
-import { useDispatch, useSelector } from 'react-redux';
-import { mainAction } from '../../Redux/Action';
-import { GROUP_USER_ID, removeData, setData } from '../../utils';
+import {useDispatch, useSelector} from 'react-redux';
+import {mainAction} from '../../Redux/Action';
+import {AlertToaster, GROUP_USER_ID, removeData, setData} from '../../utils';
 import BtnToggle from '../../components/BtnToggle';
 import ModalConfirm from '../../components/modal/ModalConfirm';
-import { APIImage } from '../../Config/Api';
+import {APIImage} from '../../Config/Api';
 import Geolocation from '@react-native-community/geolocation';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
 import BackButton from '../../components/BackButton';
-import { Avatar, Card, Icon } from '@ui-kitten/components';
+import {Avatar, Icon} from '@ui-kitten/components';
 const AccountScreen = () => {
   const navi = useNavigation();
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const AccountScreen = () => {
         AlertToaster('error', result?.ReturnMess);
         setLoading(false);
       }
-    } catch (error) {
+    } catch {
       setLoading(false);
     }
   };
@@ -68,14 +68,18 @@ const AccountScreen = () => {
       await removeData(StorageNames.USER_PROFILE);
       mainAction.userLogin(null, dispatch);
       navi.navigate(ScreenNames.LOGIN);
-    } catch (error) { }
+    } catch {
+      //
+    }
   };
   const handleClearAccount = async () => {
     try {
       await removeData(StorageNames.USER_PROFILE);
       mainAction.userLogin(null, dispatch);
       navi.navigate(ScreenNames.LOGIN);
-    } catch (error) { }
+    } catch {
+      //
+    }
   };
   useEffect(() => {
     OVG_spOfficer_Infor();
@@ -87,7 +91,7 @@ const AccountScreen = () => {
       await OVG_spOfficer_Infor();
       await CPN_spOfficer_Update_LocationTime();
       setLoadingReset(false);
-    } catch (error) {
+    } catch {
       setLoadingReset(false);
     }
     setLoadingReset(false);
@@ -116,12 +120,11 @@ const AccountScreen = () => {
             mainAction.API_spCallServer(paramss, dispatch);
           }
         },
-        error => {
-          setErrorGetLocation(true);
-        },
-        { enableHighAccuracy: false, timeout: 20000 },
+
+        {enableHighAccuracy: false, timeout: 20000},
       );
-    } catch (e) {
+    } catch {
+      //
     }
   };
 
@@ -134,7 +137,7 @@ const AccountScreen = () => {
       const params = {
         Json: JSON.stringify(pr),
         func: 'OVG_spOfficer_Infor',
-      }
+      };
       const result = await mainAction.API_spCallServer(params, dispatch);
       const userChange = {
         CreateTime: userLogin?.CreateTime,
@@ -145,35 +148,55 @@ const AccountScreen = () => {
         FilesImage: userLogin?.FilesImage,
         OfficerID: userLogin?.OfficerID,
         OfficerName: userLogin?.OfficerName,
-        OfficerStatus: result?.StateOnline?.length > 0 ? result?.StateOnline[0]?.OfficerStatus : userLogin?.OfficerStatus,
+        OfficerStatus:
+          result?.StateOnline?.length > 0
+            ? result?.StateOnline[0]?.OfficerStatus
+            : userLogin?.OfficerStatus,
         Password: userLogin?.Password,
         Phone: userLogin?.Phone,
-        State: result?.StateOnline?.length > 0 ? result?.StateOnline[0]?.State : userLogin?.State,
-        StateOnline: result?.StateOnline?.length > 0 ? result?.StateOnline[0]?.StateOnline : userLogin?.StateOnline,
-        Surplus: result?.TotalPoint?.length > 0 ? result?.TotalPoint[0]?.TotalPoint : userLogin?.Surplus,
-        TotalBookingAll: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.TotalBookingAll : userLogin?.TotalBookingAll,
-        TotalMoneyAll: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.TotalMoneyAll : userLogin?.TotalMoneyAll,
-        TotalPoint: result?.Officer_Booking_Report?.length > 0 ? result?.Officer_Booking_Report[0]?.TotalPointAll : userLogin?.TotalPoint,
-        CustomerRank: result?.Officer_Ponit_Rank?.CustomerRank || userLogin?.CustomerRank,
-      }
+        State:
+          result?.StateOnline?.length > 0
+            ? result?.StateOnline[0]?.State
+            : userLogin?.State,
+        StateOnline:
+          result?.StateOnline?.length > 0
+            ? result?.StateOnline[0]?.StateOnline
+            : userLogin?.StateOnline,
+        Surplus:
+          result?.TotalPoint?.length > 0
+            ? result?.TotalPoint[0]?.TotalPoint
+            : userLogin?.Surplus,
+        TotalBookingAll:
+          result?.Officer_Booking_Report?.length > 0
+            ? result?.Officer_Booking_Report[0]?.TotalBookingAll
+            : userLogin?.TotalBookingAll,
+        TotalMoneyAll:
+          result?.Officer_Booking_Report?.length > 0
+            ? result?.Officer_Booking_Report[0]?.TotalMoneyAll
+            : userLogin?.TotalMoneyAll,
+        TotalPoint:
+          result?.Officer_Booking_Report?.length > 0
+            ? result?.Officer_Booking_Report[0]?.TotalPointAll
+            : userLogin?.TotalPoint,
+        CustomerRank:
+          result?.Officer_Ponit_Rank?.CustomerRank || userLogin?.CustomerRank,
+      };
       await setData(StorageNames.USER_PROFILE, userChange);
       mainAction.userLogin(userChange, dispatch);
-    } catch (error) { }
+    } catch {
+      //
+    }
   };
 
   return (
     <LayoutGradientBlue>
-      {
-        userLogin?.OfficerID === 7347 && (
-          <BackButton />
-        )
-      }
+      {userLogin?.OfficerID === 7347 && <BackButton />}
       <ScrollView>
         <Text style={MainStyles.screenTitle}>Tài khoản</Text>
         <View style={MainStyles.contentContainer}>
           <Text style={MainStyles.labelTitle}>Thông tin</Text>
           <Box height={SCREEN_HEIGHT * 0.02} />
-          <View style={[{ flex: 1 }]}>
+          <View style={[{flex: 1}]}>
             <View style={[MainStyles.flexRowCenter]}>
               <Avatar
                 source={{
@@ -191,7 +214,7 @@ const AccountScreen = () => {
                     name="person-outline"
                   />
                   <Text category="s1" style={styles.textT}>
-                    Mã nhân viên:  {userLogin?.OfficerID}
+                    Mã nhân viên: {userLogin?.OfficerID}
                   </Text>
                 </View>
                 <View style={styles.infoRow}>
@@ -205,7 +228,11 @@ const AccountScreen = () => {
                   </Text>
                 </View>
                 <View style={styles.infoRow}>
-                  <Icon style={styles.icon} fill="#3366FF" name="phone-outline" />
+                  <Icon
+                    style={styles.icon}
+                    fill="#3366FF"
+                    name="phone-outline"
+                  />
                   <Text category="s1" style={styles.textT}>
                     SĐT: {userLogin?.Phone}
                   </Text>
@@ -222,8 +249,8 @@ const AccountScreen = () => {
               },
             ]}>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={{ color: colors.WHITE, fontSize: 17, marginRight: 5 }}>
-                {userLogin?.CustomerRank || "Cộng tác viên thử việc"}
+              <Text style={{color: colors.WHITE, fontSize: 17, marginRight: 5}}>
+                {userLogin?.CustomerRank || 'Cộng tác viên thử việc'}
               </Text>
             </View>
             <View style={MainStyles.flexRowCenter}>
@@ -243,7 +270,7 @@ const AccountScreen = () => {
               Tài khoản chính
             </Text>
             <View style={MainStyles.flexRowCenter}>
-              <Image source={coin_icon} style={{ width: 27, height: 27 }} />
+              <Image source={coin_icon} style={{width: 27, height: 27}} />
               <Text
                 style={{
                   color: colors.MAIN_COLOR_CLIENT,
@@ -260,7 +287,7 @@ const AccountScreen = () => {
           <View style={MainStyles.flexRowSpaceBetween}>
             <Text style={MainStyles.labelTitle}>Trạng thái nhận đơn </Text>
             <View style={MainStyles.flexRow}>
-              <Text style={[MainStyles.labelTitle, { marginRight: 10 }]}>
+              <Text style={[MainStyles.labelTitle, {marginRight: 10}]}>
                 {userLogin?.StateOnline ? 'Bật' : 'Tắt'}
               </Text>
               <BtnToggle
@@ -296,7 +323,7 @@ const AccountScreen = () => {
             <Text
               style={[
                 MainStyles.labelTitle,
-                { marginRight: 10, color: colors.MAIN_COLOR_CLIENT },
+                {marginRight: 10, color: colors.MAIN_COLOR_CLIENT},
               ]}>
               {FormatMoney(userLogin?.TotalMoneyAll || 0) || 0} VNĐ
             </Text>
@@ -313,25 +340,23 @@ const AccountScreen = () => {
               ]}>
               Công việc tuần này:
             </Text>
-            {
-              userLogin?.TotalBookingAll === 0 || !userLogin?.TotalBookingAll ? (
-                <Text
-                  style={[
-                    MainStyles.labelTitle,
-                    { marginRight: 10, color: colors.MAIN_BLUE_CLIENT },
-                  ]}>
-                  Chưa có dịch vụ hoàn thành
-                </Text>
-              ) : (
-                <Text
-                  style={[
-                    MainStyles.labelTitle,
-                    { marginRight: 10, color: colors.MAIN_BLUE_CLIENT },
-                  ]}>
-                  {userLogin?.TotalBookingAll} Dịch vụ đã hoàn thành
-                </Text>
-              )
-            }
+            {userLogin?.TotalBookingAll === 0 || !userLogin?.TotalBookingAll ? (
+              <Text
+                style={[
+                  MainStyles.labelTitle,
+                  {marginRight: 10, color: colors.MAIN_BLUE_CLIENT},
+                ]}>
+                Chưa có dịch vụ hoàn thành
+              </Text>
+            ) : (
+              <Text
+                style={[
+                  MainStyles.labelTitle,
+                  {marginRight: 10, color: colors.MAIN_BLUE_CLIENT},
+                ]}>
+                {userLogin?.TotalBookingAll} Dịch vụ đã hoàn thành
+              </Text>
+            )}
           </View>
           <Box height={SCREEN_HEIGHT * 0.01} />
           <Text style={[MainStyles.labelTitle]}>Hỗ trợ</Text>
@@ -348,7 +373,7 @@ const AccountScreen = () => {
               ]}>
               Thứ 2 đến thứ 7
             </Text>
-            <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>
+            <Text style={[{marginRight: 10, color: colors.MAIN_BLUE_CLIENT}]}>
               Chủ nhật
             </Text>
           </View>
@@ -365,7 +390,7 @@ const AccountScreen = () => {
               ]}>
               08:00 - 12:00
             </Text>
-            <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>
+            <Text style={[{marginRight: 10, color: colors.MAIN_BLUE_CLIENT}]}>
               09:00 - 12:00
             </Text>
           </View>
@@ -382,7 +407,7 @@ const AccountScreen = () => {
               ]}>
               08:00 - 12:00
             </Text>
-            <Text style={[{ marginRight: 10, color: colors.MAIN_BLUE_CLIENT }]}>
+            <Text style={[{marginRight: 10, color: colors.MAIN_BLUE_CLIENT}]}>
               09:00 - 12:00
             </Text>
           </View>
@@ -400,7 +425,8 @@ const AccountScreen = () => {
                 color: colors.MAIN_BLUE_CLIENT,
                 marginVertical: 10,
               }}>
-              Liên hệ tổng đài để được hỗ trợ các thắc mắc liên quan trong quá trình hoạt động và sử dụng ứng dụng.
+              Liên hệ tổng đài để được hỗ trợ các thắc mắc liên quan trong quá
+              trình hoạt động và sử dụng ứng dụng.
             </Text>
           </View>
           <Button
@@ -426,7 +452,8 @@ const AccountScreen = () => {
                 color: colors.MAIN_BLUE_CLIENT,
                 marginVertical: 10,
               }}>
-              Trạng thái hoạt động và các dữ liệu về tài khoản sẽ được làm mới và hỗ trợ khắc phục sự cố trong trường hợp cần thiết !
+              Trạng thái hoạt động và các dữ liệu về tài khoản sẽ được làm mới
+              và hỗ trợ khắc phục sự cố trong trường hợp cần thiết !
             </Text>
           </View>
           <Button
@@ -440,7 +467,7 @@ const AccountScreen = () => {
           </Button>
           <Box height={SCREEN_HEIGHT * 0.01} />
         </View>
-        <View style={{ marginHorizontal: 10 }}>
+        <View style={{marginHorizontal: 10}}>
           <Button
             onPress={handleLogout}
             textColor={colors.WHITE}
@@ -449,19 +476,17 @@ const AccountScreen = () => {
             Đăng xuất
           </Button>
         </View>
-        {
-          userLogin?.Phone === "0943214791" && (
-            <View style={{ margin: 10 }}>
-              <Button
-                onPress={() => setIsModalVisible(true)}
-                textColor={colors.WHITE}
-                bgColor={'#F44336'}
-                paddingVertical={5}>
-                Xóa tài khoản
-              </Button>
-            </View>
-          )
-        }
+        {userLogin?.Phone === '0943214791' && (
+          <View style={{margin: 10}}>
+            <Button
+              onPress={() => setIsModalVisible(true)}
+              textColor={colors.WHITE}
+              bgColor={'#F44336'}
+              paddingVertical={5}>
+              Xóa tài khoản
+            </Button>
+          </View>
+        )}
         <Box height={SCREEN_HEIGHT * 0.2} />
       </ScrollView>
       <ModalConfirm
@@ -490,20 +515,20 @@ const styles = StyleSheet.create({
   card: {
     margin: 16,
     borderRadius: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 16,
   },
   title: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 18,
   },
   editIcon: {
@@ -511,17 +536,16 @@ const styles = StyleSheet.create({
     height: 24,
   },
   content: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   avatar: {
     marginRight: 16,
   },
-  info: {
-  },
+  info: {},
   infoRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
   },
   icon: {

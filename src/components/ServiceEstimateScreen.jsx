@@ -1,28 +1,26 @@
-import React, { useRef, useState } from "react";
-import { Text, View, StyleSheet, ScrollView, Image } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import { KeyboardAwareScrollView } from "@codler/react-native-keyboard-aware-scroll-view";
-import { useRoute } from "@react-navigation/native";
-import { colors } from "../styles/Colors";
-import MainStyles, { SCREEN_HEIGHT } from "../styles/MainStyle";
-import { RoundUpNumber } from "../utils/RoundUpNumber";
-import { priceClearning } from "../utils/PriceService";
-import { FormatMoney } from "../utils/FormatMoney";
-import FormService from "./FormService";
-import Box from "./Box";
-import { coin_icon } from "../assets";
-import LayoutAbout from "./layouts/LayoutAbout";
-import BackButton from "./BackButton";
+import React, {useRef, useState} from 'react';
+import {Text, View, StyleSheet, ScrollView, Image} from 'react-native';
+import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
+import {useRoute} from '@react-navigation/native';
+import {colors} from '../styles/Colors';
+import MainStyles, {SCREEN_HEIGHT} from '../styles/MainStyle';
+import {RoundUpNumber} from '../utils/RoundUpNumber';
+import {priceClearning} from '../utils/PriceService';
+import {FormatMoney} from '../utils/FormatMoney';
+import FormService from './FormService';
+import Box from './Box';
+import {coin_icon} from '../assets';
+import BackButton from './BackButton';
 
 const ServiceEstimateScreen = () => {
   const route = useRoute();
-  const { service } = route.params || {};
+  const {service} = route.params || {};
   const price = service.ServicePrice || 11;
   const workingTime = service.ServiceTime || 11;
   const [time, setTime] = useState(workingTime);
   const formikSubmitRef = useRef(null);
   const [totalPrice, setTotalPrice] = useState(price);
-  const handleFormChange = (values) => {
+  const handleFormChange = values => {
     values.people ? setTime(workingTime / values.people) : setTime(workingTime);
     setTotalPrice(priceClearning(values, price, time));
   };
@@ -46,45 +44,42 @@ const ServiceEstimateScreen = () => {
 
       <View
         style={{
-          position: "absolute",
+          position: 'absolute',
           zIndex: 10,
           elevation: 10,
           bottom: 0,
           backgroundColor: colors.PRIMARY_GREEN,
-          width: "95%",
+          width: '95%',
           margin: 10,
           padding: 10,
           borderRadius: 7,
-        }}
-      >
+        }}>
         <View
           style={{
-            width: "98%",
-            alignSelf: "center",
+            width: '98%',
+            alignSelf: 'center',
             marginTop: 10,
             marginBottom: 10,
-          }}
-        >
+          }}>
           <View
             style={[
               MainStyles.flexRowCenter,
-              { backgroundColor: "transparent" },
-            ]}
-          >
+              {backgroundColor: 'transparent'},
+            ]}>
             <Image
               source={coin_icon}
               style={{
                 width: 28,
                 height: 28,
-                resizeMode: "contain",
+                resizeMode: 'contain',
                 marginRight: 10,
               }}
             />
             <Text style={styles.btnTitle}>
               {FormatMoney(totalPrice) +
-                " VNĐ / " +
+                ' VNĐ / ' +
                 RoundUpNumber(time, 0) +
-                " giờ"}
+                ' giờ'}
             </Text>
           </View>
         </View>
@@ -101,7 +96,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     marginBottom: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   btnTitle: {
     fontSize: 18,

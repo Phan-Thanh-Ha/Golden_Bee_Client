@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import ArrowLeft from "./svg/ArrowLeft";
-import { colors } from "../styles/Colors";
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import ArrowLeft from './svg/ArrowLeft';
+import {colors} from '../styles/Colors';
+import {PropTypes} from 'prop-types';
 
-const Header = ({ title, showBackButton = true, color = colors.MAIN_BLUE_CLIENT }) => {
+const Header = ({
+  title,
+  showBackButton = true,
+  color = colors.MAIN_BLUE_CLIENT,
+}) => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {
@@ -37,5 +42,16 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
 });
+
+Header.defaultProps = {
+  title: 'Title',
+  showBackButton: true,
+  color: colors.MAIN_BLUE_CLIENT,
+};
+Header.propTypes = {
+  title: PropTypes.string,
+  showBackButton: PropTypes.bool,
+  color: PropTypes.string,
+};
 
 export default Header;

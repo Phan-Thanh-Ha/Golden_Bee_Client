@@ -1,16 +1,20 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Platform, Dimensions } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { themeColors } from "../styles/Colors";
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  Dimensions,
+} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {themeColors} from '../styles/Colors';
+import {PropTypes} from 'prop-types';
 
-const FilterComponent = ({ applyFilter }) => {
+const FilterComponent = ({applyFilter}) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [currentFilter, setCurrentFilter] = useState('week');
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
 
   const onDateChange = (event, date) => {
     if (event.type === 'dismissed') {
@@ -24,7 +28,7 @@ const FilterComponent = ({ applyFilter }) => {
     applyFilter('date', currentDate);
   };
 
-  const applyCurrentFilter = (filterType) => {
+  const applyCurrentFilter = filterType => {
     setCurrentFilter(filterType);
     applyFilter(filterType);
   };
@@ -33,22 +37,24 @@ const FilterComponent = ({ applyFilter }) => {
     <View style={styles.filterContainer}>
       <TouchableOpacity
         onPress={() => applyCurrentFilter('week')}
-        style={[styles.filterButton, currentFilter === 'week' && styles.activeFilterButton]}
-      >
-        <Text style={currentFilter === 'week' && styles.activeFilterText}>Trong tuần</Text>
+        style={[
+          styles.filterButton,
+          currentFilter === 'week' && styles.activeFilterButton,
+        ]}>
+        <Text style={currentFilter === 'week' && styles.activeFilterText}>
+          Trong tuần
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => applyCurrentFilter('month')}
-        style={[styles.filterButton, currentFilter === 'month' && styles.activeFilterButton]}
-      >
-        <Text style={currentFilter === 'month' && styles.activeFilterText}>Trong tháng</Text>
+        style={[
+          styles.filterButton,
+          currentFilter === 'month' && styles.activeFilterButton,
+        ]}>
+        <Text style={currentFilter === 'month' && styles.activeFilterText}>
+          Trong tháng
+        </Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity
-        onPress={showDatePicker}
-        style={[styles.filterButton, currentFilter === 'date' && styles.activeFilterButton]}
-      >
-        <Text style={currentFilter === 'date' && styles.activeFilterText}>Chọn ngày</Text>
-      </TouchableOpacity> */}
       {isDatePickerVisible && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -87,7 +93,14 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.8,
     height: Dimensions.get('window').height * 0.3,
     alignSelf: 'center',
-  }
+  },
 });
+
+FilterComponent.defaultProps = {
+  applyFilter: () => {},
+};
+FilterComponent.propTypes = {
+  applyFilter: PropTypes.func,
+};
 
 export default FilterComponent;

@@ -1,25 +1,25 @@
-import { useNavigation } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
-import { mainAction } from "../Redux/Action";
-import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import { colors, themeColors } from "../styles/Colors";
-import UserHeader from "../components/UserHeader";
-import StatusBarCustom from "../components/StatusBarCustom";
-import LayoutBottom from "../components/layouts/LayoutBottom";
-import BtnDouble from "../components/BtnDouble";
-import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from "../styles/MainStyle";
-import { ScreenNames } from "../Constants";
-import Box from "../components/Box";
-import { CarouselItem } from "../components/ImageSliderBox";
-import { MenuScroll } from "../components/MenuScroll";
-import { MenuComponent } from "../components/MenuComponent ";
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {mainAction} from '../Redux/Action';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import {colors, themeColors} from '../styles/Colors';
+import UserHeader from '../components/UserHeader';
+import StatusBarCustom from '../components/StatusBarCustom';
+import LayoutBottom from '../components/layouts/LayoutBottom';
+import BtnDouble from '../components/BtnDouble';
+import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../styles/MainStyle';
+import {ScreenNames} from '../Constants';
+import Box from '../components/Box';
+import {CarouselItem} from '../components/ImageSliderBox';
+import {MenuScroll} from '../components/MenuScroll';
+import {MenuComponent} from '../components/MenuComponent ';
 
 const EstimatePriceScreen = () => {
   const navi = useNavigation();
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.main.userLogin);
+  const userLogin = useSelector(state => state.main.userLogin);
   const [dataCarousel, setDataCarousel] = useState([]);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const EstimatePriceScreen = () => {
       };
       const params = {
         Json: JSON.stringify(pr),
-        func: "Shop_spWeb_Slides_List",
+        func: 'Shop_spWeb_Slides_List',
       };
       const result = await mainAction.API_spCallServer(params, dispatch);
       if (result.length > 0) {
@@ -50,7 +50,7 @@ const EstimatePriceScreen = () => {
       <StatusBarCustom />
       <LinearGradient
         colors={[colors.PRIMARY_LIGHT, colors.WHITE]}
-        style={{ position: "absolute", width: "100%", height: "100%" }}
+        style={{position: 'absolute', width: '100%', height: '100%'}}
       />
       <UserHeader />
       <ScrollView>
@@ -58,38 +58,48 @@ const EstimatePriceScreen = () => {
           style={{
             borderRadius: 10,
             padding: 10,
-          }}
-        >
+          }}>
           <CarouselItem dataCarousel={dataCarousel} />
         </View>
-        <Text style={{
-          color: themeColors.primary,
-          fontSize: 20,
-          fontWeight: 'bold',
-          textAlign: 'center',
-        }}>Tra cứu giá dịch vụ</Text>
+        <Text
+          style={{
+            color: themeColors.primary,
+            fontSize: 20,
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}>
+          Tra cứu giá dịch vụ
+        </Text>
         <MenuScroll />
         <Box height={SCREEN_HEIGHT * 0.1} />
       </ScrollView>
-      {
-        userLogin ? (
-          <MenuComponent />
-        ) : (
-          <LayoutBottom>
-            <View style={{ backgroundColor: colors.WHITE }}>
-              <BtnDouble
-                title1={"Đăng nhập"}
-                title2={"Đăng ký"}
-                onConfirm1={() => navi.navigate(ScreenNames.LOGIN)}
-                onConfirm2={() => navi.navigate(ScreenNames.REGISTER)}
-              />
-              <View style={MainStyles.flexRowCenter}>
-                <Text style={[styles.title, { marginBottom: 10, width: SCREEN_WIDTH * 0.7, textAlign: 'center' }]}>Bạn cần đăng nhập để sử dụng dịch vụ của Ong Vàng</Text>
-              </View>
+      {userLogin ? (
+        <MenuComponent />
+      ) : (
+        <LayoutBottom>
+          <View style={{backgroundColor: colors.WHITE}}>
+            <BtnDouble
+              title1={'Đăng nhập'}
+              title2={'Đăng ký'}
+              onConfirm1={() => navi.navigate(ScreenNames.LOGIN)}
+              onConfirm2={() => navi.navigate(ScreenNames.REGISTER)}
+            />
+            <View style={MainStyles.flexRowCenter}>
+              <Text
+                style={[
+                  styles.title,
+                  {
+                    marginBottom: 10,
+                    width: SCREEN_WIDTH * 0.7,
+                    textAlign: 'center',
+                  },
+                ]}>
+                Bạn cần đăng nhập để sử dụng dịch vụ của Ong Vàng
+              </Text>
             </View>
-          </LayoutBottom>
-        )
-      }
+          </View>
+        </LayoutBottom>
+      )}
     </View>
   );
 };
@@ -105,6 +115,6 @@ const styles = StyleSheet.create({
   benefit: {
     margin: 10,
     padding: 10,
-  }
+  },
 });
 export default EstimatePriceScreen;

@@ -1,10 +1,10 @@
 import {Image, Pressable, View} from 'react-native';
-import {image_banner_4, zalo_icon} from '../assets';
+import {zalo_icon} from '../assets';
 import MainStyles from '../styles/MainStyle';
 import {Text} from 'react-native';
-import {colors} from '../styles/Colors';
+import React from 'react';
 
-export default CardZaloChat = () => {
+const CardZaloChat = () => {
   const onpenModal = () => {};
   return (
     <View>
@@ -26,3 +26,7 @@ export default CardZaloChat = () => {
     </View>
   );
 };
+
+CardZaloChat.displayName = 'CardZaloChat';
+
+export default CardZaloChat;

@@ -1,9 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import { colors } from '../styles/Colors';
+import {View} from 'react-native';
+import Svg, {Path} from 'react-native-svg';
+import {colors} from '../styles/Colors';
+import {PropTypes} from 'prop-types';
 
-export default StepsBar = ({ rating = 5, fontSize = [20, 20], fillColor = colors.MAIN_BLUE_CLIENT, spa }) => {
+const StepsBar = ({
+  rating = 5,
+  fontSize = [20, 20],
+  fillColor = colors.MAIN_BLUE_CLIENT,
+}) => {
   const renderStars = () => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -20,28 +25,38 @@ export default StepsBar = ({ rating = 5, fontSize = [20, 20], fillColor = colors
           strokeLinecap="round"
           strokeLinejoin="round"
           className="lucide lucide-badge"
-          style={{ marginLeft: 4 }}
-        >
+          style={{marginLeft: 4}}>
           <Path d="M3.85 8.62a4 4 0 014.78-4.77 4 4 0 016.74 0 4 4 0 014.78 4.78 4 4 0 010 6.74 4 4 0 01-4.77 4.78 4 4 0 01-6.75 0 4 4 0 01-4.78-4.77 4 4 0 010-6.76z" />
-        </Svg>
+        </Svg>,
       );
     }
     return stars;
   };
 
   return (
-    <View style={{
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-around',
-      marginBottom: 4,
-      padding: 5,
-      borderColor: colors.GRAY,
-      borderWidth: 1,
-      borderRadius: 10
-    }}>
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        marginBottom: 4,
+        padding: 5,
+        borderColor: colors.GRAY,
+        borderWidth: 1,
+        borderRadius: 10,
+      }}>
       {renderStars()}
     </View>
   );
 };
-
+StepsBar.defaultProps = {
+  rating: 5,
+  fontSize: [20, 20],
+  fillColor: colors.MAIN_BLUE_CLIENT,
+};
+StepsBar.propTypes = {
+  rating: PropTypes.number,
+  fontSize: PropTypes.array,
+  fillColor: PropTypes.string,
+};
+export default StepsBar;

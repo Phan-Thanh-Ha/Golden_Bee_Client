@@ -1,11 +1,16 @@
-import React, { useState, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, Button } from "react-native";
-import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-// import * as ImagePicker from 'react-native-image-picker';
-// import axios from "axios";
+import React, {useState, useRef} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Button,
+} from 'react-native';
+import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 const ImageUploader = () => {
-  const [imageUri, setImageUri] = useState(null);
+  const [imageUri] = useState(null);
   const [previewUri, setPreviewUri] = useState(null);
   const bottomSheetModalRef = useRef(null);
   const previewModalRef = useRef(null);
@@ -18,31 +23,31 @@ const ImageUploader = () => {
     bottomSheetModalRef.current.dismiss();
   };
 
-  const openPreviewModal = (uri) => {
-    setPreviewUri(uri);
-    previewModalRef.current.present();
-  };
+  // const openPreviewModal = uri => {
+  //   setPreviewUri(uri);
+  //   previewModalRef.current.present();
+  // };
 
   const closePreviewModal = () => {
     setPreviewUri(null);
     previewModalRef.current.dismiss();
   };
 
-  const handleTakePhoto = () => {
-    ImagePicker.launchCamera({}, response => {
-      if (response.assets) {
-        openPreviewModal(response.assets[0].uri);
-      }
-    });
-  };
+  // const handleTakePhoto = () => {
+  //   ImagePicker.launchCamera({}, response => {
+  //     if (response.assets) {
+  //       openPreviewModal(response.assets[0].uri);
+  //     }
+  //   });
+  // };
 
-  const handleChoosePhoto = () => {
-    ImagePicker.launchImageLibrary({}, response => {
-      if (response.assets) {
-        openPreviewModal(response.assets[0].uri);
-      }
-    });
-  };
+  // const handleChoosePhoto = () => {
+  //   ImagePicker.launchImageLibrary({}, response => {
+  //     if (response.assets) {
+  //       openPreviewModal(response.assets[0].uri);
+  //     }
+  //   });
+  // };
 
   const handleSaveImage = async () => {
     if (!previewUri) return;
@@ -51,7 +56,7 @@ const ImageUploader = () => {
     formData.append('file', {
       uri: previewUri,
       name: 'photo.jpg',
-      type: 'image/jpeg'
+      type: 'image/jpeg',
     });
   };
 
@@ -65,7 +70,7 @@ const ImageUploader = () => {
     <BottomSheetModalProvider>
       <TouchableOpacity style={styles.pressable} onPress={openBottomSheet}>
         {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.image} />
+          <Image source={{uri: imageUri}} style={styles.image} />
         ) : (
           <Text>Update Image</Text>
         )}
@@ -81,7 +86,9 @@ const ImageUploader = () => {
 
       <BottomSheetModal ref={previewModalRef} snapPoints={['50%']}>
         <View style={styles.previewContent}>
-          {previewUri && <Image source={{ uri: previewUri }} style={styles.previewImage} />}
+          {previewUri && (
+            <Image source={{uri: previewUri}} style={styles.previewImage} />
+          )}
           <Button title="Save" onPress={handleSaveImage} />
           <Button title="Cancel" onPress={handleCancel} />
         </View>
@@ -98,25 +105,25 @@ const styles = StyleSheet.create({
     width: 100,
     backgroundColor: '#f0f0f0',
     borderRadius: 50,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   image: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   sheetContent: {
     padding: 20,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   previewContent: {
     padding: 20,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   previewImage: {
     width: 200,
     height: 200,
-    marginBottom: 20
-  }
+    marginBottom: 20,
+  },
 });
 
 export default ImageUploader;

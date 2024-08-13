@@ -1,8 +1,7 @@
-import MainStyle from "../styles/MainStyle";
-import { Image, Text, View } from "react-native";
-import { logo_bee_blue } from "../assets";
-import { colors } from "../styles/Colors";
-
+import {Image, Text, View} from 'react-native';
+import {logo_bee_blue} from '../assets';
+import {colors} from '../styles/Colors';
+import React from 'react';
 const LogoBee = () => {
   return (
     <>
@@ -10,7 +9,7 @@ const LogoBee = () => {
         style={{
           flex: 1,
           alignItems: 'center',
-          marginTop: 35
+          marginTop: 35,
         }}>
         <Image
           source={logo_bee_blue}
@@ -26,13 +25,12 @@ const LogoBee = () => {
             color: colors.MAIN_BLUE_CLIENT,
             fontWeight: 'bold',
             fontSize: 28,
-          }}
-        >
+          }}>
           Ong Vàng
         </Text>
       </View>
     </>
-  )
-}
+  );
+};
 
 export default LogoBee;

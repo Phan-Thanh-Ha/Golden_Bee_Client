@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import ArrowLeft from "./svg/ArrowLeft";
-import { colors } from "../styles/Colors";
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import ArrowLeft from './svg/ArrowLeft';
+import {colors} from '../styles/Colors';
+import {PropTypes} from 'prop-types';
 
-const BackButton = ({ title, showBackButton = true, color = colors.WHITE }) => {
+const BackButton = ({title, showBackButton = true, color = colors.WHITE}) => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {
@@ -36,5 +37,15 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
 });
+BackButton.defaultProps = {
+  title: '',
+  showBackButton: true,
+  color: colors.WHITE,
+};
+BackButton.propTypes = {
+  title: PropTypes.string,
+  showBackButton: PropTypes.bool,
+  color: PropTypes.string,
+};
 
 export default BackButton;

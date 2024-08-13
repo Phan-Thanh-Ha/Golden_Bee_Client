@@ -21,7 +21,6 @@ const HomeMainScreen = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.main.userLogin);
   const [dataCarousel, setDataCarousel] = useState([]);
-  const [dataNewService, setDataNewService] = useState([]);
 
   useEffect(() => {
     Shop_spWeb_Slides_List();
@@ -48,17 +47,14 @@ const HomeMainScreen = () => {
 
   const Shop_spWeb_News_List = async () => {
     try {
-      const pr = {
-        GroupId: 10060,
-      };
-      const params = {
-        Json: JSON.stringify(pr),
-        func: 'Shop_spWeb_News_List',
-      };
-      const result = await mainAction.API_spCallServer(params, dispatch);
-      if (result.length > 0) {
-        setDataNewService(result);
-      }
+      // const pr = {
+      //   GroupId: 10060,
+      // };
+      // const params = {
+      //   Json: JSON.stringify(pr),
+      //   func: 'Shop_spWeb_News_List',
+      // };
+      // const result = await mainAction.API_spCallServer(params, dispatch);
     } catch {
       //
     }
