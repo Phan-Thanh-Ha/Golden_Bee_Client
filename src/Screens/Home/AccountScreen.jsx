@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, Image, ScrollView, Linking, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {ScreenNames} from '../../Constants';
+import {ScreenNames, USER_TEST} from '../../Constants';
 import Button from '../../components/buttons/Button';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import MainStyles, {SCREEN_HEIGHT} from '../../styles/MainStyle';
@@ -13,13 +13,18 @@ import {FormatMoney} from '../../utils/FormatMoney';
 import StorageNames from '../../Constants/StorageNames';
 import {useDispatch, useSelector} from 'react-redux';
 import {mainAction} from '../../Redux/Action';
-import {AlertToaster, GROUP_USER_ID, removeData, setData} from '../../utils';
+import {
+  AlertToaster,
+  GROUP_USER_ID,
+  removeData,
+  setData,
+  Version_Customer,
+} from '../../utils';
 import BtnToggle from '../../components/BtnToggle';
 import ModalConfirm from '../../components/modal/ModalConfirm';
 import {APIImage} from '../../Config/Api';
 import Geolocation from '@react-native-community/geolocation';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
-import BackButton from '../../components/BackButton';
 import {Avatar, Icon} from '@ui-kitten/components';
 const AccountScreen = () => {
   const navi = useNavigation();
@@ -31,6 +36,7 @@ const AccountScreen = () => {
   const [loadingReset, setLoadingReset] = useState(false);
   const [errorGetLocation, setErrorGetLocation] = useState(false);
 
+  // console.log('userLogin--------', userLogin);
   const handleChangeToggle = async () => {
     const status = !userLogin?.StateOnline;
     setLoading(true);
@@ -154,6 +160,10 @@ const AccountScreen = () => {
             : userLogin?.OfficerStatus,
         Password: userLogin?.Password,
         Phone: userLogin?.Phone,
+        PermisonSystem:
+          result?.StateOnline?.length > 0
+            ? result?.StateOnline[0]?.PermisonSystem
+            : userLogin?.PermisonSystem,
         State:
           result?.StateOnline?.length > 0
             ? result?.StateOnline[0]?.State
@@ -190,9 +200,8 @@ const AccountScreen = () => {
 
   return (
     <LayoutGradientBlue>
-      {userLogin?.OfficerID === 7347 && <BackButton />}
+      <Text style={MainStyles.screenTitle}>Tài khoản</Text>
       <ScrollView>
-        <Text style={MainStyles.screenTitle}>Tài khoản</Text>
         <View style={MainStyles.contentContainer}>
           <Text style={MainStyles.labelTitle}>Thông tin</Text>
           <Box height={SCREEN_HEIGHT * 0.02} />
@@ -240,16 +249,26 @@ const AccountScreen = () => {
               </View>
             </View>
           </View>
+          <Box height={SCREEN_HEIGHT * 0.02} />
+        </View>
+        <View style={MainStyles.contentContainer}>
+          <Text style={MainStyles.labelTitle}>Hạng nhân viên</Text>
           <View
             style={[
               {
-                backgroundColor: colors.MAIN_BLUE_CLIENT,
+                backgroundColor: 'transparent',
                 borderRadius: 10,
                 padding: 5,
               },
             ]}>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={{color: colors.WHITE, fontSize: 17, marginRight: 5}}>
+              <Text
+                style={{
+                  color: colors.MAIN_BLUE_CLIENT,
+                  fontSize: 17,
+                  marginRight: 5,
+                  fontWeight: '700',
+                }}>
                 {userLogin?.CustomerRank || 'Cộng tác viên thử việc'}
               </Text>
             </View>
@@ -257,7 +276,9 @@ const AccountScreen = () => {
               <Rating rating={5} fontSize={[17, 17]} />
             </View>
           </View>
-          <Box height={SCREEN_HEIGHT * 0.01} />
+          <Box height={SCREEN_HEIGHT * 0.02} />
+        </View>
+        <View style={MainStyles.contentContainer}>
           <Text style={MainStyles.labelTitle}>Tài chính</Text>
           <View>
             <Text
@@ -278,7 +299,7 @@ const AccountScreen = () => {
                   fontSize: 20,
                   fontWeight: '700',
                 }}>
-                {FormatMoney(userLogin?.Surplus || 0) || 0} VNĐ
+                {FormatMoney(userLogin?.Surplus || 0) || 0} VND
               </Text>
             </View>
           </View>
@@ -300,7 +321,8 @@ const AccountScreen = () => {
           <Box height={SCREEN_HEIGHT * 0.01} />
           <View style={MainStyles.flexRowSpaceBetween}>
             <Text style={MainStyles.labelTitle}>Trạng thái làm việc </Text>
-            {userLogin?.OfficerStatus === 0 ? (
+            {userLogin?.OfficerStatus === 0 &&
+            userLogin?.Phone !== USER_TEST ? (
               <Text style={MainStyles.labelTitle}>Chưa nhận đơn </Text>
             ) : (
               <Text style={MainStyles.labelTitle}>Đang làm việc </Text>
@@ -325,7 +347,7 @@ const AccountScreen = () => {
                 MainStyles.labelTitle,
                 {marginRight: 10, color: colors.MAIN_COLOR_CLIENT},
               ]}>
-              {FormatMoney(userLogin?.TotalMoneyAll || 0) || 0} VNĐ
+              {FormatMoney(userLogin?.TotalMoneyAll || 0) || 0} VND
             </Text>
           </View>
           <View style={MainStyles.flexRowFlexStart}>
@@ -440,33 +462,35 @@ const AccountScreen = () => {
           </Button>
           <Box height={SCREEN_HEIGHT * 0.01} />
         </View>
-        <View style={MainStyles.contentContainer}>
-          <Box height={SCREEN_HEIGHT * 0.01} />
-          <Text style={MainStyles.labelTitle}>Làm mới ứng dụng</Text>
-          <View style={MainStyles.flexRowSpaceBetween}>
-            <Text
-              style={{
-                marginRight: 10,
-                paddingLeft: 10,
-                fontSize: 15,
-                color: colors.MAIN_BLUE_CLIENT,
-                marginVertical: 10,
-              }}>
-              Trạng thái hoạt động và các dữ liệu về tài khoản sẽ được làm mới
-              và hỗ trợ khắc phục sự cố trong trường hợp cần thiết !
-            </Text>
+        {userLogin?.Phone !== USER_TEST && (
+          <View style={MainStyles.contentContainer}>
+            <Box height={SCREEN_HEIGHT * 0.01} />
+            <Text style={MainStyles.labelTitle}>Làm mới ứng dụng</Text>
+            <View style={MainStyles.flexRowSpaceBetween}>
+              <Text
+                style={{
+                  marginRight: 10,
+                  paddingLeft: 10,
+                  fontSize: 15,
+                  color: colors.MAIN_BLUE_CLIENT,
+                  marginVertical: 10,
+                }}>
+                Trạng thái hoạt động và các dữ liệu về tài khoản sẽ được làm mới
+                và hỗ trợ khắc phục sự cố trong trường hợp cần thiết !
+              </Text>
+            </View>
+            <Button
+              fontSize={15}
+              paddingHorizontal={10}
+              paddingVertical={7}
+              onPress={RefreshApp}
+              isLoading={loadingReset}
+              disable={loadingReset}>
+              Làm mới ứng dụng
+            </Button>
+            <Box height={SCREEN_HEIGHT * 0.01} />
           </View>
-          <Button
-            fontSize={15}
-            paddingHorizontal={10}
-            paddingVertical={7}
-            onPress={RefreshApp}
-            isLoading={loadingReset}
-            disable={loadingReset}>
-            Làm mới ứng dụng
-          </Button>
-          <Box height={SCREEN_HEIGHT * 0.01} />
-        </View>
+        )}
         <View style={{marginHorizontal: 10}}>
           <Button
             onPress={handleLogout}
@@ -476,17 +500,22 @@ const AccountScreen = () => {
             Đăng xuất
           </Button>
         </View>
-        {userLogin?.Phone === '0943214791' && (
-          <View style={{margin: 10}}>
-            <Button
-              onPress={() => setIsModalVisible(true)}
-              textColor={colors.WHITE}
-              bgColor={'#F44336'}
-              paddingVertical={5}>
-              Xóa tài khoản
-            </Button>
-          </View>
+        {userLogin?.Phone === USER_TEST && (
+          <>
+            <View style={{margin: 10}}>
+              <Button
+                onPress={() => setIsModalVisible(true)}
+                textColor={colors.WHITE}
+                bgColor={'#F44336'}
+                paddingVertical={5}>
+                Xóa tài khoản
+              </Button>
+            </View>
+          </>
         )}
+        <View style={MainStyles.flexRowCenter}>
+          <Text style={MainStyles.version}>{Version_Customer}</Text>
+        </View>
         <Box height={SCREEN_HEIGHT * 0.2} />
       </ScrollView>
       <ModalConfirm

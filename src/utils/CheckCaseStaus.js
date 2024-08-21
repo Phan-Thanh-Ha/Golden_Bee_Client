@@ -1,21 +1,21 @@
 export const checkCaseStatus = (statusOnline, surplus, numOrder) => {
   if (statusOnline === false) {
     return {
-      status: 'Bạn đang tắt trạng thái nhận việc',
+      status: "Bạn đang tắt trạng thái nhận việc",
     };
   }
   if (surplus < 200000) {
     return {
       status:
-        'Bạn cần có nhiều hơn 200.000 VNĐ trong tài khoản để bắt đầu nhận việc',
+        "Bạn cần có nhiều hơn 200.000 VND trong tài khoản để bắt đầu nhận việc",
     };
   }
   if (numOrder > 1) {
     return {
       status:
-        'Bạn đang được nhận ' +
+        "Bạn đang được nhận " +
         numOrder +
-        ' đơn dịch vụ, vui lòng liên hệ quản trị viên để giải quyết',
+        " đơn dịch vụ, vui lòng liên hệ quản trị viên để giải quyết",
     };
   }
   // if (state === 10) {
@@ -25,6 +25,6 @@ export const checkCaseStatus = (statusOnline, surplus, numOrder) => {
   //   };
   // }
   return {
-    status: 'Ong Vàng đang tìm việc làm cho bạn',
+    status: "Ong Vàng đang tìm việc làm cho bạn",
   };
 };

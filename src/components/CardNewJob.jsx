@@ -1,31 +1,32 @@
 import React from 'react';
-import {Image, Linking, Pressable, View} from 'react-native';
-import {Icon, Text} from '@ui-kitten/components';
-import {colors, themeColors} from '../styles/Colors';
-import MainStyles, {SCREEN_WIDTH} from '../styles/MainStyle';
-import {FormatMoney} from '../utils/FormatMoney';
+import { Image, Linking, Pressable, View } from 'react-native';
+import { Icon, Text } from '@ui-kitten/components';
+import { colors, themeColors } from '../styles/Colors';
+import MainStyles, { SCREEN_WIDTH } from '../styles/MainStyle';
+import { FormatMoney } from '../utils/FormatMoney';
 import Button from './buttons/Button';
-import {useNavigation} from '@react-navigation/native';
-import {ScreenNames} from '../Constants';
-import {coin_icon} from '../assets';
-import {useDispatch, useSelector} from 'react-redux';
-import {mainAction} from '../Redux/Action';
-import {OVG_UpdateStatusOrder} from '../firebaseService/HandleOrder';
-import {RoundUpNumber} from '../utils/RoundUpNumber';
-import {dateTimeFormat} from '../utils/FormatTime';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNames } from '../Constants';
+import { coin_icon } from '../assets';
+import { useDispatch, useSelector } from 'react-redux';
+import { mainAction } from '../Redux/Action';
+import { OVG_UpdateStatusOrder } from '../firebaseService/HandleOrder';
+import { RoundUpNumber } from '../utils/RoundUpNumber';
+import { dateTimeFormat } from '../utils/FormatTime';
 
-const CardNewJob = ({data}) => {
+const CardNewJob = ({ data }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.main.userLogin);
   const [isLoading, setIsLoading] = React.useState(false);
   const acceptedOrder = useSelector(state => state.main.acceptedOrder);
   const location = useSelector(state => state.main.locationTime);
+  const [loadingGo, setLoadingGo] = React.useState(false);
   const payment = () => {
     if (data?.DataService?.Payment) {
-      navigation.navigate(ScreenNames.PAYMENT, {data});
+      navigation.navigate(ScreenNames.PAYMENT, { data });
     } else {
-      navigation.navigate(ScreenNames.CASH, {data});
+      navigation.navigate(ScreenNames.CASH, { data });
     }
   };
   const OVG_spOfficer_Booking_Save = async data => {
@@ -69,8 +70,10 @@ const CardNewJob = ({data}) => {
     OVG_spOfficer_Booking_Save(data);
   };
 
-  const handleReadyGo = () => {
-    OVG_UpdateStatusOrder(data?.OrderId, 2);
+  const handleReadyGo = async () => {
+    setLoadingGo(true);
+    await OVG_UpdateStatusOrder(data?.OrderId, 2);
+    setLoadingGo(false);
   };
 
   return (
@@ -79,7 +82,7 @@ const CardNewJob = ({data}) => {
         {/* <Pressable onPress={openModal}> */}
         <View style={MainStyles.cardJob}>
           <View style={MainStyles.flexRowCenter}>
-            <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
+            <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
               Dịch vụ {data?.DataService?.ServiceName.toLowerCase()}
             </Text>
           </View>
@@ -123,7 +126,7 @@ const CardNewJob = ({data}) => {
               </View>
             </View>
           )}
-          {data?.DataService?.TotalStaff && (
+          {data?.DataService?.StaffTotal && (
             <View style={MainStyles.rowMargin}>
               <View style={MainStyles.flexRowFlexStart}>
                 <Icon
@@ -132,7 +135,7 @@ const CardNewJob = ({data}) => {
                   name="people-outline"
                 />
                 <Text style={MainStyles.textCardJob}>
-                  Số lượng nhân viên: {data?.DataService?.TotalStaff} nhân viên
+                  Số lượng nhân viên: {data?.DataService?.StaffTotal} nhân viên
                 </Text>
               </View>
             </View>
@@ -254,26 +257,26 @@ const CardNewJob = ({data}) => {
               </View>
               {data?.DataService?.Voucher?.length > 0
                 ? data?.DataService?.Voucher.map(item => (
-                    <View
-                      key={item?.VoucherId.toString()}
-                      style={MainStyles.flexRowFlexStart}>
-                      <Icon
-                        style={{
-                          marginLeft: SCREEN_WIDTH * 0.07,
-                          width: 20,
-                          height: 20,
-                        }}
-                        fill="#3366FF"
-                        name="plus-outline"
-                      />
-                      <Text style={[MainStyles.textCardJob]}>
-                        CODE: {item?.VoucherCode} - giảm{' '}
-                        {item?.TypeDiscount === 1
-                          ? item?.Discount + '%'
-                          : FormatMoney(item?.Discount) + ' VND'}
-                      </Text>
-                    </View>
-                  ))
+                  <View
+                    key={item?.VoucherId.toString()}
+                    style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={{
+                        marginLeft: SCREEN_WIDTH * 0.07,
+                        width: 20,
+                        height: 20,
+                      }}
+                      fill="#3366FF"
+                      name="plus-outline"
+                    />
+                    <Text style={[MainStyles.textCardJob]}>
+                      CODE: {item?.VoucherCode} - giảm{' '}
+                      {item?.TypeDiscount === 1
+                        ? item?.Discount + '%'
+                        : FormatMoney(item?.Discount) + ' VND'}
+                    </Text>
+                  </View>
+                ))
                 : null}
             </View>
           )}
@@ -301,7 +304,7 @@ const CardNewJob = ({data}) => {
               Tổng tiền
             </Text>
             <View style={MainStyles.flexRowCenter}>
-              <Image source={coin_icon} style={{width: 22, height: 22}} />
+              <Image source={coin_icon} style={{ width: 22, height: 22 }} />
               <Text
                 style={{
                   color: colors.MAIN_COLOR_CLIENT,
@@ -309,7 +312,7 @@ const CardNewJob = ({data}) => {
                   fontSize: 18,
                   fontWeight: '700',
                 }}>
-                {FormatMoney(data?.DataService?.PriceAfterDiscount)} VNĐ
+                {FormatMoney(data?.TotalMoney)} VND
               </Text>
             </View>
           </View>
@@ -317,29 +320,29 @@ const CardNewJob = ({data}) => {
       </Pressable>
       {acceptedOrder?.StatusOrder === 1 ? (
         <View>
-          <View style={{flexDirection: 'row'}}>
-            <View style={{flex: 1, marginHorizontal: 2}}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flex: 1, marginHorizontal: 2 }}>
               <Button
                 fontSize={14}
-                disable={isLoading}
+                disable={loadingGo}
                 paddingHorizontal={10}
                 paddingVertical={8}
-                bgColor={themeColors.confirm}
+                bgColor={themeColors.secondary}
                 onPress={handleReadyGo}
-                isLoading={isLoading}>
+                isLoading={loadingGo}>
                 <View style={MainStyles.flexRowCenter}>
                   <Icon
                     style={MainStyles.CardIcon}
                     fill="#FFFF"
                     name="navigation-2-outline"
                   />
-                  <Text style={{color: colors.WHITE, textAlign: 'center'}}>
+                  <Text style={{ color: colors.WHITE, textAlign: 'center' }}>
                     Bắt đầu đi
                   </Text>
                 </View>
               </Button>
             </View>
-            <View style={{flex: 1, marginHorizontal: 2}}>
+            <View style={{ flex: 1, marginHorizontal: 2 }}>
               <Button
                 fontSize={14}
                 disable={isLoading}
@@ -356,7 +359,7 @@ const CardNewJob = ({data}) => {
                     fill="#FFFF"
                     name="phone-outline"
                   />
-                  <Text style={{color: colors.WHITE, textAlign: 'center'}}>
+                  <Text style={{ color: colors.WHITE, textAlign: 'center' }}>
                     Liên Hệ KH
                   </Text>
                 </View>
@@ -367,8 +370,8 @@ const CardNewJob = ({data}) => {
       ) : null}
       {acceptedOrder?.StatusOrder === 2 ? (
         <View>
-          <View style={{flexDirection: 'row'}}>
-            <View style={{flex: 1, marginHorizontal: 2}}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flex: 1, marginHorizontal: 2 }}>
               <Button
                 fontSize={14}
                 disable={isLoading}
@@ -383,13 +386,13 @@ const CardNewJob = ({data}) => {
                     fill="#FFFF"
                     name="play-circle-outline"
                   />
-                  <Text style={{color: colors.WHITE, textAlign: 'center'}}>
+                  <Text style={{ color: colors.WHITE, textAlign: 'center' }}>
                     Bắt đầu làm
                   </Text>
                 </View>
               </Button>
             </View>
-            <View style={{flex: 1, marginHorizontal: 2}}>
+            <View style={{ flex: 1, marginHorizontal: 2 }}>
               <Button
                 fontSize={14}
                 disable={isLoading}
@@ -406,7 +409,7 @@ const CardNewJob = ({data}) => {
                     fill="#FFFF"
                     name="phone-outline"
                   />
-                  <Text style={{color: colors.WHITE, textAlign: 'center'}}>
+                  <Text style={{ color: colors.WHITE, textAlign: 'center' }}>
                     Liên Hệ KH
                   </Text>
                 </View>
@@ -416,8 +419,8 @@ const CardNewJob = ({data}) => {
         </View>
       ) : null}
       {acceptedOrder?.StatusOrder === 3 ? (
-        <View style={{flexDirection: 'row'}}>
-          <View style={{flex: 1}}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ flex: 1 }}>
             <Button
               paddingHorizontal={10}
               paddingVertical={8}
@@ -430,7 +433,7 @@ const CardNewJob = ({data}) => {
                   fill="#FFFF"
                   name="credit-card-outline"
                 />
-                <Text style={{color: colors.WHITE, textAlign: 'center'}}>
+                <Text style={{ color: colors.WHITE, textAlign: 'center' }}>
                   Thanh toán dịch vụ
                 </Text>
               </View>

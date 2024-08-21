@@ -17,6 +17,7 @@ import {PropTypes} from 'prop-types';
 
 const CongratulationsScreen = ({navigation, route}) => {
   const {data} = route.params || {};
+  console.log("dataaa---------------------------", data);
   const userLogin = useSelector(state => state.main.userLogin);
 
   return (
@@ -79,7 +80,7 @@ const CongratulationsScreen = ({navigation, route}) => {
                   fontSize: 18,
                   fontWeight: '700',
                 }}>
-                {FormatMoney(data?.DataService?.PriceAfterDiscount)} VNĐ
+                {FormatMoney(data?.TotalMoneyBooking)} VND
               </Text>
             </View>
             <View>
@@ -102,7 +103,7 @@ const CongratulationsScreen = ({navigation, route}) => {
                     fontSize: 18,
                     fontWeight: '700',
                   }}>
-                  {FormatMoney(data?.DataService?.PriceAfterDiscount * 0.7)} VNĐ
+                  {FormatMoney(data?.OfficerMoney)} VND
                 </Text>
               </View>
             </View>

@@ -1,15 +1,12 @@
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
-import Header from '../../components/Header';
-import {colors} from '../../styles/Colors';
 import FormActiveAccount from '../../components/forms/FormActiveAccount';
-import React, {useEffect, useState} from 'react';
-import Footer from '../../components/Footer';
-import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
-import {ScreenNames} from '../../Constants';
-import {PropTypes} from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
+import { ScreenNames } from '../../Constants';
+import { PropTypes } from 'prop-types';
 
-const ActiveAccount = ({navigation, route}) => {
+const ActiveAccount = ({ navigation, route }) => {
   const [isSubmit, setIsSubmit] = useState(false);
   useEffect(() => {
     if (isSubmit === true) {
@@ -19,11 +16,10 @@ const ActiveAccount = ({navigation, route}) => {
   }, [isSubmit]);
   return (
     <>
-      <Header showBackButton={true} color={colors.WHITE} />
       <LayoutGradientBlue>
         <KeyboardAwareScrollView
           contentContainerStyle={styles.container}
-          resetScrollToCoords={{x: 0, y: 0}}
+          resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={true}
           keyboardShouldPersistTaps="handled"
           enableAutomaticScroll={true}
@@ -36,7 +32,6 @@ const ActiveAccount = ({navigation, route}) => {
           />
         </KeyboardAwareScrollView>
       </LayoutGradientBlue>
-      <Footer />
     </>
   );
 };

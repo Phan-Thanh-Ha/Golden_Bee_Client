@@ -1,22 +1,22 @@
 import React from 'react';
-import {Image, Pressable, View} from 'react-native';
-import {Icon, Text} from '@ui-kitten/components';
-import {colors} from '../styles/Colors';
+import { Image, Pressable, View } from 'react-native';
+import { Icon, Text } from '@ui-kitten/components';
+import { colors } from '../styles/Colors';
 import MainStyles from '../styles/MainStyle';
-import {FormatMoney} from '../utils/FormatMoney';
-import {coin_icon} from '../assets';
-import {parseTimeSql} from '../utils/FormatTime';
+import { FormatMoney } from '../utils/FormatMoney';
+import { coin_icon } from '../assets';
+import { FormatDateJsonPro } from '../utils/FormatTime';
 import Rating from './Rating';
-import {RoundUpNumber} from '../utils/RoundUpNumber';
-import {PropTypes} from 'prop-types';
+import { RoundUpNumber } from '../utils/RoundUpNumber';
+import { PropTypes } from 'prop-types';
 
-const CardJobDone = ({data}) => {
+const CardJobDone = ({ data }) => {
   return (
     <View>
       <Pressable>
         <View style={MainStyles.cardJob}>
           <View style={MainStyles.flexRowCenter}>
-            <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
+            <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
               Dịch vụ {data?.ServiceName.toLowerCase()}
             </Text>
           </View>
@@ -91,7 +91,7 @@ const CardJobDone = ({data}) => {
                 name="calendar-outline"
               />
               <Text style={MainStyles.textCardJob}>
-                Ngày hoàn thành: {parseTimeSql(data?.BookingTime, 3)}
+                Ngày hoàn thành: {FormatDateJsonPro(data?.BookingTime, 21)}
               </Text>
             </View>
           </View>
@@ -102,39 +102,44 @@ const CardJobDone = ({data}) => {
                 fill="#3366FF"
                 name="star-outline"
               />
-              <Text style={MainStyles.textCardJob}>Được đánh giá: </Text>
+              <Text style={MainStyles.textCardJob}>Đánh giá: </Text>
               <Rating rating={data?.StartNumber || 5} />
             </View>
           </View>
-          {data?.RatingNote ? (
-            <View style={MainStyles.rowMargin}>
-              <View style={MainStyles.flexRowFlexStart}>
-                <Icon
-                  style={MainStyles.CardIcon}
-                  fill="#3366FF"
-                  name="message-square-outline"
-                />
-                <Text style={MainStyles.textCardJob}>
-                  {data?.RatingNote
-                    ? 'Feedback : ' + data?.RatingNote?.trim()
-                    : ' Khách hàng không để lại Feedback'}
-                </Text>
-              </View>
-            </View>
-          ) : (
-            <View style={MainStyles.rowMargin}>
-              <View style={MainStyles.flexRowFlexStart}>
-                <Icon
-                  style={MainStyles.CardIcon}
-                  fill="#3366FF"
-                  name="message-square-outline"
-                />
-                <Text style={MainStyles.textCardJob}>
-                  Khách hàng chưa đánh giá
-                </Text>
-              </View>
-            </View>
-          )}
+          {
+            data?.RatingNote ?
+              (
+                <View style={MainStyles.rowMargin}>
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="message-square-outline"
+                    />
+                    <Text style={MainStyles.textCardJob}>
+                      {
+                        data?.RatingNote
+                          ? 'Phản hồi: ' + data?.RatingNote?.trim()
+                          : ' Khách hàng không để lại phản hồi'
+                      }
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <View style={MainStyles.rowMargin}>
+                  <View style={MainStyles.flexRowFlexStart}>
+                    <Icon
+                      style={MainStyles.CardIcon}
+                      fill="#3366FF"
+                      name="message-square-outline"
+                    />
+                    <Text style={MainStyles.textCardJob}>
+                      Khách hàng chưa đánh giá
+                    </Text>
+                  </View>
+                </View>
+              )
+          }
           <View style={MainStyles.cardContentJob}>
             <Text
               style={{
@@ -147,7 +152,7 @@ const CardJobDone = ({data}) => {
               Tổng tiền
             </Text>
             <View style={MainStyles.flexRowCenter}>
-              <Image source={coin_icon} style={{width: 22, height: 22}} />
+              <Image source={coin_icon} style={{ width: 22, height: 22 }} />
               <Text
                 style={{
                   color: colors.MAIN_COLOR_CLIENT,

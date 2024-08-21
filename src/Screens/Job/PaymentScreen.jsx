@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -7,43 +7,43 @@ import {
   TouchableOpacity,
   Linking,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import {colors} from '../../styles/Colors';
-import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../styles/MainStyle';
+import { colors } from '../../styles/Colors';
+import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
 import Box from '../../components/Box';
 import Header from '../../components/Header';
-import {FormatMoney} from '../../utils/FormatMoney';
+import { FormatMoney } from '../../utils/FormatMoney';
 import CustomLabel from '../../components/forms/CustomLabel';
-import {coin_icon} from '../../assets';
+import { coin_icon } from '../../assets';
 import StatusBarCustom from '../../components/StatusBarCustom';
 import LayoutBottom from '../../components/layouts/LayoutBottom';
-import {responsivescreen} from '../../utils/responsive-screen';
-import {setData} from '../../utils';
-import {ScreenNames} from '../../Constants';
-import {useDispatch, useSelector} from 'react-redux';
-import {mainAction} from '../../Redux/Action';
+import { responsivescreen } from '../../utils/responsive-screen';
+import { setData } from '../../utils';
+import { ScreenNames } from '../../Constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { mainAction } from '../../Redux/Action';
 import StorageNames from '../../Constants/StorageNames';
 import Up from '../../components/svg/Up';
 import Down from '../../components/svg/Down';
 import BtnGetImageModal from '../../components/BtnGetImageModal';
 import ModalBlockFunction from '../../components/modal/ModalBlockFunction';
-import {StyleSheet} from 'react-native';
-import {Icon, Spinner} from '@ui-kitten/components';
+import { StyleSheet } from 'react-native';
+import { Icon, Spinner } from '@ui-kitten/components';
 import AlertConfirm from '../../components/modal/AlertConfirm';
-import {RoundUpNumber} from '../../utils/RoundUpNumber';
-import {OVG_DeleteOrdersByBookingCode} from '../../firebaseService/ListenOrder';
-import {PropTypes} from 'prop-types';
+import { RoundUpNumber } from '../../utils/RoundUpNumber';
+import { OVG_DeleteOrdersByBookingCode } from '../../firebaseService/ListenOrder';
+import { PropTypes } from 'prop-types';
 
-const PaymentScreen = ({route}) => {
+const PaymentScreen = ({ route }) => {
   const [isModalVisible, setIsModalVisible] = useState(true);
   const navi = useNavigation();
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.main.userLogin);
   const [isLoading, setIsLoading] = React.useState(false);
   const location = useSelector(state => state.main.locationTime);
-  const {data} = route.params;
+  const { data } = route.params;
   const [more, setMore] = useState(false);
   const [imageBefore, setImageBefore] = useState([]);
   const [imageAfter, setImageAfter] = useState([]);
@@ -61,7 +61,7 @@ const PaymentScreen = ({route}) => {
       setTotalMoneyAll(
         RoundUpNumber(
           parseFloat(data?.DataService?.PriceAfterDiscount) +
-            parseFloat(number),
+          parseFloat(number),
           0,
         ),
       );
@@ -89,13 +89,15 @@ const PaymentScreen = ({route}) => {
       const pr = {
         OfficerId: userLogin?.OfficerID,
         BookingId: parseInt(data?.DataService?.BookingId),
+        BookingCode: data?.BookingCode,
+        TotalStaff: data?.DataService?.StaffTotal,
+        CustomerId: data?.DataService?.CustomerId,
         LatOfficer: location?.latitude,
         LngOfficer: location?.longitude,
         OfficerName: userLogin?.OfficerName,
         IsConfirm: 3,
-        TotalMoneyBooking: totalMoneyAll,
-        OfficerMoney: totalMoneyAll * 0.7,
-        AdminMoney: totalMoneyAll * 0.3,
+        TotalMoneyBooking: data?.TotalMoney,
+        PriceAfterDiscount: totalMoneyAll,
         ImageBookingServiceBefore: imageBefore[0],
         ImageBookingServiceAfter: imageAfter[0],
         IsPayment: 2,
@@ -103,7 +105,7 @@ const PaymentScreen = ({route}) => {
       };
       const params = {
         Json: JSON.stringify(pr),
-        func: 'OVG_spOfficer_Booking_Save_V1',
+        func: "OVG_spOfficer_Booking_Save_V2",
       };
 
       const result = await mainAction.API_spCallServer(params, dispatch);
@@ -123,11 +125,12 @@ const PaymentScreen = ({route}) => {
               ...data?.DataService,
               PriceAfterDiscount: totalMoneyAll,
             },
-          };
+            ...result.ListData[0]
+          }
           navi.reset({
             index: 0,
             routes: [
-              {name: ScreenNames.CONGRATULATION, params: {data: dataConfirm}},
+              { name: ScreenNames.CONGRATULATION, params: { data: dataConfirm } },
             ],
           });
         }
@@ -163,7 +166,7 @@ const PaymentScreen = ({route}) => {
         <View style={MainStyles.containerTabPayment}>
           <View style={MainStyles.layoutTabPayment}>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
+              <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
                 Dịch vụ {data?.DataService?.ServiceName.toLowerCase()}
               </Text>
             </View>
@@ -207,7 +210,7 @@ const PaymentScreen = ({route}) => {
                 </View>
               </View>
             )}
-            {data?.DataService?.TotalStaff && (
+            {data?.DataService?.StaffTotal && (
               <View style={MainStyles.rowMargin}>
                 <View style={MainStyles.flexRowFlexStart}>
                   <Icon
@@ -216,7 +219,7 @@ const PaymentScreen = ({route}) => {
                     name="people-outline"
                   />
                   <Text style={MainStyles.textCardJob}>
-                    Số lượng nhân viên: {data?.DataService?.TotalStaff} nhân
+                    Số lượng nhân viên: {data?.DataService?.StaffTotal} nhân
                     viên
                   </Text>
                 </View>
@@ -276,26 +279,26 @@ const PaymentScreen = ({route}) => {
                     </View>
                     {data?.DataService?.Voucher?.length > 0
                       ? data?.DataService?.Voucher.map(item => (
-                          <View
-                            key={item?.VoucherId.toString()}
-                            style={MainStyles.flexRowFlexStart}>
-                            <Icon
-                              style={{
-                                marginLeft: SCREEN_WIDTH * 0.07,
-                                width: 20,
-                                height: 20,
-                              }}
-                              fill="#3366FF"
-                              name="plus-outline"
-                            />
-                            <Text style={[MainStyles.textCardJob]}>
-                              CODE: {item?.VoucherCode} - giảm{' '}
-                              {item?.TypeDiscount === 1
-                                ? item?.Discount + '%'
-                                : FormatMoney(item?.Discount) + ' VND'}
-                            </Text>
-                          </View>
-                        ))
+                        <View
+                          key={item?.VoucherId.toString()}
+                          style={MainStyles.flexRowFlexStart}>
+                          <Icon
+                            style={{
+                              marginLeft: SCREEN_WIDTH * 0.07,
+                              width: 20,
+                              height: 20,
+                            }}
+                            fill="#3366FF"
+                            name="plus-outline"
+                          />
+                          <Text style={[MainStyles.textCardJob]}>
+                            CODE: {item?.VoucherCode} - giảm{' '}
+                            {item?.TypeDiscount === 1
+                              ? item?.Discount + '%'
+                              : FormatMoney(item?.Discount) + ' VND'}
+                          </Text>
+                        </View>
+                      ))
                       : null}
                   </View>
                 )}
@@ -378,7 +381,7 @@ const PaymentScreen = ({route}) => {
             <View
               style={[
                 MainStyles.cardContentJob,
-                {backgroundColor: colors.WHITE},
+                { backgroundColor: colors.WHITE },
               ]}>
               <View style={MainStyles.flexRowCenter}>
                 <View>
@@ -393,7 +396,7 @@ const PaymentScreen = ({route}) => {
                     Tổng tiền
                   </Text>
                   <View style={MainStyles.flexRowCenter}>
-                    <Image source={coin_icon} style={{width: 22, height: 22}} />
+                    <Image source={coin_icon} style={{ width: 22, height: 22 }} />
                     <Text
                       style={{
                         color: colors.MAIN_COLOR_CLIENT,
@@ -401,7 +404,7 @@ const PaymentScreen = ({route}) => {
                         fontSize: 18,
                         fontWeight: '700',
                       }}>
-                      {FormatMoney(totalMoneyAll)} VNĐ
+                      {FormatMoney(totalMoneyAll)} VND
                     </Text>
                   </View>
                 </View>

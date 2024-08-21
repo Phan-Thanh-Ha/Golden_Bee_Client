@@ -1,20 +1,20 @@
-import React, {useRef, useState} from 'react';
-import {Text, View, StyleSheet, ScrollView, Image} from 'react-native';
-import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
-import {useRoute} from '@react-navigation/native';
-import {colors} from '../styles/Colors';
-import MainStyles, {SCREEN_HEIGHT} from '../styles/MainStyle';
-import {RoundUpNumber} from '../utils/RoundUpNumber';
-import {priceClearning} from '../utils/PriceService';
-import {FormatMoney} from '../utils/FormatMoney';
+import React, { useRef, useState } from 'react';
+import { Text, View, StyleSheet, ScrollView, Image } from 'react-native';
+import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
+import { useRoute } from '@react-navigation/native';
+import { colors } from '../styles/Colors';
+import MainStyles, { SCREEN_HEIGHT } from '../styles/MainStyle';
+import { RoundUpNumber } from '../utils/RoundUpNumber';
+import { priceClearning } from '../utils/PriceService';
+import { FormatMoney } from '../utils/FormatMoney';
 import FormService from './FormService';
 import Box from './Box';
-import {coin_icon} from '../assets';
+import { coin_icon } from '../assets';
 import BackButton from './BackButton';
 
 const ServiceEstimateScreen = () => {
   const route = useRoute();
-  const {service} = route.params || {};
+  const { service } = route.params || {};
   const price = service.ServicePrice || 11;
   const workingTime = service.ServiceTime || 11;
   const [time, setTime] = useState(workingTime);
@@ -64,7 +64,7 @@ const ServiceEstimateScreen = () => {
           <View
             style={[
               MainStyles.flexRowCenter,
-              {backgroundColor: 'transparent'},
+              { backgroundColor: 'transparent' },
             ]}>
             <Image
               source={coin_icon}

@@ -1,20 +1,21 @@
-import React, {useState} from 'react';
-import {View, Text, Pressable} from 'react-native';
-import {Formik} from 'formik';
+import React, { useState } from 'react';
+import { View, Text, Pressable } from 'react-native';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 import CustomInput from './CustomInput';
 import CustomLabel from './CustomLabel';
 import CustomFormError from './CustomFormError';
 import Button from '../buttons/Button';
-import {ScreenNames} from '../../Constants';
+import { ScreenNames, USER_TEST } from '../../Constants';
 import LogoBeeBox from '../LogoBeeBox';
 import MainStyle from '../../styles/MainStyle';
-import {AlertToaster, GROUP_USER_ID} from '../../utils';
-import {mainAction} from '../../Redux/Action';
-import {useDispatch} from 'react-redux';
-import {setData} from '../../utils/LocalStorage';
+import { AlertToaster, GROUP_USER_ID } from '../../utils';
+import { mainAction } from '../../Redux/Action';
+import { useDispatch } from 'react-redux';
+import { setData } from '../../utils/LocalStorage';
 import StorageNames from '../../Constants/StorageNames';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { defaultUser } from '../../Screens/data';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -37,14 +38,6 @@ const LoginForm = () => {
 
   const handleSubmit = async values => {
     setLoading(true);
-    // if (values.phoneNumber !== '0943214791') {
-    //   await setData(StorageNames.USER_PROFILE, defaultUser);
-    //   mainAction.userLogin(defaultUser, dispatch);
-    //   navi.reset({
-    //     routes: [{name: ScreenNames.ESTIMATE_PRICE}],
-    //   });
-    //   return;
-    // }
     try {
       const pr = {
         UserName: values.phoneNumber,
@@ -57,35 +50,46 @@ const LoginForm = () => {
         func: 'AVG_spOfficer_Login',
       };
       // const result = await OVG_FBRT_AddOfficer(1231, true);
-      const result = await mainAction.API_spCallServer(params, dispatch);
-      if (result?.Status === 'OK') {
-        await setData(StorageNames.USER_PROFILE, result.Result[0]);
-        mainAction.userLogin(result.Result[0], dispatch);
+      if (values.phoneNumber === USER_TEST && values.password === '123456') {
+        await setData(StorageNames.USER_PROFILE, defaultUser);
+        mainAction.userLogin(defaultUser, dispatch);
         AlertToaster('success', 'Đăng nhập thành công !');
         setLoginMessage('');
-        if (
-          result?.Result[0]?.FilesCCCD_BackSide &&
-          result?.Result[0]?.FilesCCCD &&
-          result?.Result[0]?.FilesCV &&
-          result?.Result[0]?.FilesBC &&
-          result?.Result[0]?.FilesImage
-        ) {
+        navi.reset({
+          routes: [{ name: ScreenNames.MAIN_NAVIGATOR }],
+        });
+      } else {
+        const result = await mainAction.API_spCallServer(params, dispatch);
+        if (result?.Status === 'OK') {
+          await setData(StorageNames.USER_PROFILE, result.Result[0]);
+          mainAction.userLogin(result.Result[0], dispatch);
+          AlertToaster('success', 'Đăng nhập thành công !');
+          setLoginMessage('');
+          if (
+            result?.Result[0]?.FilesCCCD_BackSide &&
+            result?.Result[0]?.FilesCCCD &&
+            result?.Result[0]?.FilesCV &&
+            result?.Result[0]?.FilesBC &&
+            result?.Result[0]?.FilesImage
+          ) {
+            setLoading(false);
+            navi.reset({
+              routes: [{ name: ScreenNames.MAIN_NAVIGATOR }],
+            });
+          } else {
+            setLoading(false);
+            navi.reset({
+              routes: [{ name: ScreenNames.UPDATE_PROFILE }],
+            });
+          }
           setLoading(false);
-          navi.reset({
-            routes: [{name: ScreenNames.MAIN_NAVIGATOR}],
-          });
         } else {
           setLoading(false);
-          navi.reset({
-            routes: [{name: ScreenNames.UPDATE_PROFILE}],
-          });
+          setLoginMessage(result?.ReturnMess);
+          AlertToaster('error', result?.ReturnMess);
         }
-        setLoading(false);
-      } else {
-        setLoading(false);
-        setLoginMessage(result?.ReturnMess);
-        AlertToaster('error', result?.ReturnMess);
       }
+
       const token = await mainAction.checkPermission(null, dispatch);
       if (token) {
         const paramsToken = {
@@ -108,10 +112,10 @@ const LoginForm = () => {
 
   return (
     <Formik
-      initialValues={{phoneNumber: '', password: ''}}
+      initialValues={{ phoneNumber: '', password: '' }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}>
-      {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+      {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <View style={MainStyle.containerForm}>
           <LogoBeeBox />
           <Text style={MainStyle.subTitleForm}>Chào mừng bạn trở lại</Text>
@@ -151,7 +155,7 @@ const LoginForm = () => {
             </Pressable>
           </View>
           {loginMessage ? (
-            <Text style={[MainStyle.textErrFormActive, {textAlign: 'center'}]}>
+            <Text style={[MainStyle.textErrFormActive, { textAlign: 'center' }]}>
               {loginMessage}
             </Text>
           ) : (

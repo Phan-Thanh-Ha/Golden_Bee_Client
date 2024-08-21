@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import ArrowLeft from './svg/ArrowLeft';
-import {colors} from '../styles/Colors';
-import {PropTypes} from 'prop-types';
+import { colors } from '../styles/Colors';
+import { PropTypes } from 'prop-types';
 
-const BackButton = ({title, showBackButton = true, color = colors.WHITE}) => {
+const BackButton = ({ title, showBackButton = true, color = colors.WHITE }) => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingVertical: 40,
+    paddingVertical: Platform.OS === 'ios' ? 80 : 40,
     zIndex: 999,
   },
 });

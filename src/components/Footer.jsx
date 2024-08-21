@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {colors} from '../styles/Colors';
-import {Version_Customer} from '../utils';
+import { View, Text, StyleSheet } from 'react-native';
+import { colors } from '../styles/Colors';
+import { Version_Customer } from '../utils';
 
 const Footer = () => {
   return (
@@ -14,7 +14,7 @@ const Footer = () => {
 const styles = StyleSheet.create({
   footer: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 100,
     left: 0,
     right: 0,
     height: 30,

@@ -1,15 +1,17 @@
-import React, {useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import {Tab, TabView} from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { Tab, TabView } from '@ui-kitten/components';
 import CardNewJob from './CardNewJob';
 import CardDefault from './CardDefault';
-import {useSelector} from 'react-redux';
-import {checkCaseStatus} from '../utils/CheckCaseStaus';
-import {SCREEN_HEIGHT} from '../styles/MainStyle';
+import { useSelector } from 'react-redux';
+import { checkCaseStatus } from '../utils/CheckCaseStaus';
+import { SCREEN_HEIGHT } from '../styles/MainStyle';
 import TabJobDone from './TabJobDone';
-import {PropTypes} from 'prop-types';
+import { PropTypes } from 'prop-types';
+import { myOrderDefault } from '../Screens/data';
+import { USER_TEST } from '../Constants';
 
-export const TabCustom = ({modalRef, modalJobDoneRef, height}) => {
+export const TabCustom = ({ height }) => {
   const userLogin = useSelector(state => state.main.userLogin);
   const acceptedOrder = useSelector(state => state.main.acceptedOrder);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -17,36 +19,50 @@ export const TabCustom = ({modalRef, modalJobDoneRef, height}) => {
 
   const renderFooter = () => <View style={styles.footer} />;
   return (
-    <View style={{height, padding: 10}}>
+    <View style={{ height, padding: 10 }}>
       <TabView
         selectedIndex={selectedIndex}
         onSelect={index => setSelectedIndex(index)}
         style={styles.tabView}>
-        <Tab style={{height: 40}} title="Việc mới">
-          {acceptedOrder?.OrderId ? (
-            <FlatList
-              data={[acceptedOrder]}
-              renderItem={({item, index}) => (
-                <CardNewJob key={index} data={item} modalRef={modalRef} />
-              )}
-              ListFooterComponent={renderFooter}
-            />
+        {/* Bùa */}
+        {
+          userLogin?.Phone === USER_TEST ? (
+            <Tab style={{ height: 40 }} title="Việc mới">
+              <FlatList
+                data={[myOrderDefault]}
+                renderItem={({ item, index }) => (
+                  <CardNewJob key={index} data={item} />
+                )}
+                ListFooterComponent={renderFooter}
+              />
+            </Tab>
           ) : (
-            <CardDefault
-              title={
-                checkCaseStatus(
-                  userLogin?.StateOnline,
-                  userLogin?.Surplus,
-                  myOrdersAccepted?.length,
-                  userLogin?.State,
-                ).status
-              }
-            />
-          )}
-        </Tab>
-
-        <Tab style={{height: 40}} title="Đã hoàn thành">
-          <TabJobDone modalJobDoneRef={modalJobDoneRef} />
+            <Tab style={{ height: 40 }} title="Việc mới">
+              {acceptedOrder?.OrderId ? (
+                <FlatList
+                  data={[acceptedOrder]}
+                  renderItem={({ item, index }) => (
+                    <CardNewJob key={index} data={item} />
+                  )}
+                  ListFooterComponent={renderFooter}
+                />
+              ) : (
+                <CardDefault
+                  title={
+                    checkCaseStatus(
+                      userLogin?.StateOnline,
+                      userLogin?.Surplus,
+                      myOrdersAccepted?.length,
+                      userLogin?.State,
+                    ).status
+                  }
+                />
+              )}
+            </Tab>
+          )
+        }
+        <Tab style={{ height: 40 }} title="Đã hoàn thành">
+          <TabJobDone />
         </Tab>
       </TabView>
     </View>

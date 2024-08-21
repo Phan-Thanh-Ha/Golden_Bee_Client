@@ -21,7 +21,7 @@ const App = () => {
   } else {
     setTimeout(() => {
       SplashScreen.hide();
-    }, 2000);
+    }, 200);
   }
   return (
     <Provider store={Store}>

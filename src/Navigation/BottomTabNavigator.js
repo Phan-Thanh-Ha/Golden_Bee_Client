@@ -8,15 +8,25 @@ import {
 } from 'react-native';
 import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
 import {Icon} from '@ui-kitten/components';
-import {ScreenNames} from '../Constants';
+import {ScreenNames, USER_TEST} from '../Constants';
 import HomeScreen from '../Screens/Home/HomeScreen';
 import EmailScreen from '../Screens/Home/EmailScreen';
 import BenefitsScreen from '../Screens/Home/BenefitsScreen';
 import AccountScreen from '../Screens/Home/AccountScreen';
 import {logo_bee_blue} from '../assets';
 import {colors} from '../styles/Colors';
+import StorageNames from '../Constants/StorageNames';
+import {getData} from '../utils';
 
 export const BottomTabNavigator = () => {
+  const handleGoAdmin = async navigate => {
+    const admin = await getData(StorageNames.USER_PROFILE);
+    if (admin?.PermisonSystem) {
+      navigate(ScreenNames.ADMIN_SCREEN);
+    } else if (admin?.Phone === USER_TEST) {
+      navigate(ScreenNames.VIEW_MY_MAP);
+    }
+  };
   const _renderIcon = (routeName, selectedTab) => {
     let iconName = '';
     let displayName = '';
@@ -95,7 +105,7 @@ export const BottomTabNavigator = () => {
         <Animated.View style={styles.btnCircleUp}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigate(ScreenNames.ADMIN_SCREEN)}>
+            onPress={() => handleGoAdmin(navigate)}>
             <Image source={logo_bee_blue} style={styles.circleIcon} />
           </TouchableOpacity>
         </Animated.View>

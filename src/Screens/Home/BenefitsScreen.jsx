@@ -1,18 +1,20 @@
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import {colors} from '../../styles/Colors';
+import { colors } from '../../styles/Colors';
 import Box from '../../components/Box';
-import MainStyles, {SCREEN_HEIGHT} from '../../styles/MainStyle';
-import {useSelector} from 'react-redux';
+import MainStyles, { SCREEN_HEIGHT } from '../../styles/MainStyle';
+import { useSelector } from 'react-redux';
 import RankProgress from '../../components/RankProgress';
-import {FormatMoney} from '../../utils/FormatMoney';
+import { FormatMoney } from '../../utils/FormatMoney';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import {cirtificate, gift} from '../../assets';
+import { cirtificate, gift } from '../../assets';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNames } from '../../Constants';
 
 const BenefitsScreen = () => {
   const userLogin = useSelector(state => state.main.userLogin);
-
+  const navi = useNavigation();
   return (
     <LayoutGradientBlue>
       <ScrollView>
@@ -21,7 +23,7 @@ const BenefitsScreen = () => {
           sizeImage={70}
           sizeText={20}
         />
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <View
             style={{
               backgroundColor: colors.WHITE,
@@ -54,7 +56,10 @@ const BenefitsScreen = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View
+            <TouchableOpacity
+              onPress={() => {
+                navi.navigate(ScreenNames.GIFT_DETAIL);
+              }}
               style={{
                 flex: 1,
                 justifyContent: 'center',
@@ -89,8 +94,11 @@ const BenefitsScreen = () => {
                 }}>
                 Nhận vô vàn quà tặng khi tích điểm và đổi quà cùng Ong Vàng !
               </Text>
-            </View>
-            <View
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navi.navigate(ScreenNames.PREMIUM_PARTNER);
+              }}
               style={{
                 flex: 1,
                 justifyContent: 'center',
@@ -125,10 +133,10 @@ const BenefitsScreen = () => {
                 }}>
                 Hãy cùng phấn đấu để trở thành cộng tác viên cao cấp !
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
-        <Box height={SCREEN_HEIGHT * 0.7} />
+        <Box height={SCREEN_HEIGHT * 0.07} />
       </ScrollView>
     </LayoutGradientBlue>
   );

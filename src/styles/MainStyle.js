@@ -1,6 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { colors, themeColors } from "./Colors";
-import { responsivescreen } from "../utils/responsive-screen";
 
 export const SCREEN_WIDTH = Dimensions.get("screen").width;
 export const SCREEN_HEIGHT = Dimensions.get("screen").height;
@@ -8,6 +7,18 @@ export const SCREEN_HEIGHT = Dimensions.get("screen").height;
 const MainStyles = StyleSheet.create({
   safeArea: {
     flex: 1,
+  },
+  pageTitle: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: colors.MAIN_BLUE_CLIENT,
+    textAlign: "center",
+  },
+  version: {
+    marginTop: 10,
+    textAlign: "center",
+    fontSize: 10,
+    color: colors.BLACK,
   },
   filterButton: {
     padding: 10,
@@ -161,7 +172,7 @@ const MainStyles = StyleSheet.create({
   titleForgotPasswordForm: {
     fontSize: 30,
     fontWeight: "bold",
-    color: themeColors.primary,
+    color: colors.MAIN_BLUE_CLIENT,
     textAlign: "center",
     marginTop: 20,
     marginBottom: 20,
@@ -187,7 +198,7 @@ const MainStyles = StyleSheet.create({
     marginBottom: 20,
   },
   containerLogin: {
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   titleLogin: {
     fontSize: 30,
@@ -420,6 +431,7 @@ const MainStyles = StyleSheet.create({
     padding: 5,
   },
   labelTitle: {
+    paddingLeft: 5,
     fontSize: 15,
     fontWeight: "700",
     color: colors.MAIN_BLUE_CLIENT,

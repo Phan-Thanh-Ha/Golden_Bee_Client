@@ -1,27 +1,26 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import {colors} from '../../styles/Colors';
-import {TabCustom} from '../../components/TabCustom';
+import { colors } from '../../styles/Colors';
+import { TabCustom } from '../../components/TabCustom';
 import JobDetailsModal from '../../components/JobDetailsModal';
-import {responsivescreen} from '../../utils/responsive-screen';
-import {useDispatch, useSelector} from 'react-redux';
-import {mainAction} from '../../Redux/Action';
+import { responsivescreen } from '../../utils/responsive-screen';
+import { useDispatch, useSelector } from 'react-redux';
+import { mainAction } from '../../Redux/Action';
 import JobDoneModal from '../../components/JobDoneModal';
 import MyOrders from '../../components/firebaseListen/MyOrders';
 import Geolocation from '@react-native-community/geolocation';
 import ListenOrderTotal from '../../components/firebaseListen/ListenTotalOrder';
-import {Linking} from 'react-native';
+import { Linking } from 'react-native';
 import ModalUserNotActive from '../../components/modal/ModalUserNotActive';
-import {GROUP_USER_ID} from '../../utils';
-import {OVG_FBRT_UpdateLocation} from '../../firebaseService/HandleOrder';
+import { GROUP_USER_ID } from '../../utils';
+import { OVG_FBRT_UpdateLocation } from '../../firebaseService/HandleOrder';
+import GetLocationTitle from '../../utils/GetLocationTitle';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.main.userLogin);
   const acceptedOrder = useSelector(state => state.main.acceptedOrder);
-  const modalRef = useRef(null);
-  const modalJobDoneRef = useRef(null);
   const myOrdersAccepted = useSelector(state => state.main.myOrdersAccepted);
   const initValueFirebase = useSelector(state => state.main.initValueFirebase);
   const locationIntervalRef = useRef(null);
@@ -58,16 +57,19 @@ const HomeScreen = () => {
   const updateLocation = async () => {
     try {
       Geolocation.getCurrentPosition(
-        position => {
+        async (position) => {
           if (position?.coords) {
-            OVG_spOfficer_Update_LocationTime(position, userLogin?.OfficerID);
+            const result = await GetLocationTitle(
+              position?.coords?.latitude,
+              position?.coords?.longitude
+            );
+            mainAction.locationUpdate(result, dispatch);
           }
         },
-        {enableHighAccuracy: false, timeout: 20000},
+        (error) => { },
+        { enableHighAccuracy: false, timeout: 20000 }
       );
-    } catch {
-      //
-    }
+    } catch (e) { }
   };
   const OVG_spOfficer_Update_LocationTime = async (position, officerId) => {
     try {
@@ -118,7 +120,7 @@ const HomeScreen = () => {
             error => {
               console.log('Error getting location:', error);
             },
-            {enableHighAccuracy: false, timeout: 20000},
+            { enableHighAccuracy: false, timeout: 20000 },
           );
         };
 
@@ -155,12 +157,8 @@ const HomeScreen = () => {
         sizeText={20}
       />
       <TabCustom
-        modalRef={modalRef}
-        modalJobDoneRef={modalJobDoneRef}
         height={responsivescreen.height('77%')}
       />
-      <JobDetailsModal ref={modalRef} />
-      <JobDoneModal ref={modalJobDoneRef} />
       <ListenOrderTotal
         myOrders={myOrdersAccepted}
         isModalVisible={modalOrderTotalVisible}

@@ -1,21 +1,21 @@
 import React from 'react';
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import FastImage from 'react-native-fast-image'; // Hoặc thư viện hình ảnh khác nếu cần
-import {themeColors} from '../styles/Colors';
-import {SCREEN_HEIGHT} from '../styles/MainStyle';
-import {PropTypes} from 'prop-types';
+import { themeColors, colors } from '../styles/Colors';
+import { SCREEN_HEIGHT } from '../styles/MainStyle';
+import { PropTypes } from 'prop-types';
 
-const {width: SCREEN_WIDTH} = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const ITEM_WIDTH = SCREEN_WIDTH * 0.8;
 
-const ServiceCarousel = ({dataNewService = []}) => {
-  const renderItem = ({item}) => (
+const ServiceCarousel = ({ dataNewService = [] }) => {
+  const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
       <View style={styles.card}>
         <FastImage
           style={styles.image}
-          source={{uri: item.ImageNewsShow}}
+          source={{ uri: item.ImageNewsShow }}
           resizeMode={FastImage.resizeMode.cover}
         />
         <View style={styles.textContainer}>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,
-    color: themeColors.primary,
+    color: colors.MAIN_BLUE_CLIENT,
   },
   cardContainer: {
     height: SCREEN_HEIGHT * 0.35,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 15,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 6},
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 6,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: themeColors.primary,
+    color: colors.MAIN_BLUE_CLIENT,
   },
   description: {
     fontSize: 14,
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: themeColors.primary,
+    backgroundColor: colors.MAIN_BLUE_CLIENT,
   },
   carouselContentContainer: {
     // paddingHorizontal: SCREEN_WIDTH * (1 - 0.8) / 2, // Padding để đảm bảo item nằm ở lề trái

@@ -1,9 +1,9 @@
-import {Image, Platform, StyleSheet, Text, View} from 'react-native';
-import MainStyles, {SCREEN_HEIGHT} from '../styles/MainStyle';
-import {themeColors} from '../styles/Colors';
-import {useSelector} from 'react-redux';
-import {logo_bee_blue} from '../assets';
-import {SCREEN_WIDTH} from '@gorhom/bottom-sheet';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import MainStyles, { SCREEN_HEIGHT } from '../styles/MainStyle';
+import { themeColors, colors } from '../styles/Colors';
+import { useSelector } from 'react-redux';
+import { logo_bee_blue } from '../assets';
+import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import React from 'react';
 const UserHeader = () => {
   const userLogin = useSelector(state => state.main.userLogin);
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: themeColors.primary,
+    color: colors.MAIN_BLUE_CLIENT,
   },
   subTitle: {
     fontSize: 13,

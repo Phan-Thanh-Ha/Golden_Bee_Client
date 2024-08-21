@@ -19,6 +19,7 @@ const First = () => {
   }, []);
 
   const checkUploadCCCD = async userLogin => {
+    console.log('checkUploadCCCD-------', userLogin);
     try {
       if (
         !userLogin?.FilesBC ||
@@ -41,7 +42,7 @@ const First = () => {
       console.error('Error in checkUploadCCCD:', error);
       navi.reset({
         index: 0,
-        routes: [{name: ScreenNames.HOME_MAIN_SCREEN}],
+        routes: [{name: ScreenNames.LOGIN}],
       });
     }
   };
@@ -51,18 +52,10 @@ const First = () => {
     if (isOld) {
       try {
         const userLogin = await getData(StorageNames.USER_PROFILE);
-        if (userLogin?.OfficerID === 7347) {
-          mainAction.userLogin(userLogin, dispatch);
-          navi.reset({
-            index: 0,
-            routes: [{name: ScreenNames.ESTIMATE_PRICE}],
-          });
-          return;
-        }
         if (!userLogin) {
           navi.reset({
             index: 0,
-            routes: [{name: ScreenNames.HOME_MAIN_SCREEN}],
+            routes: [{name: ScreenNames.LOGIN}],
           });
         } else {
           mainAction.userLogin(userLogin, dispatch);
@@ -71,7 +64,7 @@ const First = () => {
       } catch {
         navi.reset({
           index: 0,
-          routes: [{name: ScreenNames.HOME_MAIN_SCREEN}],
+          routes: [{name: ScreenNames.LOGIN}],
         });
       }
     } else {

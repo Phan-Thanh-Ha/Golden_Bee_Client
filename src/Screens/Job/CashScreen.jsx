@@ -1,41 +1,41 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View, Image, ScrollView, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import LogoBeeBox from '../../components/LogoBeeBox';
-import {colors, themeColors} from '../../styles/Colors';
-import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../styles/MainStyle';
+import { colors, themeColors } from '../../styles/Colors';
+import MainStyles, { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/MainStyle';
 import Box from '../../components/Box';
 import Header from '../../components/Header';
-import {FormatMoney} from '../../utils/FormatMoney';
+import { FormatMoney } from '../../utils/FormatMoney';
 import CustomLabel from '../../components/forms/CustomLabel';
-import {coin_icon} from '../../assets';
+import { coin_icon } from '../../assets';
 import Button from '../../components/buttons/Button';
 import StatusBarCustom from '../../components/StatusBarCustom';
 import LayoutBottom from '../../components/layouts/LayoutBottom';
-import {responsivescreen} from '../../utils/responsive-screen';
+import { responsivescreen } from '../../utils/responsive-screen';
 import ArrowRight from '../../components/svg/ArrowRight';
-import {setData} from '../../utils';
-import {ScreenNames} from '../../Constants';
-import {useDispatch, useSelector} from 'react-redux';
-import {mainAction} from '../../Redux/Action';
+import { setData } from '../../utils';
+import { ScreenNames } from '../../Constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { mainAction } from '../../Redux/Action';
 import StorageNames from '../../Constants/StorageNames';
 import Up from '../../components/svg/Up';
 import Down from '../../components/svg/Down';
 import BtnGetImageModal from '../../components/BtnGetImageModal';
 import AlertConfirm from '../../components/modal/AlertConfirm';
-import {RoundUpNumber} from '../../utils/RoundUpNumber';
-import {Icon} from '@ui-kitten/components';
-import {OVG_DeleteOrdersByBookingCode} from '../../firebaseService/ListenOrder';
-import {PropTypes} from 'prop-types';
+import { RoundUpNumber } from '../../utils/RoundUpNumber';
+import { Icon } from '@ui-kitten/components';
+import { OVG_DeleteOrdersByBookingCode } from '../../firebaseService/ListenOrder';
+import { PropTypes } from 'prop-types';
 
-const CashScreen = ({route}) => {
+const CashScreen = ({ route }) => {
   const navi = useNavigation();
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.main.userLogin);
   const [isLoading, setIsLoading] = React.useState(false);
   const location = useSelector(state => state.main.locationTime);
-  const {data} = route.params;
+  const { data } = route.params;
   const [more, setMore] = useState(false);
   const [imageBefore, setImageBefore] = useState([]);
   const [imageAfter, setImageAfter] = useState([]);
@@ -51,7 +51,7 @@ const CashScreen = ({route}) => {
       setTotalMoneyAll(
         RoundUpNumber(
           parseFloat(data?.DataService?.PriceAfterDiscount) +
-            parseFloat(number),
+          parseFloat(number),
           0,
         ),
       );
@@ -60,9 +60,9 @@ const CashScreen = ({route}) => {
     }
   }, [number]);
   // console.log('data', data);
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <View>
-      <Text style={[MainStyles.textCardJob, {paddingLeft: 10}]}>
+      <Text style={[MainStyles.textCardJob, { paddingLeft: 10 }]}>
         🔸{item.ServiceDetailName}
       </Text>
     </View>
@@ -87,13 +87,16 @@ const CashScreen = ({route}) => {
       const pr = {
         OfficerId: userLogin?.OfficerID,
         BookingId: parseInt(data?.DataService?.BookingId),
+        BookingCode: data?.BookingCode,
+        TotalStaff: data?.DataService?.StaffTotal,
+        CustomerId: data?.DataService?.CustomerId,
         LatOfficer: location?.latitude,
         LngOfficer: location?.longitude,
         OfficerName: userLogin?.OfficerName,
+        VoucherId: data?.DataService?.Voucher?.length > 0 ? data?.DataService?.Voucher[0].VoucherId : 0,
         IsConfirm: 3,
-        TotalMoneyBooking: totalMoneyAll,
-        OfficerMoney: totalMoneyAll * 0.7,
-        AdminMoney: totalMoneyAll * 0.3,
+        TotalMoneyBooking: data?.TotalMoney,
+        PriceAfterDiscount: totalMoneyAll,
         ImageBookingServiceBefore: imageBefore[0],
         ImageBookingServiceAfter: imageAfter[0],
         IsPayment: 1,
@@ -101,7 +104,7 @@ const CashScreen = ({route}) => {
       };
       const params = {
         Json: JSON.stringify(pr),
-        func: 'OVG_spOfficer_Booking_Save_V1',
+        func: 'OVG_spOfficer_Booking_Save_V2',
       };
       const result = await mainAction.API_spCallServer(params, dispatch);
       if (result?.Status === 'OK') {
@@ -120,11 +123,12 @@ const CashScreen = ({route}) => {
               ...data?.DataService,
               PriceAfterDiscount: totalMoneyAll,
             },
-          };
+            ...result.ListData[0]
+          }
           navi.reset({
             index: 0,
             routes: [
-              {name: ScreenNames.CONGRATULATION, params: {data: dataConfirm}},
+              { name: ScreenNames.CONGRATULATION, params: { data: dataConfirm } },
             ],
           });
         }
@@ -157,7 +161,7 @@ const CashScreen = ({route}) => {
         <View style={MainStyles.containerTabPayment}>
           <View style={MainStyles.layoutTabPayment}>
             <View style={MainStyles.flexRowCenter}>
-              <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
+              <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
                 Dịch vụ {data?.DataService?.ServiceName.toLowerCase()}
               </Text>
             </View>
@@ -201,7 +205,7 @@ const CashScreen = ({route}) => {
                 </View>
               </View>
             )}
-            {data?.DataService?.TotalStaff && (
+            {data?.DataService?.StaffTotal && (
               <View style={MainStyles.rowMargin}>
                 <View style={MainStyles.flexRowFlexStart}>
                   <Icon
@@ -210,7 +214,7 @@ const CashScreen = ({route}) => {
                     name="people-outline"
                   />
                   <Text style={MainStyles.textCardJob}>
-                    Số lượng nhân viên: {data?.DataService?.TotalStaff} nhân
+                    Số lượng nhân viên: {data?.DataService?.StaffTotal} nhân
                     viên
                   </Text>
                 </View>
@@ -282,26 +286,26 @@ const CashScreen = ({route}) => {
                     </View>
                     {data?.DataService?.Voucher?.length > 0
                       ? data?.DataService?.Voucher.map(item => (
-                          <View
-                            key={item?.VoucherId.toString()}
-                            style={MainStyles.flexRowFlexStart}>
-                            <Icon
-                              style={{
-                                marginLeft: SCREEN_WIDTH * 0.07,
-                                width: 20,
-                                height: 20,
-                              }}
-                              fill="#3366FF"
-                              name="plus-outline"
-                            />
-                            <Text style={[MainStyles.textCardJob]}>
-                              CODE: {item?.VoucherCode} - giảm{' '}
-                              {item?.TypeDiscount === 1
-                                ? item?.Discount + '%'
-                                : FormatMoney(item?.Discount) + ' VND'}
-                            </Text>
-                          </View>
-                        ))
+                        <View
+                          key={item?.VoucherId.toString()}
+                          style={MainStyles.flexRowFlexStart}>
+                          <Icon
+                            style={{
+                              marginLeft: SCREEN_WIDTH * 0.07,
+                              width: 20,
+                              height: 20,
+                            }}
+                            fill="#3366FF"
+                            name="plus-outline"
+                          />
+                          <Text style={[MainStyles.textCardJob]}>
+                            CODE: {item?.VoucherCode} - giảm{' '}
+                            {item?.TypeDiscount === 1
+                              ? item?.Discount + '%'
+                              : FormatMoney(item?.Discount) + ' VND'}
+                          </Text>
+                        </View>
+                      ))
                       : null}
                   </View>
                 )}
@@ -383,7 +387,7 @@ const CashScreen = ({route}) => {
             <View
               style={[
                 MainStyles.cardContentJob,
-                {backgroundColor: colors.WHITE},
+                { backgroundColor: colors.WHITE },
               ]}>
               <View style={MainStyles.flexRowCenter}>
                 <View>
@@ -398,7 +402,7 @@ const CashScreen = ({route}) => {
                     Tổng tiền
                   </Text>
                   <View style={MainStyles.flexRowCenter}>
-                    <Image source={coin_icon} style={{width: 22, height: 22}} />
+                    <Image source={coin_icon} style={{ width: 22, height: 22 }} />
                     <Text
                       style={{
                         color: colors.MAIN_COLOR_CLIENT,
@@ -406,7 +410,7 @@ const CashScreen = ({route}) => {
                         fontSize: 18,
                         fontWeight: '700',
                       }}>
-                      {FormatMoney(totalMoneyAll)} VNĐ
+                      {FormatMoney(totalMoneyAll)} VND
                     </Text>
                   </View>
                 </View>
@@ -421,7 +425,6 @@ const CashScreen = ({route}) => {
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: 80,
           }}>
           <CustomLabel color={colors.WHITE}>
             Hình thức thanh toán đã chọn{' '}

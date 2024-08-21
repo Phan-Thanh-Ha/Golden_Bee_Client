@@ -1,1 +1,1 @@
-export const Version_Customer = 'Version 12 CAK Solutions';
+export const Version_Customer = "Version V.1.13";

@@ -1,12 +1,12 @@
-import {firebase} from '@react-native-firebase/database';
-import {setInitValueFirebase} from '../Redux/Action/mainAction';
+import { firebase } from "@react-native-firebase/database";
+import { setInitValueFirebase } from "../Redux/Action/mainAction";
 
 export const databaseOrder = firebase
   .app()
   .database(
-    'https://golden-bee-651eb-default-rtdb.asia-southeast1.firebasedatabase.app',
+    "https://golden-bee-651eb-default-rtdb.asia-southeast1.firebasedatabase.app"
   )
-  .ref('/order');
+  .ref("/order");
 
 export const OVG_FBRT_ListenMyOrders = (
   staffId,
@@ -17,7 +17,7 @@ export const OVG_FBRT_ListenMyOrders = (
   setModalOrderRemoveVisible,
   setOrderAdd,
   setModalOrderAddVisible,
-  dispatch,
+  dispatch
 ) => {
   if (!staffId) {
     return;
@@ -25,19 +25,19 @@ export const OVG_FBRT_ListenMyOrders = (
 
   let initialLoadComplete = false;
 
-  const handleOrderChange = snapshot => {
+  const handleOrderChange = (snapshot) => {
     const order = snapshot.val();
     const orderId = snapshot.key;
-    setOrderChange({...order, orderId});
+    setOrderChange({ ...order, orderId });
 
-    setMyOrders(prevOrders => {
+    setMyOrders((prevOrders) => {
       const existingOrderIndex = prevOrders.findIndex(
-        o => o.OrderId === orderId,
+        (o) => o.OrderId === orderId
       );
 
       if (existingOrderIndex > -1) {
         const updatedOrders = [...prevOrders];
-        updatedOrders[existingOrderIndex] = {...order, OrderId: orderId};
+        updatedOrders[existingOrderIndex] = { ...order, OrderId: orderId };
         return updatedOrders;
       } else {
         return prevOrders;
@@ -45,21 +45,21 @@ export const OVG_FBRT_ListenMyOrders = (
     });
   };
 
-  const handleOrderAdd = snapshot => {
+  const handleOrderAdd = (snapshot) => {
     if (!initialLoadComplete) return;
 
     const order = snapshot.val();
     const orderId = snapshot.key;
 
-    setMyOrders(prevOrders => {
+    setMyOrders((prevOrders) => {
       const existingOrderIndex = prevOrders.findIndex(
-        o => o.OrderId === orderId,
+        (o) => o.OrderId === orderId
       );
       if (existingOrderIndex > -1) {
         return prevOrders;
       } else {
-        const updatedOrders = [...prevOrders, {...order, OrderId: orderId}];
-        const orderAdded = {...order, orderId};
+        const updatedOrders = [...prevOrders, { ...order, OrderId: orderId }];
+        const orderAdded = { ...order, orderId };
 
         if (
           orderAdded?.StatusOrder === 0 ||
@@ -74,13 +74,13 @@ export const OVG_FBRT_ListenMyOrders = (
     });
   };
 
-  const handleOrderRemove = snapshot => {
+  const handleOrderRemove = (snapshot) => {
     const order = snapshot.val();
     const orderId = snapshot.key;
-    const orderRemoved = {...order, orderId};
+    const orderRemoved = { ...order, orderId };
 
-    setMyOrders(prevOrders => {
-      const updatedOrders = prevOrders.filter(o => o.OrderId !== orderId);
+    setMyOrders((prevOrders) => {
+      const updatedOrders = prevOrders.filter((o) => o.OrderId !== orderId);
 
       if (order?.StatusOrder === 1) {
         setModalOrderRemoveVisible(true);
@@ -92,14 +92,14 @@ export const OVG_FBRT_ListenMyOrders = (
   };
 
   try {
-    const myOrdersRef = databaseOrder.orderByChild('StaffId').equalTo(staffId);
-    console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  myOrdersRef:', myOrdersRef);
+    const myOrdersRef = databaseOrder.orderByChild("StaffId").equalTo(staffId);
+    console.log("-----> 💀💀💀💀💀💀💀💀💀 <-----  myOrdersRef:", myOrdersRef);
 
-    myOrdersRef.once('value', snapshot => {
+    myOrdersRef.once("value", (snapshot) => {
       const orders = snapshot.val();
-      console.log('-----> 💀💀💀💀💀💀💀💀💀 <-----  orders:', orders);
+      console.log("-----> 💀💀💀💀💀💀💀💀💀 <-----  orders:", orders);
       if (orders) {
-        const initialOrders = Object.keys(orders).map(orderId => ({
+        const initialOrders = Object.keys(orders).map((orderId) => ({
           ...orders[orderId],
           OrderId: orderId,
         }));
@@ -113,29 +113,29 @@ export const OVG_FBRT_ListenMyOrders = (
 
       initialLoadComplete = true;
 
-      myOrdersRef.on('child_changed', handleOrderChange);
-      myOrdersRef.on('child_added', handleOrderAdd);
-      myOrdersRef.on('child_removed', handleOrderRemove);
+      myOrdersRef.on("child_changed", handleOrderChange);
+      myOrdersRef.on("child_added", handleOrderAdd);
+      myOrdersRef.on("child_removed", handleOrderRemove);
     });
 
     return () => {
-      myOrdersRef.off('child_changed', handleOrderChange);
-      myOrdersRef.off('child_added', handleOrderAdd);
-      myOrdersRef.off('child_removed', handleOrderRemove);
+      myOrdersRef.off("child_changed", handleOrderChange);
+      myOrdersRef.off("child_added", handleOrderAdd);
+      myOrdersRef.off("child_removed", handleOrderRemove);
     };
   } catch (error) {
-    console.error('Error listening for orders: ', error);
+    console.error("Error listening for orders: ", error);
   }
 };
 
-export const OVG_DeleteOrdersByBookingCode = async bookingCode => {
-  if (typeof bookingCode !== 'string' || !bookingCode.trim()) {
-    console.error('Invalid BookingCode. It should be a non-empty string.');
+export const OVG_DeleteOrdersByBookingCode = async (bookingCode) => {
+  if (typeof bookingCode !== "string" || !bookingCode.trim()) {
+    console.error("Invalid BookingCode. It should be a non-empty string.");
     return false;
   }
 
   try {
-    const snapshot = await databaseOrder.once('value');
+    const snapshot = await databaseOrder.once("value");
     const orders = snapshot.val();
     const updates = {};
 
@@ -149,19 +149,69 @@ export const OVG_DeleteOrdersByBookingCode = async bookingCode => {
       if (Object.keys(updates).length > 0) {
         await databaseOrder.update(updates);
         console.log(
-          `Orders with BookingCode ${bookingCode} deleted successfully.`,
+          `Orders with BookingCode ${bookingCode} deleted successfully.`
         );
         return true;
       } else {
-        console.log('No orders found with the given BookingCode.');
+        console.log("No orders found with the given BookingCode.");
         return false;
       }
     } else {
-      console.log('No orders found in the database.');
+      console.log("No orders found in the database.");
       return false;
     }
   } catch (error) {
-    console.error('Error deleting orders:', error);
+    console.error("Error deleting orders:", error);
+    return false;
+  }
+};
+
+export const OVG_DeleteOrdersByBookingCodeAndStaffId = async (
+  bookingCode,
+  staffId
+) => {
+  if (typeof bookingCode !== "string" || !bookingCode.trim()) {
+    console.error("Invalid BookingCode. It should be a non-empty string.");
+    return false;
+  }
+
+  if (typeof staffId !== "number") {
+    console.error("Invalid StaffId. It should be a number.");
+    return false;
+  }
+
+  const database = getDatabase();
+  const ordersRef = ref(database, "/order");
+
+  try {
+    const snapshot = await get(ordersRef);
+    const orders = snapshot.val();
+    const updates = {};
+
+    if (orders) {
+      for (const orderId in orders) {
+        const order = orders[orderId];
+        if (order.BookingCode === bookingCode && order.StaffId === staffId) {
+          updates[orderId] = null;
+        }
+      }
+
+      if (Object.keys(updates).length > 0) {
+        await update(ordersRef, updates);
+        console.log(
+          `Orders with BookingCode ${bookingCode} and StaffId ${staffId} deleted successfully.`
+        );
+        return true;
+      } else {
+        console.log("No orders found with the given BookingCode and StaffId.");
+        return false;
+      }
+    } else {
+      console.log("No orders found in the database.");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error deleting orders:", error);
     return false;
   }
 };

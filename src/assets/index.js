@@ -49,3 +49,6 @@ export const ic_silver = require("./rank_icons/silver.png");
 export const ic_gold = require("./rank_icons/gold.png");
 export const ic_platinum = require("./rank_icons/platinum.png");
 export const ic_diamond = require("./rank_icons/diamond.png");
+
+export const ic_Loading = require("../assets/Image_Json/Loading.json");
+export const pin_outline = require("../assets/Image_Json/pin_outline.json");

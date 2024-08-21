@@ -1,6 +1,5 @@
 import {ScrollView, Text, View} from 'react-native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
-import Header from '../../components/Header';
 import {colors} from '../../styles/Colors';
 import React, {useState} from 'react';
 import MainStyles, {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../styles/MainStyle';
@@ -42,11 +41,6 @@ const AddProfileScreen = () => {
         'Bạn cần cung cấp đầy đủ thông tin hồ sơ cá nhân để đăng ký sử dụng dịch vụ. Vui lòng thêm ảnh 3x4',
       );
       setIsModalVisible(true);
-      // AlertToaster(
-      //   'error',
-      //   'Bạn cần cung cấp đủ thông tin',
-      //   'Vui lòng thêm ảnh 3x4',
-      // );
       setIsLoading(false);
       return false;
     } else if (
@@ -58,12 +52,6 @@ const AddProfileScreen = () => {
         'Bạn cần cung cấp đầy đủ thông tin hồ sơ cá nhân để đăng ký sử dụng dịch vụ. Vui lòng thêm CMND/CCCD mặt trước',
       );
       setIsModalVisible(true);
-
-      // AlertToaster(
-      //   'error',
-      //   'Bạn cần cung cấp đủ thông tin',
-      //   'Vui lòng thêm CMND/CCCD mặt trước',
-      // );
       setIsLoading(false);
       return false;
     } else if (
@@ -75,11 +63,6 @@ const AddProfileScreen = () => {
         'Bạn cần cung cấp đầy đủ thông tin hồ sơ cá nhân để đăng ký sử dụng dịch vụ.Vui lòng thêm CMND/CCCD mặt sau',
       );
       setIsModalVisible(true);
-      // AlertToaster(
-      //   'error',
-      //   'Bạn cần cung cấp đủ thông tin',
-      //   'Vui lòng thêm CMND/CCCD mặt sau',
-      // );
       setIsLoading(false);
       return false;
     } else if (confirmAddress.length === 0 || confirmAddress[0] === undefined) {
@@ -87,12 +70,6 @@ const AddProfileScreen = () => {
         'Bạn cần cung cấp đầy đủ thông tin hồ sơ cá nhân để đăng ký sử dụng dịch vụ.Vui lòng thêm Giấy xác nhận cư trú',
       );
       setIsModalVisible(true);
-
-      // AlertToaster(
-      //   'error',
-      //   'Bạn cần cung cấp đủ thông tin',
-      //   'Vui lòng thêm Giấy xác nhận cư trú',
-      // );
       setIsLoading(false);
       return false;
     } else if (background.length === 0 || background[0] === undefined) {
@@ -100,25 +77,15 @@ const AddProfileScreen = () => {
         'Bạn cần cung cấp đầy đủ thông tin hồ sơ cá nhân để đăng ký sử dụng dịch vụ.Vui lòng thêm sơ yếu lý lịch',
       );
       setIsModalVisible(true);
-      // AlertToaster(
-      //   'error',
-      //   'Bạn cần cung cấp đủ thông tin',
-      //   'Vui lòng thêm sơ yếu lý lịch',
-      // );
       setIsLoading(false);
       return false;
     } else return true;
   };
-  // const testApp = () => {
-  //   navi.navigate(ScreenNames.MAIN_NAVIGATOR);
-  // }
   const CRM2_spProfileOfficer_Save = async () => {
     setIsLoading(true);
     const valid = validateForm();
     if (valid) {
-      // console.log('valid : ', valid);
       try {
-        // console.log('satus : ', cmndBack);
         const pr = {
           GroupUserId: 10060,
           IdProfileOfficer: 0,
@@ -134,8 +101,6 @@ const AddProfileScreen = () => {
           Json: JSON.stringify(pr),
           func: 'OVG_spProfileOfficer_Save',
         };
-
-        // console.log('params : ', params);
         const result = await mainAction.API_spCallServer(params, dispatch);
         console.log('result : ', result);
         // Cập nhật xuống localStore để lưu trạng thái đã cập nhật hồ sơ
@@ -159,17 +124,11 @@ const AddProfileScreen = () => {
             },
             dispatch,
           );
-          // setIsLoading(false);
-          // if (userLogin?.State === 10 || !userLogin?.State) {
           setTitle('Hồ sơ của bạn đã được cập nhật thành công !');
           setIsUpdate(true);
-          // } else {
-          //   setIsLoading(false);
           navi.reset({
             routes: [{name: ScreenNames.MAIN_NAVIGATOR}],
           });
-          // navi.navigate(ScreenNames.MAIN_NAVIGATOR);
-          // }
           setIsLoading(false);
         }
         setIsLoading(false);
@@ -183,9 +142,7 @@ const AddProfileScreen = () => {
   return (
     <LayoutGradientBlue>
       <ScrollView>
-        {/* <ImageUploadComponent setImageUrl={setImageUrl} /> */}
-        <Header showBackButton={true} color={colors.WHITE} />
-        <Text style={MainStyles.titleForgotPasswordForm}>Bổ sung hồ sơ</Text>
+        <Text style={MainStyles.pageTitle}>Bổ sung hồ sơ</Text>
         <View style={MainStyles.containerFormUpload}>
           <View>
             <View style={MainStyles.rowBtnUpload}>
@@ -271,13 +228,6 @@ const AddProfileScreen = () => {
           disable={isLoading}>
           Cập nhật
         </Button>
-        {/* <Button
-          onPress={testApp}
-          bgColor={colors.PRIMARY_GREEN}
-          icon={() => <ArrowRight color={colors.WHITE} />}
-        >
-          Tiếp tục
-        </Button> */}
       </LayoutBottom>
       <ModalUserNotActive
         title={title}

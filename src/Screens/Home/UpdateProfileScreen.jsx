@@ -1,15 +1,15 @@
-import {Image, StatusBar, Text, View} from 'react-native';
+import { Image, StatusBar, Text, View } from 'react-native';
 import LayoutGradientBlue from '../../components/layouts/LayoutGradientBlue';
 import Footer from '../../components/Footer';
 import MainStyles from '../../styles/MainStyle';
-import {image_banner_5} from '../../assets';
+import { image_banner_5 } from '../../assets';
 import Button from '../../components/buttons/Button';
 import Box from '../../components/Box';
-import {ScreenNames} from '../../Constants';
+import { ScreenNames } from '../../Constants';
 import ProgressBar from '../../components/ProgressBar';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {responsivescreen} from '../../utils/responsive-screen';
-import {useSelector} from 'react-redux';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { responsivescreen } from '../../utils/responsive-screen';
+import { useSelector } from 'react-redux';
 import React from 'react';
 
 const UpdateProfileScreen = () => {
@@ -38,7 +38,7 @@ const UpdateProfileScreen = () => {
     route.params && route.params.data ? route.params.data : undefined;
   const navigation = useNavigation();
   const handleUpdate = () => {
-    navigation.navigate(ScreenNames.ADD_PROFILE, {data: {UserProfile}});
+    navigation.navigate(ScreenNames.ADD_PROFILE, { data: { UserProfile } });
   };
   return (
     <LayoutGradientBlue>
@@ -63,7 +63,6 @@ const UpdateProfileScreen = () => {
         <Box height={30} />
         <Button onPress={handleUpdate}>Cập nhật</Button>
       </View>
-      <Footer />
     </LayoutGradientBlue>
   );
 };

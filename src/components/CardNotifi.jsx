@@ -1,13 +1,13 @@
 import React from 'react';
-import {View} from 'react-native';
-import {Icon, Text} from '@ui-kitten/components';
-import {colors} from '../styles/Colors';
+import { View } from 'react-native';
+import { Icon, Text } from '@ui-kitten/components';
+import { colors } from '../styles/Colors';
 import MainStyles from '../styles/MainStyle';
-import {parseTimeSql} from '../utils/FormatTime';
+import { FormatDateJsonPro, parseTimeSql } from '../utils/FormatTime';
 import Rating from './Rating';
-import {PropTypes} from 'prop-types';
+import { PropTypes } from 'prop-types';
 
-const CardNotifi = ({data}) => {
+const CardNotifi = ({ data }) => {
   return (
     <View>
       <View style={MainStyles.cardJob}>
@@ -15,7 +15,7 @@ const CardNotifi = ({data}) => {
           <Text
             style={[
               MainStyles.titleCardJob,
-              {textAlign: 'center', color: colors.MAIN_BLUE_CLIENT},
+              { textAlign: 'center', color: colors.MAIN_BLUE_CLIENT },
             ]}>
             Thông báo hoàn thành dịch vụ
           </Text>
@@ -24,7 +24,7 @@ const CardNotifi = ({data}) => {
           <View style={MainStyles.line} />
         </View>
         <View style={MainStyles.flexRowCenter}>
-          <Text style={[MainStyles.titleCardJob, {textAlign: 'center'}]}>
+          <Text style={[MainStyles.titleCardJob, { textAlign: 'center' }]}>
             Dịch vụ {data?.ServiceName.toLowerCase()}
           </Text>
         </View>
@@ -47,7 +47,7 @@ const CardNotifi = ({data}) => {
               name="calendar-outline"
             />
             <Text style={MainStyles.textCardJob}>
-              Ngày hoàn thành: {parseTimeSql(data?.BookingTime, 3)}
+              Ngày hoàn thành: {FormatDateJsonPro(data?.BookingTime, 21)}
             </Text>
           </View>
         </View>
@@ -58,7 +58,7 @@ const CardNotifi = ({data}) => {
               fill="#3366FF"
               name="star-outline"
             />
-            <Text style={MainStyles.textCardJob}>Được đánh giá: </Text>
+            <Text style={MainStyles.textCardJob}>Đánh giá: </Text>
             <Rating rating={data?.StartNumber || 5} />
           </View>
         </View>
@@ -71,8 +71,8 @@ const CardNotifi = ({data}) => {
             />
             <Text style={MainStyles.textCardJob}>
               {data?.RatingNote
-                ? 'Feedback: ' + data?.RatingNote.trim()
-                : 'Khách hàng không để lại Feedback'}
+                ? 'Đánh giá: ' + data?.RatingNote.trim()
+                : 'Khách hàng không để lại đánh giá'}
             </Text>
           </View>
         </View>
